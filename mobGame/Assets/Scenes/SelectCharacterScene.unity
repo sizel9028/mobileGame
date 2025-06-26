@@ -269,26 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85dfae781f06ece40b2ebd4d3a94ebf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterButtons:
-  - {fileID: 1339837914}
-  - {fileID: 493631687}
-  - {fileID: 1131585445}
-  - {fileID: 1876578681}
-  characterImages:
-  - {fileID: 1809496630}
-  - {fileID: 402937598}
-  - {fileID: 536908893}
-  - {fileID: 1290350726}
-  DifficultyButtons:
-  - {fileID: 757916089}
-  - {fileID: 1420664213}
-  - {fileID: 648528558}
-  - {fileID: 1065659668}
-  DifficultyImages:
-  - {fileID: 1289303634}
-  - {fileID: 1083013910}
-  - {fileID: 1518051684}
-  - {fileID: 951487939}
+  characterSelector: {fileID: 1036013711}
+  difficultySelector: {fileID: 1154795165}
   startButton: {fileID: 1712326}
 --- !u!4 &362179292
 Transform:
@@ -302,7 +284,9 @@ Transform:
   m_LocalPosition: {x: 356.94403, y: 163.23874, z: 1.5283921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1036013710}
+  - {fileID: 1154795164}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &395054490
@@ -1147,6 +1131,60 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1036013709
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1036013710}
+  - component: {fileID: 1036013711}
+  m_Layer: 0
+  m_Name: ChUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1036013710
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036013709}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 362179292}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1036013711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036013709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858f99232bf627f47b0b85b68c496d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 1339837914}
+  - {fileID: 493631687}
+  - {fileID: 1131585445}
+  - {fileID: 1876578681}
+  images:
+  - {fileID: 1809496630}
+  - {fileID: 402937598}
+  - {fileID: 536908893}
+  - {fileID: 1290350726}
 --- !u!1 &1065659664
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,6 +1593,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1154795163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1154795164}
+  - component: {fileID: 1154795165}
+  m_Layer: 0
+  m_Name: DfUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1154795164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154795163}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 362179292}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1154795165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154795163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858f99232bf627f47b0b85b68c496d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttons:
+  - {fileID: 757916089}
+  - {fileID: 1420664213}
+  - {fileID: 648528558}
+  - {fileID: 1065659668}
+  images:
+  - {fileID: 1289303634}
+  - {fileID: 1083013910}
+  - {fileID: 1518051684}
+  - {fileID: 951487939}
 --- !u!1 &1289303631
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,5 +4,5 @@ using UnityEngine;
 public class MapNode
 {
     public int stageNumber;
-    public List<MapNodeData> nodes = new();
+    public MapNodeData[] nodes = new MapNodeData[50];
 }

@@ -26,5 +26,6 @@ public class ChSceneManager : MonoBehaviour
 
         // TODO이 값을 정보로 넘기고 시작하기
 
+        UnityEngine.SceneManagement.SceneManager.LoadScene("StageScene");
     }
 }

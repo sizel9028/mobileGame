@@ -60,6 +60,9 @@ public class StartMenu : MonoBehaviour
     void onClickNewGame()
     {
         //TODO 저장소에 새로운 값을 채움 + 씬 변환
+        GameManager.gameManager.StartNewGame();
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("SelectCharacterScene");
     }
 
     void onClickContinue()

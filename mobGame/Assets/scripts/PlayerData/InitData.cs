@@ -9,7 +9,7 @@ public class InitData : MonoBehaviour
             //TODO 초기값 설정
             hp = 100,
             gold = 0,
-            currentMap = MapGenerator.GenerateStage1()
+            currentMap = MapGenerator.LoadMap(1,0)
         };
     }
 }

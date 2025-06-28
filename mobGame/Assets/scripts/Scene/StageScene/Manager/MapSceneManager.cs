@@ -3,12 +3,13 @@ using UnityEngine;
 public class MapSceneManager : MonoBehaviour
 {
     public UImanager uimanager;
-    private MapNode currentMap;
     //ButtonManager이랑 간접 연결
 
     void Start()
     {
         //TODO currentMap 데이터를 게임 매니저로부터 받아옴 
+        MapNode currentMap = GameManager.gameManager.playerData.currentMap;
+        
         uimanager.InitMap(currentMap);
     }
 

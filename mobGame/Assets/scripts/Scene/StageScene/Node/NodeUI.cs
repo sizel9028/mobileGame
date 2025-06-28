@@ -30,7 +30,7 @@ public class NodeUI : MonoBehaviour
         nodeIndex = index;
         manager = sceneManager;
 
-        nodeImage.sprite = GetIcon(type);
+        button.image.sprite = GetIcon(type);
         nodeImage.color = defaultColor;
 
         button.onClick.RemoveAllListeners();

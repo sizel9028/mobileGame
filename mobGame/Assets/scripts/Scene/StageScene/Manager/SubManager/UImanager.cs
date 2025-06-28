@@ -1,8 +1,17 @@
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class UImanager : MonoBehaviour
 {
+    //노드 프리팹
+    public GameObject nodePrefab;
+    public RectTransform nodeParent;
+
+    //노드를 이어줌
+    public GameObject linePrefab;
+    public RectTransform lineParent;
+
     private Dictionary<int, NodeUI> nodeUIs = new();
     private int selectedIdx = -1;
     public int SelectedIdx => selectedIdx;
@@ -84,12 +93,63 @@ public class UImanager : MonoBehaviour
             RegisterNode(node.nodeId, ui);
             ui.SetInteractable(true);
         }
+
+        DrawAllLine(map);
     }
 
     private NodeUI CreateNodeUI(MapNodeData node)
     {
         // TODO 게임오브젝트 인스턴스화 후 NodeUI 반환
-        return null;
+        //return null;
+
+        GameObject obj = Instantiate(nodePrefab, nodeParent);
+        NodeUI ui = obj.GetComponent<NodeUI>();
+
+        RectTransform rt = obj.GetComponent<RectTransform>();
+        rt.anchoredPosition = node.position;
+
+        ui.Setup(node.nodeId, node.nodeType, this);
+        return ui;
+    }
+
+    private void DrawAllLine(MapNode map)
+    {
+        foreach (var node in map.nodes)
+        {
+            if (node == null || node.nodeType != NodeType.cleared)
+                continue;
+
+            if (!nodeUIs.ContainsKey(node.nodeId))
+                continue;
+
+            NodeUI fromUI = nodeUIs[node.nodeId];
+
+            foreach (int toId in node.connectedNodeIds)
+            {
+                if (!nodeUIs.ContainsKey(toId))
+                    continue;
+
+                NodeUI toUI = nodeUIs[toId];
+                DrawLine(fromUI, toUI);
+            }
+        }
+    }
+
+    private void DrawLine(NodeUI from, NodeUI to)
+    {
+        GameObject lineObj = Instantiate(linePrefab, lineParent);
+        RectTransform rt = lineObj.GetComponent<RectTransform>();
+
+        Vector2 start = from.GetComponent<RectTransform>().anchoredPosition;
+        Vector2 end = to.GetComponent<RectTransform>().anchoredPosition;
+        Vector2 dir = end - start;
+
+        float length = dir.magnitude;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        rt.sizeDelta = new Vector2(length, 4);
+        rt.anchoredPosition = start + dir * 0.5f;
+        rt.localRotation = Quaternion.Euler(0, 0, angle);
     }
 
 }

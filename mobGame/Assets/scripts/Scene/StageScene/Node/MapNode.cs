@@ -19,7 +19,7 @@ public class MapNode
         foreach (var node in nodes)
         {
             if (node == null) continue;
-            if (node.nodeType != NodeType.cleared)
+            if (node.nodeType != NodeType.Cleared)
                 return false;
         }
 

@@ -30,7 +30,7 @@ public class NodeUI : MonoBehaviour
         nodeIndex = index;
         manager = sceneManager;
 
-        nodeImage.sprite = GetIcon(type);
+        button.image.sprite = GetIcon(type);
         nodeImage.color = defaultColor;
 
         button.onClick.RemoveAllListeners();
@@ -65,7 +65,7 @@ public class NodeUI : MonoBehaviour
             NodeType.Elite => eliteIcon,
             NodeType.Treasure => treasureIcon,
             NodeType.Unknown => unknownIcon,
-            NodeType.cleared => clearedIcon,
+            NodeType.Cleared => clearedIcon,
             _ => unknownIcon
         };
     }

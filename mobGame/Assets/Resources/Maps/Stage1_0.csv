@@ -1,0 +1,6 @@
+nodeId,nodeType,posX,posY,connectedIds
+0,cleared,-300,0,1;
+1,cleared,-200,0,2;3;4
+2,Battle,-100,100,5
+3,Campfire,-100,0,5
+4,Treasure,-100,-100,5

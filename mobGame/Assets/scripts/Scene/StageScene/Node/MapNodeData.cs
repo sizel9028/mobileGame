@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum NodeType
 {
-    Battle, Shop, Campfire, Elite, Treasure, Unknown, cleared
+    Battle, Shop, Campfire, Elite, Treasure, Unknown, Cleared
 }
 
 public class MapNodeData

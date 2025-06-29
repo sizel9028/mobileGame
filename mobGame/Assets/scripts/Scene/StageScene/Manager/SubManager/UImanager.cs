@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class UImanager : MonoBehaviour
@@ -58,7 +57,7 @@ public class UImanager : MonoBehaviour
         for (int i = 0; i < map.nodes.Length; ++i)
         {
             var node = map.nodes[i];
-            if (node == null || node.nodeType != NodeType.cleared) continue;
+            if (node == null || node.nodeType != NodeType.Cleared) continue;
 
             //NodeUI를 인스턴스화 시키고 등록시킴
             var ui = CreateNodeUI(node);
@@ -116,7 +115,7 @@ public class UImanager : MonoBehaviour
     {
         foreach (var node in map.nodes)
         {
-            if (node == null || node.nodeType != NodeType.cleared)
+            if (node == null || node.nodeType != NodeType.Cleared)
                 continue;
 
             if (!nodeUIs.ContainsKey(node.nodeId))

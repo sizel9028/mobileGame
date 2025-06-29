@@ -65,7 +65,7 @@ public class NodeUI : MonoBehaviour
             NodeType.Elite => eliteIcon,
             NodeType.Treasure => treasureIcon,
             NodeType.Unknown => unknownIcon,
-            NodeType.cleared => clearedIcon,
+            NodeType.Cleared => clearedIcon,
             _ => unknownIcon
         };
     }

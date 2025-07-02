@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum CardType  //카드 종류 (패시브, 스크롤, 이외 나머지)
@@ -35,7 +36,11 @@ public class CardData
 
     //카드 타입
 
-    public Sprite cardArt;
+    //public Sprite cardArt; 카드 저장 문제 대안으로 이름 저장
+    public string path;
+    public string cardArtName;
+    [NonSerialized] public Sprite cardArt;
+
     public CardType cardType;
     public ActionType actionType;
     public CardTarget cardTarget;
@@ -45,5 +50,15 @@ public class CardData
 
     //TODO 상태이상, 데미지 등등 효과
     public StatusEffect statusEffect;
+
+    public void LoadArt()
+    {
+        string fullPath = $"{path}/{cardArtName}";
+        cardArt = Resources.Load<Sprite>(fullPath);
+        if (cardArt == null)
+        {
+            Debug.LogWarning($"[CardData] 스프라이트 로드 실패: {fullPath}");
+        }
+    }
 
 }

@@ -21,4 +21,18 @@ public class LocalizedText : MonoBehaviour
         }
     }
 
+    public void SetText(string newKey)
+    {
+        key = newKey;
+        if (LocalizationManager.languageM != null)
+        {
+            text.text = LocalizationManager.languageM.GetText(key);
+            text.font = LocalizationManager.languageM.GetFont();
+        }
+        else
+        {
+            Debug.LogWarning("LocalizationManager가 존재하지 않습니다. 키: " + key);
+        }
+    }
+
 }

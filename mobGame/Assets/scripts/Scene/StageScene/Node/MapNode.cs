@@ -4,7 +4,7 @@ using UnityEngine;
 //맵 테마
 public enum MapTheme
 {
-    FROST
+    NOP, FROST
 };
 
 public class MapNode

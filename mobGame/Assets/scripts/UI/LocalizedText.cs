@@ -6,10 +6,15 @@ public class LocalizedText : MonoBehaviour
     public string key;
     private TMP_Text text;
 
+    void Awake()
+    {
+        text = GetComponent<TMP_Text>();
+    }
+
 
     void Start()
     {
-        text = GetComponent<TMP_Text>();
+        //text = GetComponent<TMP_Text>();
         if (LocalizationManager.languageM != null)
         {
             text.text = LocalizationManager.languageM.GetText(key);

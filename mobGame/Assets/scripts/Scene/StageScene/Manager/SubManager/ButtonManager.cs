@@ -17,11 +17,11 @@ public class ButtonManager : MonoBehaviour
 
     void OnStartClick()
     {
-        //TODO 게임 시작
+        manager.HandleStart();
     }
 
     void OnBackClick()
     {
-        //TODO 이전화면으로 돌아가기
+        manager.HandleBack();
     }
 }

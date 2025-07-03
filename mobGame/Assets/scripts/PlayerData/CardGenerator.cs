@@ -12,8 +12,8 @@ public class CardGenerator : MonoBehaviour
 
         var deck = new Deck
         {
-            deckType = (stage == 0) ? DeckType.Player : DeckType.Enemy,
-            allCards = new List<CardData>()
+            //deckType = (stage == 0) ? DeckType.Player : DeckType.Enemy,
+            cards = new List<CardData>()
         };
 
         TextAsset csv = Resources.Load<TextAsset>($"{path}/data");
@@ -55,7 +55,7 @@ public class CardGenerator : MonoBehaviour
                 };
 
                 card.LoadArt();
-                deck.allCards.Add(card);
+                deck.cards.Add(card);
             }
             catch (Exception err)
             {

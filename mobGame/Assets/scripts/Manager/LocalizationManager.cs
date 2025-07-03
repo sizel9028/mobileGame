@@ -71,6 +71,7 @@ public class LocalizationManager : MonoBehaviour
 
     public TMP_FontAsset GetFont()
     {
+        //TODO 폰트 넣기
         switch (currentLanguage)
         {
             case "ko": return fontKorean;

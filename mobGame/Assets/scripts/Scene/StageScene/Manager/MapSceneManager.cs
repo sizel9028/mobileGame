@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapSceneManager : MonoBehaviour
 {
@@ -16,6 +17,20 @@ public class MapSceneManager : MonoBehaviour
     public void HandleStart()
     {
         //TODO uimanager selectedIndex값에 따라 다음 씬으로 행동
+        NodeType? nodeType = uimanager.GetNodeType();
+
+        if (nodeType == null)
+        {
+            Debug.LogWarning("[Battle] 선택된 노드가 없습니다.");
+            return;
+        }
+
+        switch (nodeType)
+        {
+            case NodeType.Battle:
+                SceneManager.LoadScene("BattleScene");
+                break;
+        }
     }
 
     public void HandleBack()

@@ -19,6 +19,7 @@ public class NodeUI : MonoBehaviour
     private int nodeIndex;
     //씬 매니저 호출, 정보 전달
     private UImanager manager;
+    private NodeType nodeType;
 
     private Color defaultColor = Color.white;
     private Color disabledColor = Color.gray;
@@ -27,6 +28,7 @@ public class NodeUI : MonoBehaviour
 
     public void Setup(int index, NodeType type, UImanager sceneManager)
     {
+        nodeType = type;
         nodeIndex = index;
         manager = sceneManager;
 
@@ -74,5 +76,10 @@ public class NodeUI : MonoBehaviour
     public bool CanSelect()
     {
         return isInteractable;
+    }
+
+    public NodeType GetNodeType()
+    {
+        return nodeType;
     }
 }

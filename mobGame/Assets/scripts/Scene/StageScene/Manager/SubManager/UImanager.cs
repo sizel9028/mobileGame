@@ -151,4 +151,12 @@ public class UImanager : MonoBehaviour
         rt.localRotation = Quaternion.Euler(0, 0, angle);
     }
 
+    public NodeType? GetNodeType()
+    {
+        if (selectedIdx == -1 || !nodeUIs.ContainsKey(selectedIdx))
+            return null;
+
+        return nodeUIs[selectedIdx].GetNodeType();
+    }
+
 }

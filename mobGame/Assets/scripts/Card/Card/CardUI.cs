@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CardUI : MonoBehaviour
 {
     //public Image backgroundImage; //배경 버튼에서 처리
+    //private GameObject wrapper; // 상위 빈 객체
     public Image cardImage;  //카드 일러스트
     public LocalizedText nameText;
     public LocalizedText descriptionText;

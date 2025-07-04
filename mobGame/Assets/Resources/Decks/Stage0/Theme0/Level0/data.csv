@@ -1,5 +1,5 @@
 nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,damage,statusEffect
-fireball_name,fireball_desc,Fireball,Scroll,Attack,oneEnemy,Tier1,1,10,Burn
-fireball_name,fireball_desc,Fireball,Scroll,Attack,oneEnemy,Tier1,1,10,Burn
-fireball_name,fireball_desc,Fireball,Scroll,Attack,oneEnemy,Tier1,1,10,Burn
-fireball_name,fireball_desc,Fireball,Scroll,Attack,oneEnemy,Tier1,1,10,Burn
+fireball_name,fireball_desc,Fireball,Action,Attack,oneEnemy,Tier1,1,10,Burn
+fireball_name,fireball_desc,Fireball,Action,Attack,oneEnemy,Tier1,1,10,Burn
+fireball_name,fireball_desc,Fireball,Action,Attack,oneEnemy,Tier1,1,10,Burn
+fireball_name,fireball_desc,Fireball,Action,Attack,oneEnemy,Tier1,1,10,Burn

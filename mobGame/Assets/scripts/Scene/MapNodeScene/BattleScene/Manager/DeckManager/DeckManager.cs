@@ -10,10 +10,16 @@ public class DeckManager : MonoBehaviour
     public List<CardData> passiveCards = new();  //패시브 카드
     //TODO 숫자 바꿈
     public int maxHandSize = 8;
-    public int firstDraw = 3;
+    private int firstDraw = 2;
 
     public Transform handPanel;
-    public CardUIManager cardUIManager;  // hand 대신
+    public CardUIManager cardUIManager;    // 이외의 모든 UI관리
+    public HandView handView;   // 손에 보이게 함
+
+    void Start()
+    {
+        cardUIManager.isBattleUI = true;
+    }
 
     public void InitDeck()
     {
@@ -44,7 +50,7 @@ public class DeckManager : MonoBehaviour
         {
             DrawCard();
         }
-        cardUIManager.ArrangeCardWithArc();
+        //cardUIManager.ArrangeCardWithArc(); 모션이 별로여서 삭제
     }
 
     public void DrawCard()
@@ -65,7 +71,8 @@ public class DeckManager : MonoBehaviour
         var card = drawPile.Draw();
         if (card != null)
         {
-            cardUIManager.Register(card, handPanel);
+            var cardUI = cardUIManager.CreateCard(card, handPanel,new Vector2(800f,-300f));
+            StartCoroutine(handView.AddCard(cardUI));
         }
     }
 
@@ -73,4 +80,28 @@ public class DeckManager : MonoBehaviour
     {
 
     }
+    
+
+    void Update()
+{
+    if (Input.GetKeyDown(KeyCode.Space))  // 스페이스 키 눌렀을 때
+    {
+        DrawOneCardFromDeckTop();
+    }
+}
+
+    private void DrawOneCardFromDeckTop()
+    {
+        if (drawPile.cards.Count == 0)
+        {
+            Debug.Log("DrawPile is empty");
+            return;
+        }
+
+        var card = drawPile.cards[0];
+
+        var ui = cardUIManager.CreateCard(card, handPanel,new Vector2(800f,-300f));
+        StartCoroutine(handView.AddCard(ui));
+}
+
 }

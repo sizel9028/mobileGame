@@ -18,7 +18,7 @@ public class DeckManager : MonoBehaviour
 
     void Start()
     {
-        cardUIManager.isBattleUI = true;
+        //cardUIManager.isBattleUI = true;
     }
 
     public void InitDeck()

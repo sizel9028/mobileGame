@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Slider _hpBar;
     [SerializeField] private TextMeshProUGUI hpText;       // HP 텍스트
     [SerializeField] private TextMeshProUGUI shieldText;   // 방어력 텍스트
+    [SerializeField] private Image playerUIImage;           // 이미지 추가
+
 
     // 플레이어의 HP
     private int _hp;

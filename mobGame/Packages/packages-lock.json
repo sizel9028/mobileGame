@@ -353,11 +353,10 @@
       }
     },
     "com.unity.uiextensions": {
-      "version": "https://github.com/Unity-UI-Extensions/com.unity.uiextensions.git",
+      "version": "file:com.unity.uiextensions-release",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "35b9985bf238cde2bad9c8e107c686ba3194471c"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.visualscripting": {
       "version": "1.9.7",

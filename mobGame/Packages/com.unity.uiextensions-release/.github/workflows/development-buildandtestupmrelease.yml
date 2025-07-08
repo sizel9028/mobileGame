@@ -1,0 +1,30 @@
+name: Build and test UPM packages for platforms, all branches except main
+
+on:
+  pull_request:
+    branches-ignore:    
+      - 'release'
+  # Ignore PRs targeting main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Check Unity version required by the package
+  # Run Unity build unit tests defined in the package for a single version for feature branches
+  Run-Partial-Unit-Tests:
+    name: Run Unity Unit Tests
+    if: github.ref != 'refs/heads/development'
+    uses: ./.github/workflows/rununitysinglebuild.yml    
+    with:
+      unityversion: 2020.3
+
+  # Run Unity multi-version build unit tests defined in the package for the development branch
+  Run-Full-Unit-Tests:
+    name: Run Unity Unit Tests
+    if: github.ref == 'refs/heads/development'
+    uses: ./.github/workflows/rununitybuildmultiversion.yml

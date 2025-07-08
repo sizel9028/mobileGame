@@ -18,7 +18,7 @@ public class DeckManager : MonoBehaviour
 
     void Start()
     {
-        //cardUIManager.isBattleUI = true;
+        //cardUIManager.isBattleUI = true;  핸드는 따로 클래스 만듬
     }
 
     public void InitDeck()
@@ -71,7 +71,8 @@ public class DeckManager : MonoBehaviour
         var card = drawPile.Draw();
         if (card != null)
         {
-            var cardUI = cardUIManager.CreateCard(card, handPanel,new Vector2(800f,-300f));
+            var cardUI = cardUIManager.CreateCard(card, handPanel,new Vector2(-800f,-300f));
+            cardUI.SetHandView(handView);
             StartCoroutine(handView.AddCard(cardUI));
         }
     }
@@ -80,13 +81,19 @@ public class DeckManager : MonoBehaviour
     {
 
     }
-    
+
 
     void Update()
-{
-    if (Input.GetKeyDown(KeyCode.Space))  // 스페이스 키 눌렀을 때
     {
-        DrawOneCardFromDeckTop();
+        if (Input.GetKeyDown(KeyCode.Space))  // 스페이스 키 눌렀을 때
+        {
+            DrawOneCardFromDeckTop();
+        }
+    
+    if (Input.GetKeyDown(KeyCode.E))  // E 키를 눌렀을 때
+    {
+        handView.DiscardAllCards();
+        Debug.Log("DiscardAllCards 실행됨");
     }
 }
 
@@ -100,7 +107,8 @@ public class DeckManager : MonoBehaviour
 
         var card = drawPile.cards[0];
 
-        var ui = cardUIManager.CreateCard(card, handPanel,new Vector2(800f,-300f));
+        var ui = cardUIManager.CreateCard(card, handPanel,new Vector2(-800f,-300f));
+        ui.SetHandView(handView);
         StartCoroutine(handView.AddCard(ui));
 }
 

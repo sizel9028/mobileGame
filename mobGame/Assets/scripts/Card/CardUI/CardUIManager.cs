@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CardUIManager : MonoBehaviour
 {
-    public GameObject cardPrefab;
+    public GameObject cardPrefab;  //[SerializeField] 어차피 2명인데 다 public으로 넘기자
     public List<CardUI> handCards = new(); // 카드 담음
     private Dictionary<CardUI, CardData> cardLookup = new(); //CardUI를 얻으면 그 CardData를 반환
 

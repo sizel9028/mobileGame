@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7feaed42a81469948ad6eb09efa5ccc2
+guid: 76d1122b01e66e343a1894461fb79d41
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7041459566998464328
-    second: FireBall (1)_0
+      213: -1486736674410596525
+    second: ArrowHead_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FireBall (1)_0
+      name: ArrowHead_0
       rect:
         serializedVersion: 2
-        x: 30
-        y: 25
-        width: 120
-        height: 130
+        x: 111
+        y: 120
+        width: 138
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 847283f3b2a48b160800000000000000
-      internalID: 7041459566998464328
+      spriteID: 357f5372fdc0e5be0800000000000000
+      internalID: -1486736674410596525
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      FireBall (1)_0: 7041459566998464328
+      ArrowHead_0: -1486736674410596525
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

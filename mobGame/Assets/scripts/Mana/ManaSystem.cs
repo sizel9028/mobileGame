@@ -7,6 +7,21 @@ public class ManaSystem : Singleton<ManaSystem>
     [SerializeField] private ManaUI ManaUI;
     private const int Max_Mana = 3;
     private int currentMana = Max_Mana;
+    void OnEnable()
+    {
+        ActionSystem.AttachPerformer<SpendMana>(SpendManaPerformer);
+        ActionSystem.AttachPerformer<RefillMana>(RefillManaPerformer);
+    }
+    void OnDisable()
+    {
+        ActionSystem.DetachPerformer<SpendMana>();
+        ActionSystem.DetachPerformer<RefillMana>();
+    }
+
+    public bool HasEnoughMana(int mana)
+    {
+        return currentMana >= mana;
+    }
 
     private IEnumerator SpendManaPerformer(SpendMana spendMana)
     {

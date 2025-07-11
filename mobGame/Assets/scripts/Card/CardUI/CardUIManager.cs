@@ -17,7 +17,8 @@ public class CardUIManager : MonoBehaviour
     public void Register(CardData cardData, Transform handParent, Vector2 anchoredPos = default)
     {
         var ui = CreateCard(cardData, handParent, anchoredPos);
-
+        ui.SetManager(this);
+        
         handCards.Add(ui);
         cardLookup[ui] = cardData;
     }

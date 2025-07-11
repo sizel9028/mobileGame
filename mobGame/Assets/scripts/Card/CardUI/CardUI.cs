@@ -69,8 +69,12 @@ public class CardUI : MonoBehaviour
         borderImage.color = isSelected ? Color.white : Color.gray;
     }
 
-    // 터치 관련 함수 (패에 있는 카드들은 handManager한테 넘김)
+    public void SetManager(CardUIManager uiManager)
+    {
+        this.manager = uiManager;
+    }
 
+    // 터치 관련 함수 (패에 있는 카드들은 handManager한테 넘김)
     public void SetHandView(HandView manager)
     {
         handView = manager;

@@ -10,17 +10,19 @@ public class CardUIManager : MonoBehaviour
     private Dictionary<CardUI, CardData> cardLookup = new(); //CardUI를 얻으면 그 CardData를 반환
 
     private int selectedIndex = -1; //어떤 인덱스가 선택되었는지(리스트 기준)
-    //public bool isBattleUI = false; //배틀 UI는 카드 배치를 사용
+                                    //public bool isBattleUI = false; //배틀 UI는 카드 배치를 사용
                                     //public HandView handView; handView는 따로 관리(역할이 다름 패에 보여주게 하는녀석)
 
-    //카드 등록함수 (드로우 패는 HandView에서 관리)
-    public void Register(CardData cardData, Transform handParent, Vector2 anchoredPos = default)
+    //카드 등록함수 (드로우 패는 HandView에서 관리) CardUI를 반환해서 움직임을 변환 가능
+    public CardUI Register(CardData cardData, Transform handParent, Vector2 anchoredPos = default)
     {
         var ui = CreateCard(cardData, handParent, anchoredPos);
         ui.SetManager(this);
-        
+
         handCards.Add(ui);
         cardLookup[ui] = cardData;
+
+        return ui;
     }
 
     //카드 프리팹 복제함수

@@ -1,5 +1,5 @@
-nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,damage,statusEffect
-fireball_name,fireball_desc,Fireball,Action,Attack,oneEnemy,Tier1,1,10,Burn
-fireball_name,fireball_desc,Fireball,Action,Attack,oneEnemy,Tier1,1,10,Burn
-fireball_name,fireball_desc,Fireball,Action,Attack,oneEnemy,Tier1,1,10,Burn
-fireball_name,fireball_desc,Fireball,Action,Attack,oneEnemy,Tier1,1,10,Burn
+nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,statusEffect,maxTurn,maxCount,effectMapRaw
+fireball_name,fireball_desc,Fireball,Action,Skill,oneEnemy,Tier1,1,Burn,0,0,"Damage::10,Burn::1"
+fireball_name,fireball_desc,Fireball,Action,Skill,oneEnemy,Tier1,1,Burn,0,0,"Damage::10,Burn::1"
+fireball_name,fireball_desc,Fireball,Action,Skill,oneEnemy,Tier1,1,Burn,0,0,"Damage::10,Burn::1"
+fireball_name,fireball_desc,Fireball,Action,Skill,oneEnemy,Tier1,1,Burn,0,0,"Damage::10,Burn::1"

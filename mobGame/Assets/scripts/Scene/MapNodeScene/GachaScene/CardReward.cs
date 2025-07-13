@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,8 @@ public class CardReward : MonoBehaviour
     public Button resetBtn; // 카드 리셋
 
     private int maxReset;
+
+    private Vector2 defaultCardPos = new Vector2(0f, 300f);  //카드가 생성되는 시작 위치
 
     private Vector2[] cardPos = new Vector2[]
     {
@@ -40,13 +43,24 @@ public class CardReward : MonoBehaviour
     {
         //TODO 랜덤 카드 3장을 뽑음(따로 만들어야 함)
         //  --- Test ---
-        var deck = CardGenerator.LoadDeck(0, 0, 0);
-        var card = deck.cards[0];
+        //var deck = CardGenerator.LoadDeck(0, 0, 0);
+        //var card = deck.cards[0];
         //카드는 테스트 용으로 보여줌
 
         for (int i = 0; i < 3; ++i)
         {
-            cardUIManager.Register(card, cardParent, cardPos[i]);
+            // --- Test ---
+            var deck = CardGenerator.LoadDeck(0, 0, 0);
+            var card = deck.cards[0];
+            // --- Test ---
+
+            var cardUI = cardUIManager.Register(card, cardParent, defaultCardPos);
+            var rect = cardUI.GetComponent<RectTransform>();
+
+            if (rect == null) continue;
+
+            float delay = 0.2f * i;
+            rect.DOAnchorPos(cardPos[i], 0.5f).SetEase(Ease.OutBack).SetDelay(delay); // SetEase 애니메이션 튀기는 효과 + 딜레이
         }
 
     }

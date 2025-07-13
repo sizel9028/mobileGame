@@ -31,7 +31,7 @@ public class CardGenerator : MonoBehaviour
             if (string.IsNullOrEmpty(line)) continue;
 
             string[] tokens = line.Split(',');
-            if (tokens.Length < 10)
+            if (tokens.Length < 12)
             {
                 Debug.LogWarning($"[CardGenerator] 잘못된 CSV 라인: {line}");
                 continue;
@@ -50,10 +50,13 @@ public class CardGenerator : MonoBehaviour
                     cardTarget = Enum.Parse<CardTarget>(tokens[5]),
                     rare = Enum.Parse<Rare>(tokens[6]),
                     cost = int.Parse(tokens[7]),
-                    damage = int.Parse(tokens[8]),
-                    statusEffect = Enum.Parse<StatusEffect>(tokens[9])
+                    statusEffect = Enum.Parse<StatusEffect>(tokens[8]),
+                    maxTurn = int.Parse(tokens[9]),
+                    maxCount = int.Parse(tokens[10]),
+                    effectMapRaw = tokens[11].Replace("\"","").Trim()
                 };
-
+                
+                card.ParseEffectMap();
                 card.LoadArt();
                 deck.cards.Add(card);
             }

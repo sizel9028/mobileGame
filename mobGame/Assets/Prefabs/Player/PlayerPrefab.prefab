@@ -386,7 +386,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 118.6, y: 44.6}
+  m_AnchoredPosition: {x: 55.5, y: 21.2}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5154757042233943568
@@ -404,7 +404,7 @@ MonoBehaviour:
   _hpBar: {fileID: 5419371015331398726}
   hpText: {fileID: 8954678467431581977}
   shieldText: {fileID: 1316761090894117524}
-  playerUIImage: {fileID: 0}
+  playerUIImage: {fileID: 3973813344236666119}
 --- !u!1 &4091970252454443552
 GameObject:
   m_ObjectHideFlags: 0

@@ -91,13 +91,65 @@ public class EnemySystem : MonoBehaviour
     {
         StartCoroutine(EnemyTurnCoroutine());
     }
-    
-     void Update()
+
+    void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("스페이스 눌림 - Enemy 공격 모션 실행");
             StartEnemyTurn();
         }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+
+
+            if (enemyBoardView.EnemyViews.Count > 0)
+            {
+                Debug.Log("W 키 눌림 - Enemy 데스 모션 실행");
+                EnemyView enemy = enemyBoardView.EnemyViews[0];
+                StartCoroutine(KillEnemy(enemy));
+            }
+        }
     }
+
+private IEnumerator KillEnemy(EnemyView enemy)
+    {
+        enemyBoardView.EnemyViews.Remove(enemy);
+        yield return StartCoroutine(PlayDeathAnimation(enemy.gameObject));
+    }
+
+    public IEnumerator PlayDeathAnimation(GameObject enemyObject)
+    {
+    EnemyView enemyView = enemyObject.GetComponent<EnemyView>();
+    Sequence deathSequence = DOTween.Sequence();
+
+    if (enemyView != null)
+    {
+        // 캐릭터 이미지 스케일 및 알파 제거
+        if (enemyView.characterImage != null)
+        {
+            deathSequence.Join(enemyView.characterImage.rectTransform.DOScale(Vector3.zero, 0.3f));
+            deathSequence.Join(enemyView.characterImage.DOFade(0f, 0.3f));
+        }
+
+        // 테두리 이미지도 동일하게 제거
+        if (enemyView.characterBoldImage != null)
+        {
+            deathSequence.Join(enemyView.characterBoldImage.rectTransform.DOScale(Vector3.zero, 0.3f));
+            deathSequence.Join(enemyView.characterBoldImage.DOFade(0f, 0.3f));
+        }
+    }
+
+    // 전체 오브젝트도 축소
+    deathSequence.Join(enemyObject.transform.DOScale(Vector3.zero, 0.3f));
+
+    yield return deathSequence.WaitForCompletion();
+
+    Destroy(enemyObject);
+    }
+
+
+
 }
+

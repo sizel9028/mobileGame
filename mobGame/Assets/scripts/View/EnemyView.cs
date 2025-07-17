@@ -15,7 +15,9 @@ public class EnemyView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI shieldText;
 
     // 적의 이미지를 표시할 UI 이미지
-    [SerializeField] private Image characterImage;
+    [SerializeField] public Image characterImage;
+    [SerializeField] public Image characterBoldImage;
+
 
     // 적의 최대 체력과 현재 체력
     public int MaxHealth { get; private set; }

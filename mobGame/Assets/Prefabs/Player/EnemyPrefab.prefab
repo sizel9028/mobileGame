@@ -490,7 +490,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 220, y: 90}
+  m_AnchoredPosition: {x: 481, y: 88.035}
   m_SizeDelta: {x: 2.493, y: 1.965}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5053166266978936319
@@ -509,6 +509,7 @@ MonoBehaviour:
   hpText: {fileID: 638876251441485670}
   shieldText: {fileID: 8260870554394170781}
   characterImage: {fileID: 2467678802951094421}
+  characterBoldImage: {fileID: 2516033483375631563}
 --- !u!1 &3931758107709346680
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,7 +826,7 @@ GameObject:
   - component: {fileID: 3826560855807366519}
   - component: {fileID: 2516033483375631563}
   m_Layer: 5
-  m_Name: EnemyImageBold
+  m_Name: BoldImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

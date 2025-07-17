@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,10 +37,10 @@ public class CardReward : MonoBehaviour
     public void SetActive(bool active)
     {
         rewardPanel.SetActive(active);
-        if (active) ShowCard();
+        if (active) StartCoroutine(ShowCard());
     }
 
-    public void ShowCard()
+    private IEnumerator ShowCard()
     {
         //TODO 랜덤 카드 3장을 뽑음(따로 만들어야 함)
         //  --- Test ---
@@ -49,6 +50,7 @@ public class CardReward : MonoBehaviour
 
         for (int i = 0; i < 3; ++i)
         {
+            yield return new WaitForSeconds(0.7f);
             // --- Test ---
             var deck = CardGenerator.LoadDeck(0, 0, 0);
             var card = deck.cards[0];
@@ -59,8 +61,7 @@ public class CardReward : MonoBehaviour
 
             if (rect == null) continue;
 
-            float delay = 0.2f * i;
-            rect.DOAnchorPos(cardPos[i], 0.5f).SetEase(Ease.OutBack).SetDelay(delay); // SetEase 애니메이션 튀기는 효과 + 딜레이
+            rect.DOAnchorPos(cardPos[i], 0.5f).SetEase(Ease.OutBack); // SetEase 애니메이션 튀기는 효과 + 딜레이
         }
 
     }
@@ -69,7 +70,7 @@ public class CardReward : MonoBehaviour
     {
         if (maxReset > 0)
         {
-            ShowCard();
+            StartCoroutine(ShowCard());
             --maxReset;
         }
     }

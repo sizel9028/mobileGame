@@ -2,6 +2,8 @@ using System;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -58,5 +60,21 @@ public class PlayerController : MonoBehaviour
     public void UpdateShieldText(int shieldAmount)
     {
         shieldText.text = shieldAmount.ToString();
+    }
+
+    // 데미지 받는 함수
+    public void Damage()
+    {
+
+        // 흔들림 연출 (UI용)
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        if (rectTransform != null)
+        {
+            Debug.Log("Damage() 함수 실행됨");
+            transform.DOShakePosition(0.2f, 30f, 10, 90, false);  // 진폭값은 상황에 맞게 조정
+        }
+
+    // 추후 체력 감소 처리도 여기서 추가할 수 있음
+
     }
 }

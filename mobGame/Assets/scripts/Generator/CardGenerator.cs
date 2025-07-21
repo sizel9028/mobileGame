@@ -50,7 +50,7 @@ public class CardGenerator : MonoBehaviour
                     cardTarget = Enum.Parse<CardTarget>(tokens[5]),
                     rare = Enum.Parse<Rare>(tokens[6]),
                     cost = int.Parse(tokens[7]),
-                    statusEffect = Enum.Parse<StatusEffect>(tokens[8]),
+                    costType = Enum.Parse<CostType>(tokens[8]),
                     maxTurn = int.Parse(tokens[9]),
                     maxCount = int.Parse(tokens[10]),
                     effectMapRaw = tokens[11].Replace("\"","").Trim()

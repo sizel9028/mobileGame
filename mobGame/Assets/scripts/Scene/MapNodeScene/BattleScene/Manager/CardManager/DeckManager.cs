@@ -45,12 +45,14 @@ public class DeckManager : MonoBehaviour
             }
         }
 
-        drawPile.Shuffle();
+        // --- test --- 셔플 하지않음
+        //drawPile.Shuffle();
         for (int i = 0; i < firstDraw; ++i)
         {
             DrawCard();
         }
         //cardUIManager.ArrangeCardWithArc(); 모션이 별로여서 삭제
+        handView.CheckUsableCard();
     }
 
     public void DrawCard()

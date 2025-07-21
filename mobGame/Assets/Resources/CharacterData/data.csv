@@ -1,2 +1,2 @@
-id,name,hp,baseShield
-0-0-0,test,100,20
+name,maxHp,hp,baseShield
+Slime,20,20,12

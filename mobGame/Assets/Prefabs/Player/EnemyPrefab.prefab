@@ -510,6 +510,8 @@ MonoBehaviour:
   shieldText: {fileID: 8260870554394170781}
   characterImage: {fileID: 2467678802951094421}
   characterBoldImage: {fileID: 2516033483375631563}
+  redMaterial: {fileID: 2100000, guid: 4f4020b62a2c9d24db8222a0e737adc3, type: 2}
+  isPlayer: 0
 --- !u!1 &3931758107709346680
 GameObject:
   m_ObjectHideFlags: 0

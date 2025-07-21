@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 //CharacterData/data.csv의 파일을 읽어 모든 캐릭터의 정보를 dict에 저장
-public class ChManager : MonoBehaviour
+/*public class ChManager : MonoBehaviour
 {
     public static ChManager chManager;
     private Dictionary<string, CharacterData> chDict = new();
@@ -73,3 +73,5 @@ public class ChManager : MonoBehaviour
         return null;
     }
 }
+
+*/

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleSceneInitializer : MonoBehaviour
+/*public class BattleSceneInitializer : MonoBehaviour
 {
     [Header("초기 적 데이터 세팅")]
     [SerializeField] private EnemyBoardView enemyBoardView;
@@ -34,4 +34,4 @@ public class BattleSceneInitializer : MonoBehaviour
 
         Debug.Log("[BattleSceneInitializer] 적 생성 완료");
     }
-}
+}*/

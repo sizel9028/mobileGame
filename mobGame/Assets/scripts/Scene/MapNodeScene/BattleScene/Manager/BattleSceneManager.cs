@@ -6,29 +6,33 @@ public class Battle : MonoBehaviour
     //BattleScene의 최상위 매니저
 
     public DeckManager deckManager;
-    [SerializeField] private EnemySystem enemySystem;
-    [Header("전투 데이터")]
-    [SerializeField] private EnemyBoardView enemyBoardView;
-
-    [SerializeField] private List<EnemyData> testEnemies; // 인스펙터에서 세팅할 수도 있고, 코드에서 만들 수도 있음
 
 
     void Start()
     {
-        InitializeBattle();
+        ManaSystem.Instance.InitManaSystem();  //마나 초기화 먼저
+        
+        InitializeBattle(); //적을 세팅
 
-        deckManager.InitDeck();
+        deckManager.InitDeck(); //플레이어 덱을 세팅
     }
-    /// <summary>
-    /// 전투 초기화: 적 생성 및 배치
-    /// </summary>
+
     public void InitializeBattle()
     {
-        foreach (EnemyData enemy in testEnemies)
+        //--- test --- //TODO 스테이 정보를 진짜 스테이지로 함
+        List<string> enemyNames = StageLoader.Load(1, 1);
+
+        if (enemyNames == null)
         {
-            enemyBoardView.AddEnemy(enemy);
+            Debug.LogError("[Battle] StageLoader 실패");
+            return;
         }
 
-        Debug.Log("[BattleSceneManager] 전투 초기화 완료");
+        foreach (var name in enemyNames)
+        {
+            CharacterUIManager.Instance.AddCharacterByName(name, false);
+        }
+
+        CharacterUIManager.Instance.AddCharacterByName(enemyNames[0], true);
     }
 }

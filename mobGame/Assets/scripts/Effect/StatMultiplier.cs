@@ -4,12 +4,15 @@ public class StatMultiplier
 {
     // 받은 데미지 계수 (예: 약화 디버프에 의해 1.3f)
     public float incomingDamage = 1f; 
+
     // 주는 데미지 계수 (곱연산)
-    public float outgoingDamage = 1f; 
+    public float outgoingDamageMultiple = 1f;
+
     // 주는 데미지 합연산 (힘 상태이상)
-    
+    public float outgoingDamageAdd = 0f;
+
     // 방어력 증가 합연산 (민첩 상태이상)
-    
+
     // 방어력 증가 계수 (예: 강화된 방어 상태일 때 1.2f)
     public float blockGain = 1f; 
     // 받는 방어력 감소 계수 (예: debuff로 방어량 -50%일 때 0.5f)

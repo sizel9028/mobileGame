@@ -18,6 +18,7 @@ public class CardUI : MonoBehaviour
 
     //private CardData data; 카드 데이터는 나중에 manager가 관리하자
     //private int index = -1; // 카드 자신이 가지는 번호 (리스트 처리)
+    public CardData data;
 
     //2개의 관리 매니저(handView :: 패에 있는 카드, manager : 이외의 상황)
     private CardUIManager manager;
@@ -32,6 +33,7 @@ public class CardUI : MonoBehaviour
 
     public void SetCard(CardData newData, CardUIManager uiManager)
     {
+        data = newData;
         manager = uiManager;
         //TODO 카드 데이터로 저걸 채움
         nameText.SetText(newData.nameKey);
@@ -93,6 +95,18 @@ public class CardUI : MonoBehaviour
     {
         //Debug.Log("Button Released: " + gameObject.name);  // 현재 버튼 이름 출력
         handView?.OnCardUp(this);
+    }
+
+    public void UpdateUsableVisual()
+    {
+        bool usable = CardValidator.IsCardAble(data, true);
+        Color color = usable ? Color.white : new Color(0.5f, 0.5f, 0.5f, 1f);
+
+        cardImage.color = color;
+        cardBackImage.color = color;
+        borderImage.color = usable ? rareColors[(int)data.rare] : color;
+
+        Debug.Log($"[CardUI] 카드: {data.nameKey}, 비용: {data.cost}, 사용 가능 여부: {usable}");
     }
 
 }

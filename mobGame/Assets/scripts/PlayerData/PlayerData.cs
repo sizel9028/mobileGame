@@ -16,5 +16,7 @@ public class PlayerData
     public MapNode currentMap;
     //현재 카드
     public Deck playerDeck;
+    //캐릭터 정보
+    public CharacterData characterData;
     
 }

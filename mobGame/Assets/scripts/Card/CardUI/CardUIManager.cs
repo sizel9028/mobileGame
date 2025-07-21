@@ -7,7 +7,7 @@ public class CardUIManager : MonoBehaviour
 {
     public GameObject cardPrefab;  //[SerializeField] 어차피 2명인데 다 public으로 넘기자
     public List<CardUI> handCards = new(); // 카드 담음
-    private Dictionary<CardUI, CardData> cardLookup = new(); //CardUI를 얻으면 그 CardData를 반환
+    //private Dictionary<CardUI, CardData> cardLookup = new(); //CardUI를 얻으면 그 CardData를 반환
 
     private int selectedIndex = -1; //어떤 인덱스가 선택되었는지(리스트 기준)
                                     //public bool isBattleUI = false; //배틀 UI는 카드 배치를 사용
@@ -20,7 +20,6 @@ public class CardUIManager : MonoBehaviour
         ui.SetManager(this);
 
         handCards.Add(ui);
-        cardLookup[ui] = cardData;
 
         return ui;
     }

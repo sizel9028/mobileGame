@@ -14,13 +14,12 @@ public enum ActionType  //카드의 세부 타입 (Skill : 계수영향 x, power
 
 public enum CardTarget
 {
-    oneEnemy, allEnemy, onePlayer, allPlayer
+    oneEnemy, allEnemy, onePlayer, allPlayer, nop
 }
 
-public enum StatusEffect
+public enum CostType
 {
-    Stun, Poison, Lifesteal, Weak, Vulnerable,//취약,  // 플레이어가 쓸거, 적도 가능
-    Burn
+    Hp, Mana
 }
 
 public enum Rare
@@ -50,7 +49,7 @@ public class CardData
     //public int damage;  // 카드가 Player/Enemy에 작용하는 숫자 effect에서 처리
 
     //TODO 상태이상, 데미지 등등 효과
-    public StatusEffect statusEffect;
+    public CostType costType;
 
     public int maxTurn;
     public int maxCount;

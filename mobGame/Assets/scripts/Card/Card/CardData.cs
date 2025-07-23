@@ -39,7 +39,7 @@ public class CardData
     //public Sprite cardArt; 카드 저장 문제 대안으로 이름 저장
     public string path;
     public string cardArtName;
-    [NonSerialized] public Sprite cardArt;
+    //[NonSerialized] public Sprite cardArt;
 
     public CardType cardType;
     public ActionType actionType;
@@ -57,15 +57,6 @@ public class CardData
     public string effectMapRaw; // "Damage::20,Heal::20" 같은 효과들 전부 모아둠
     [NonSerialized] public Dictionary<string, float> effectMap = new();
 
-    public void LoadArt()
-    {
-        string fullPath = $"{path}/{cardArtName}";
-        cardArt = Resources.Load<Sprite>(fullPath);
-        if (cardArt == null)
-        {
-            Debug.LogWarning($"[CardData] 스프라이트 로드 실패: {fullPath}");
-        }
-    }
 
     public void ParseEffectMap()
     {

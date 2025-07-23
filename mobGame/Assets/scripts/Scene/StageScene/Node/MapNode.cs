@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//맵 테마
+//맵 테마 (Nop :: 튜토리얼 존)
 public enum MapTheme
 {
     NOP, FROST
@@ -24,5 +24,38 @@ public class MapNode
         }
 
         return true;
+    }
+
+    //제일 많이 클리어한 노드 반환시킴
+    public int GetMaxClearedNode()
+    {
+        int maxId = -1;
+
+        foreach (var node in nodes)
+        {
+            if (node == null) continue;
+
+            if (node.nodeType == NodeType.Cleared && node.nodeId > maxId)
+            {
+                maxId = node.nodeId;
+            }
+        }
+
+        return maxId;
+    }
+
+    public int GetTotalNode()
+    {
+        int cnt = 0;
+
+        foreach (var node in nodes)
+        {
+            if (node != null)
+            {
+                ++cnt;
+            }
+        }
+
+        return cnt;
     }
 }

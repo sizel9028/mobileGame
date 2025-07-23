@@ -1,25 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeckManager : MonoBehaviour
+public class DeckManager : Singleton<DeckManager>
 {
     //플레이어 덱을 받고 그걸 관리함
     public Deck drawPile = new(); // 뽑기 덱에 있는 카드
     public Deck discardPile = new();  // 버리는 카드
     //public List<CardData> hand = new();   // 현재 손에 있는 카드
     public List<CardData> passiveCards = new();  //패시브 카드
+    public List<CardData> scrollCards = new();
     //TODO 숫자 바꿈
     public int maxHandSize = 8;
-    private int firstDraw = 2;
+    private int firstDraw = 4;
 
     public Transform handPanel;
     public CardUIManager cardUIManager;    // 이외의 모든 UI관리
     public HandView handView;   // 손에 보이게 함
 
-    void Start()
-    {
-        //cardUIManager.isBattleUI = true;  핸드는 따로 클래스 만듬
-    }
+
 
     public void InitDeck()
     {
@@ -37,6 +35,7 @@ public class DeckManager : MonoBehaviour
             }
             else if (card.cardType == CardType.Scroll)
             {
+                scrollCards.Add(card);
                 cardUIManager.Register(card, handPanel);
             }
             else
@@ -51,7 +50,7 @@ public class DeckManager : MonoBehaviour
         {
             DrawCard();
         }
-        //cardUIManager.ArrangeCardWithArc(); 모션이 별로여서 삭제
+
         handView.CheckUsableCard();
     }
 
@@ -73,17 +72,39 @@ public class DeckManager : MonoBehaviour
         var card = drawPile.Draw();
         if (card != null)
         {
-            var cardUI = cardUIManager.CreateCard(card, handPanel,new Vector2(-800f,-300f));
+            var cardUI = cardUIManager.CreateCard(card, handPanel, new Vector2(-800f, -300f));
             cardUI.SetHandView(handView);
             StartCoroutine(handView.AddCard(cardUI));
         }
     }
 
-    public void DiscardCard(CardData card)
+    //처음을 제외하고 다시 자신의 턴이 되면 카드를 드로우함
+    public void ReDrawCards()
     {
+        ClearDiscardDeck(); //버림존에 있는 카드를 전부 덱에 넣음
+        drawPile.Shuffle();
+        //스크롤 카드 먼저 드로우
+        foreach (var card in scrollCards)
+        {
+            cardUIManager.Register(card, handPanel);
+        }
 
+        for (int i = 0; i < firstDraw; ++i)
+        {
+            DrawCard();
+        }
+
+        handView.CheckUsableCard();
     }
 
+    private void ClearDiscardDeck()
+    {
+        if (discardPile.cards.Count > 0)
+        {
+            drawPile.cards.AddRange(discardPile.cards);
+            discardPile.cards.Clear();
+        }   
+    }
 
     void Update()
     {

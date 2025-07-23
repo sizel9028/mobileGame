@@ -57,7 +57,6 @@ public class CardGenerator : MonoBehaviour
                 };
                 
                 card.ParseEffectMap();
-                card.LoadArt();
                 deck.cards.Add(card);
             }
             catch (Exception err)

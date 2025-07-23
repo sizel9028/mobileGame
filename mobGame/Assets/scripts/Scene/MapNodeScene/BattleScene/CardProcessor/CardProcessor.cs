@@ -44,19 +44,33 @@ public class CardProcessor
 
             case CardTarget.allEnemy:
                 {
-                    var targets = casterUI.isPlayer ? CharacterUIManager.Instance.enemyUIs : CharacterUIManager.Instance.playerUIs;
+                    var targets = casterUI.isPlayer 
+                        ? CharacterUIManager.Instance.enemyUIs 
+                        : CharacterUIManager.Instance.playerUIs;
 
-                    ProcessCard(card, casterUI, targets);
+                    var validTargets = targets.FindAll(t => t != null && t.character != null);
+                    ProcessCard(card, casterUI, validTargets);
                     break;
                 }
 
             case CardTarget.allPlayer:
                 {
-                    var targets = casterUI.isPlayer ? CharacterUIManager.Instance.playerUIs : CharacterUIManager.Instance.enemyUIs;
+                    var targets = casterUI.isPlayer 
+                        ? CharacterUIManager.Instance.playerUIs 
+                        : CharacterUIManager.Instance.enemyUIs;
 
-                    ProcessCard(card, casterUI, targets);
+                    var validTargets = targets.FindAll(t => t != null && t.character != null);
+                    ProcessCard(card, casterUI, validTargets);
                     break;
                 }
+        }
+
+        // 게임이 끝났는지 확인
+        BattleResult result = CharacterUIManager.Instance.CheckCharacter();
+
+        if (result != BattleResult.Nop)
+        {
+            Battle.Instance.EndGame();
         }
     }
 

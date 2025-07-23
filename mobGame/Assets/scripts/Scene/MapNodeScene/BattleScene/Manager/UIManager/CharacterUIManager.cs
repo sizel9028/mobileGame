@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BattleResult
+{
+    Nop, PlayerWin, EnemyWin
+}
+
 public class CharacterUIManager : Singleton<CharacterUIManager>
 {
     [Header("생성 위치 정보 저장")]
@@ -71,9 +76,33 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
             return;
         }
 
+        //현재 캐릭터 정보 세팅
         Character character = new Character();
         character.Setup(data);
         character.isPlayer = isPlayer;
+
+        Character baseCh;
+        if (isPlayer)
+        {
+            baseCh = PassiveProcessor.Instance.playerCh;
+        }
+        else
+        {
+            baseCh = PassiveProcessor.Instance.enemyCh;
+        }
+
+        //stat effectCard를 복제한걸 넘김
+        if (baseCh.statMultiplier != null)
+        {
+            character.statMultiplier = (StatMultiplier)baseCh.statMultiplier.Clone();
+        }
+        if (baseCh.effectCardManager != null)
+        {
+            character.effectCardManager = (EffectCardManager)baseCh.effectCardManager.Clone();
+        }
+
+        //현재 캐릭터랑 effectCardManager을 연결시킴
+        character.effectCardManager.SetupCh(character);
 
         AddCharacter(character);
     }
@@ -95,5 +124,46 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
 
         Debug.LogWarning("[CharacterUIManager] 대상 캐릭터의 UI를 찾을 수 없음");
         return null;
+    }
+
+
+    //카드 한장을 내면 매번 캐릭터를 체크함과 동시에 게임이 끝났는지도 체크함
+    public BattleResult CheckCharacter()
+    {
+
+        // 체력 0을 모두 제거시킴
+        playerUIs.RemoveAll(ui =>
+        {
+            if (ui.character.currentHp <= 0)
+            {
+                ui.DestroySelf();
+                return true;
+            }
+            return false;
+        });
+
+        enemyUIs.RemoveAll(ui =>
+        {
+            if (ui.character.currentHp <= 0)
+            {
+                ui.DestroySelf();
+                return true;
+            }
+            return false;
+        });
+
+        if (playerUIs.Count == 0)
+        {
+            return BattleResult.EnemyWin;
+        }
+        else if (enemyUIs.Count == 0)
+        {
+            return BattleResult.PlayerWin;
+        }
+        else
+        {
+            return BattleResult.Nop;
+        }
+
     }
 }

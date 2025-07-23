@@ -25,7 +25,7 @@ public static class CardValidator
         {
             var list = isPlayer ? CharacterUIManager.Instance.playerUIs : CharacterUIManager.Instance.enemyUIs;
 
-            if (list == null || list.Count == 0) return false;
+            if (list == null || list.Count == 3) return false;
         }
 
         return true;

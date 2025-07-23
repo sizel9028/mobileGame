@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using Unity.Android.Gradle.Manifest;
 using UnityEngine;
@@ -40,20 +41,21 @@ public class CardUI : MonoBehaviour
         descriptionText.SetText(newData.descriptionKey);  // key를 바탕으로 값 결정
         costText.text = newData.cost.ToString();
 
-        if (newData.cardArt != null)
+        StartCoroutine(CardArtLoader.LoadCardArt(newData, (sprite) =>
         {
-            cardImage.sprite = newData.cardArt;
-        }
-        else
-        {
-            Debug.LogWarning($"[CardUI] 카드 아트가 비어있습니다: {newData.cardArtName}");
-        }
+            if (sprite != null)
+            {
+                cardImage.sprite = sprite;
+            }
+            else
+            {
+                Debug.LogError($"[CardUI] 카드 아트 로딩 실패: {newData.cardArtName}");
+            }
+        }));
 
         if (borderImage != null)
             borderImage.color = rareColors[(int)newData.rare];
 
-        //cardButton.onClick.RemoveAllListeners();
-        //cardButton.onClick.AddListener(OnClick);
     }
 
     private void OnClick()
@@ -107,6 +109,24 @@ public class CardUI : MonoBehaviour
         borderImage.color = usable ? rareColors[(int)data.rare] : color;
 
         Debug.Log($"[CardUI] 카드: {data.nameKey}, 비용: {data.cost}, 사용 가능 여부: {usable}");
+    }
+
+    public void DestroyCard()
+    {
+        transform.DOKill(true);
+        
+        if (cardImage.sprite != null)
+        {
+            Texture2D tex = cardImage.sprite.texture;
+            if (tex != null)
+            {
+                Destroy(tex);
+            }
+
+            Destroy(cardImage.sprite);
+        }
+
+        Destroy(gameObject);
     }
 
 }

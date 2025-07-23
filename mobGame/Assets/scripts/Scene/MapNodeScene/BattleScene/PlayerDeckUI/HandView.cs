@@ -13,7 +13,8 @@ public class HandView : MonoBehaviour
     //선택 카드 + 화살표 표현하기 위함
     private CardUI selectCard = null;
     private bool isDragging = false;
-    private bool isZooming = false;
+    private bool isZooming = false; //지금 줌을 하기 위해 꾹 누르고 있는지 체크
+    private bool isZoom = false; //실제 줌 중인지
     [SerializeField] private ArrowUIBezier arrowUI;
 
     //꾹 누르는거 표현
@@ -36,12 +37,17 @@ public class HandView : MonoBehaviour
     private IEnumerator UpdateCardPositions(float duration)
     {
         if (cards.Count == 0) yield break;
+        //카드 널일때도 추가
 
         float cardSpacing = 1f / 10f;
         float firstCardPosition = 0.5f - (cards.Count - 1) * cardSpacing / 2;
         Spline spline = splineContainer.Spline;
+
         for (int i = 0; i < cards.Count; ++i)
         {
+            //카드 널일때는 넘겨서 Tween null 방지
+            if (cards[i] == null || cards[i].gameObject == null || cards[i].transform == null) continue;
+
             float p = firstCardPosition + i * cardSpacing;
             Vector3 splinePos = spline.EvaluatePosition(p);
             Vector3 forward = spline.EvaluateTangent(p);
@@ -67,6 +73,7 @@ public class HandView : MonoBehaviour
 
         selectCard = card;
         isDragging = true;
+        isZooming = true;
         card.SetSelected(true);
 
         startPos = Input.mousePosition;
@@ -97,18 +104,17 @@ public class HandView : MonoBehaviour
             StopCoroutine(longPressRoutine);
         }
 
-        ResetZoomCard();
-
         card.SetSelected(false);
         var ui = arrowUI.EndArrow();
 
         bool isCancel = arrowUI.GetInCancleZone(); //취소 카드인지 확인
 
-        if (!isZooming && !isCancel)
+        if (!isZooming && !isCancel && !isZoom)   // 실행 가능한 상태인지
         {
             ProcessCard(ui);
         }
 
+        ResetZoomCard();
         selectCard = null;  //카드 널로 바꿈
         CheckUsableCard();
     }
@@ -119,12 +125,16 @@ public class HandView : MonoBehaviour
         while (timer < longPressTime)
         {
             float distance = Vector2.Distance(Input.mousePosition, startPos);
-            if (distance > 40f) yield break;
+            if (distance > 40f)
+            {
+                isZooming = false;
+                yield break;   
+            }
 
             timer += Time.deltaTime;
             yield return null;    //다음프레임까지 기다림 (안하면 초당)
         }
-
+        
         ZoomCard(card);
     }
 
@@ -143,7 +153,7 @@ public class HandView : MonoBehaviour
             Debug.LogWarning("[ProcessCard] 단일 타겟 카드인데 타겟이 null이라 실행 안 함");
             return;
         }
-        
+
         Debug.Log("processCard 실행");
         //Debug.Log($"[ProcessCard] 실행, selectCard: {(selectCard != null ? selectCard.data.nameKey : "null")}, targetUI: {(ui != null ? ui.name : "null")}");
         processor.SpendCost(card, ui, this);
@@ -151,14 +161,41 @@ public class HandView : MonoBehaviour
         processor.ProcessCardWithTarget(card, characterUI, ui);
 
         //TODO 카드 실행후 삭제 로직 추가
+        RemoveCard(selectCard);
     }
 
-    
+    private void RemoveCard(CardUI card)
+    {
+        if (!cards.Contains(card)) return;
+
+        // 1) 덱에 폐기 등록
+        DeckManager.Instance.discardPile.cards.Add(card.data);
+        cards.Remove(card);
+
+        // 2) RectTransform 가져오기
+        RectTransform rect = card.GetComponent<RectTransform>();
+        float duration = 0.25f;
+
+        // 3) 기존 트윈 정리
+        rect.DOKill();
+
+        // 4) 시퀀스 구성
+        var seq = DOTween.Sequence()
+            .SetLink(card.gameObject)                // 카드가 파괴되면 자동으로 트윈도 죽임
+            .Append(rect.DOScale(Vector3.zero, duration).SetEase(Ease.InBack))  // 작아지면서 사라짐
+            .Join(rect.DORotate(Vector3.zero, duration))            // 회전 초기화
+            .OnComplete(() => {
+                card.DestroyCard();                  // 내부에서 transform.DOKill(true) + Destroy(gameObject)
+                StartCoroutine(UpdateCardPositions(0.2f));  //남은 카드 재정렬
+            });
+    }
+
 
     //카드를 줌시켜서 확대한다
     private void ZoomCard(CardUI card)
     {
-        isZooming = true;  //줌 활성화
+        isZooming = false;  //줌 활성화
+        isZoom = true;
 
         arrowUI.EndArrow();   //카드 자세히보기 했을땐 필요가 없음
 
@@ -179,6 +216,7 @@ public class HandView : MonoBehaviour
         if (selectCard == null) return;
 
         isZooming = false;
+        isZoom = false;
 
         RectTransform rect = selectCard.GetComponent<RectTransform>();
 
@@ -204,11 +242,14 @@ public class HandView : MonoBehaviour
         //선택 카드 초기화 시키기
         selectCard = null;
         isDragging = false;
+        isZoom = false;
+        isZooming = false;
         arrowUI.EndArrow();
 
         for (int i = 0; i < cards.Count; ++i)
         {
             CardUI card = cards[i];
+            if (card == null || card.gameObject == null) continue;
 
             RectTransform rect = card.GetComponent<RectTransform>();
             Vector2 targetAnchorPos = new Vector2(800f, -300f);
@@ -221,10 +262,7 @@ public class HandView : MonoBehaviour
             .SetEase(Ease.InBack)
             .SetDelay(i * delayOffset);
             //회전 복구
-            rect.DORotate(Vector3.zero, duration).SetDelay(i * delayOffset);
-
-            //카드 객체 삭제
-            DOVirtual.DelayedCall(i * delayOffset + duration, () => { Destroy(card.gameObject); });
+            rect.DORotate(Vector3.zero, duration).SetDelay(i * delayOffset).OnComplete(() => { card.DestroyCard(); });
         }
 
         cards.Clear();

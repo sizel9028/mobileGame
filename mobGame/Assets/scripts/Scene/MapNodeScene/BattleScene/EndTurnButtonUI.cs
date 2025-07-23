@@ -3,12 +3,16 @@ using UnityEngine;
 public class EndTurnButtonUI : MonoBehaviour
 {
 
-
     public void Onclick()
     {
         Debug.Log("End Turn 버튼 클릭됨"); // 로그 확인용
-
-
-        // 액션 시스템 제거 → 직접 호출
+        Battle.Instance.EnemyTurn();
     }
+
+    //버튼 보여주거나 숨기는 용도
+    public void SetActive(bool isActive)
+    {
+        gameObject.SetActive(isActive);
+    }
+
 }

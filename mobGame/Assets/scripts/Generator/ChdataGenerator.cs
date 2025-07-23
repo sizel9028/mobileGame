@@ -39,7 +39,6 @@ public static class ChdataGenerator
                 baseShield = int.Parse(tokens[3])
             };
 
-            data.LoadArt(); // 자동으로 Resources/CharacterArt/{name}.png 로드
             return data;
         }
 

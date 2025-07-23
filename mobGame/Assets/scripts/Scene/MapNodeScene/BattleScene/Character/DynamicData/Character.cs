@@ -7,20 +7,19 @@ public class Character
 {
 
     //정보
+    public string characterArtName;
     public int maxHp;
     public int currentHp;
     public int shield;
 
     //덱(에너미만 있음)
-    public Deck deck;
     public bool isPlayer;
-
-    public Sprite characterArt;
 
 
     // 스탯과 이펙트 카드 매니저를 따로 들고있음
     public StatMultiplier statMultiplier = new();
     public EffectCardManager effectCardManager = new();
+    
 
     public Character()
     {
@@ -29,10 +28,10 @@ public class Character
 
     public void Setup(CharacterData data)
     {
+        characterArtName = data.name;
         maxHp = data.maxHp;
         currentHp = data.hp;
         shield = data.baseShield;
-        characterArt = data.characterArt;
     }
 
     //내부 값을 바꾸는 함수(데미지, 힐같은 함수)

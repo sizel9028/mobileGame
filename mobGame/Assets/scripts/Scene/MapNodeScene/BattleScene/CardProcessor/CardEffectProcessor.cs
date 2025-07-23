@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardEffectProcessor
+public partial class CardEffectProcessor
 {
     // 적용할거 매번 적기 귀찮아서 지역변수로 설정
     private StatMultiplier casterStat;
@@ -31,10 +31,17 @@ public class CardEffectProcessor
         }
 
         //카드 한장이 사용되면 계수카드 쓰인거 삭제
-        casterUI.character.effectCardManager.CheckCount();
+        if (casterUI?.character?.effectCardManager != null)
+        {
+            casterUI.character.effectCardManager.CheckCount();
+        }
+
         foreach (var targetUI in targetUIs)
         {
-            targetUI.character.effectCardManager.CheckCount();
+            if (targetUI?.character?.effectCardManager != null)
+            {
+                targetUI.character.effectCardManager.CheckCount();
+            }
         }
 
     }
@@ -53,8 +60,15 @@ public class CardEffectProcessor
     {
         this.casterUI = casterUI;
         this.targetUI = targetUI;
-        casterStat = casterUI.character.statMultiplier;
-        targetStat = targetUI.character.statMultiplier;
+        
+        if (casterUI?.character != null)
+        {
+            casterStat = casterUI.character.statMultiplier;
+        }
+        if (targetUI?.character != null)
+        {
+            targetStat = targetUI.character.statMultiplier;
+        }
 
         //TODO switch문으로 효과 나누기
         switch (effectKey)
@@ -63,35 +77,67 @@ public class CardEffectProcessor
                 ApplyDamage(effect);
                 break;
 
+            case "Shield":
+                ApplyShield(effect);
+                break;
+
+            case "Draw":
+                ApplyDraw(effect);
+                break;
+
+            case "Heal":
+                ApplyHeal(effect);
+                break;
+
         }
     }
 
-    private void ApplyDamage(float damage)
+
+    //카드 효과가 발동되면 이 값을 effectCardManager에 넘겨서 턴, 횟수 체크
+    private float StatWithDirty(string expr, bool doMotion = true)
     {
-        //실제 입는 데미지
-        damage += casterStat.outgoingDamageAdd;
-        damage *= casterStat.outgoingDamageMultiple;
-        damage *= targetStat.incomingDamage;
-
-        AssistDamage(damage);
-    }
-
-    private void AssistDamage(float damage)
-    {
-        int intDamage = Mathf.RoundToInt(damage);
-
-        if (targetUI != null)
+        string[] parts = expr.Split('.'); // ex: "casterStat.outgoingDamageAdd"
+        if (parts.Length != 2)
         {
-            targetUI.character.TakeDamage(intDamage);
-            targetUI.Setup();
-
-            if (intDamage > 0)
-            {
-                targetUI.Damage();  // 데미지 모션
-            }
+            Debug.LogError($"[StatWithDirty] 잘못된 형식: {expr}");
+            return 0;
         }
 
+        string source = parts[0];
+        string fieldName = parts[1];
+
+        if (source == "casterStat")
+        {
+            // motion을 안하면 값만 단순히 반환시킴
+            if (doMotion) casterUI.character.effectCardManager.dirtyFlag.Add(fieldName);
+
+            var field = casterStat.GetType().GetField(fieldName);
+            if (field != null && field.GetValue(casterStat) is float val)
+            {
+                return val;
+            }
+
+            Debug.LogError($"[StatWithDirty] casterStat에 '{fieldName}' 필드가 없거나 float이 아님");
+            return 1;
+        }
+        else if (source == "targetStat")
+        {
+            if (doMotion) targetUI.character.effectCardManager.dirtyFlag.Add(fieldName);
+
+            var field = targetStat.GetType().GetField(fieldName);
+            if (field != null && field.GetValue(targetStat) is float val)
+            {
+                return val;
+            }
+
+            Debug.LogError($"[StatWithDirty] targetStat에 '{fieldName}' 필드가 없거나 float이 아님");
+            return 1;
+        }
+        else
+        {
+            Debug.LogError($"[StatWithDirty] 알 수 없는 stat source: {source}");
+            return 1;
+        }
     }
-    
     
 }

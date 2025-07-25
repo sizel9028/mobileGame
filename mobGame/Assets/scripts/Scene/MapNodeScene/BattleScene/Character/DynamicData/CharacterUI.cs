@@ -36,6 +36,9 @@ public class CharacterUI : MonoBehaviour
 
     private string chName;
 
+    private Tween damageTween; //데미지 트윈
+    private Vector2 originalAnchoredPos;
+
 
     public void Setup()
     {
@@ -53,8 +56,12 @@ public class CharacterUI : MonoBehaviour
         Shield = data.shield;
 
         //hp 정보 셋팅
+
+        if (hpBar == null) return;
+        
         hpBar.maxValue = MaxHealth;
         hpBar.value = CurrentHealth;
+        
 
         //텍스트 갱신
         UpdateHealthText();
@@ -82,24 +89,42 @@ public class CharacterUI : MonoBehaviour
 
     private void UpdateHealthText()
     {
+        if (hpText == null) return;
+
         hpText.text = $"{CurrentHealth} / {MaxHealth}";
     }
 
     private void UpdateShieldText(int shieldAmount)
     {
+        if (shieldText == null) return;
+
         shieldText.text = shieldAmount.ToString();
     }
 
     // 데미지 받는 함수
     public void Damage()
     {
-
-        // 흔들림 연출 (UI용)
         RectTransform rectTransform = GetComponent<RectTransform>();
-        if (rectTransform != null)
-        {
-            rectTransform.DOShakeAnchorPos(0.2f, 30f, 10, 90, false);  // 진폭값은 상황에 맞게 조정
-        }
+        if (rectTransform == null) return;
+
+        // 트윈이 이미 실행 중이면 중복 실행 방지
+        if (damageTween != null && damageTween.IsActive() && damageTween.IsPlaying())
+            return;
+
+        // 최초 실행 시 기준점 저장
+        originalAnchoredPos = rectTransform.anchoredPosition;
+
+        Vector2 shakeDirection = isPlayer ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
+        Vector3 strength = shakeDirection.normalized * 80f;
+
+        damageTween = rectTransform.DOShakeAnchorPos(0.4f, strength, 10, 0f, false)
+            .OnComplete(() =>
+            {
+                // 트윈이 끝난 후 위치 원복
+                rectTransform.anchoredPosition = originalAnchoredPos;
+                damageTween = null; // 상태 초기화
+            })
+            .SetId(this); // ID 지정(optional, Kill 용이함)
 
     }
 
@@ -126,11 +151,19 @@ public class CharacterUI : MonoBehaviour
     {
         if (characterImage.sprite != null)
         {
-            Destroy(characterImage.sprite.texture);
+            if (characterImage.sprite.texture != null)
+            {
+                Destroy(characterImage.sprite.texture);
+            }
             Destroy(characterImage.sprite);
 
         }
 
+        damageTween?.Kill();  // 데미지 트윈을 수동 삭제
+        damageTween = null;
+
         Destroy(gameObject);
     }
+    
+    
 }

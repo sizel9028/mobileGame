@@ -5,15 +5,21 @@ using UnityEngine;
 public class EnemyDeckManager : Singleton<EnemyDeckManager>
 {
     private Deck deck = new();
-    private List<CardData> passiveCards = new();
+    public List<CardData> passiveCards = new();
     private List<CardData> handCards = new();
+    private EnemyAI enemyAI = new();
+
+    //시뮬레이션 루트
+    [SerializeField] private Transform simRoot;
 
     public void InitEnemyDeck()
     {
         var currMap = GameManager.gameManager.playerData.currentMap;
         int[] levelInfo = LevelGenerator.GetLevelInfo(currMap);
 
-        deck = CardGenerator.LoadDeck(levelInfo[0], levelInfo[1], levelInfo[2]); //덱 로드
+        //deck = CardGenerator.LoadDeck(levelInfo[0], levelInfo[1], levelInfo[2]); //덱 로드
+        //--- test ---
+        deck = CardGenerator.LoadDeck(1, 1, 1);
 
         passiveCards.Clear();
 
@@ -28,5 +34,33 @@ public class EnemyDeckManager : Singleton<EnemyDeckManager>
                 deck.cards.RemoveAt(i);
             }
         }
+    }
+
+    //amount만큼 덱에서 카드를 드로우 하고 handCards에 넣음
+    private void DrawCards(int amount)
+    {
+        //먼저 덱을 셔플 + 핸드 카드 초기화
+        handCards.Clear();
+        deck.Shuffle();
+
+        for (int i = 0; i < amount; i++)
+        {
+            if (deck.cards.Count == 0) break;
+
+            CardData drawnCard = deck.PeekDraw(i);
+
+            if (drawnCard != null)
+            {
+                handCards.Add(drawnCard);
+                Debug.Log($"[EnemyDeckManager] 무작위 카드 확인: {drawnCard.nameKey}");
+            }
+        }
+    }
+
+    public void PlayCard()
+    {
+        DrawCards(5);
+        enemyAI.SetCards(handCards, simRoot);  //패에 있는 카드 셋팅
+        enemyAI.PlayCard();
     }
 }

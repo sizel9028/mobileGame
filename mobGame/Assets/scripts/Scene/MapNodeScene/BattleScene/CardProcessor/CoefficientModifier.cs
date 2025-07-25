@@ -58,6 +58,20 @@ public class CoefficientModifier
     private void ApplySingle(string effectKey, float value, Character caster, Character target)
     {
         //TODO 계수 변경
+        switch (effectKey)
+        {
+            case "incomingDamage":
+                target.statMultiplier.incomingDamage += value;
+                break;
+
+            case "outgoingDamageAdd":
+                target.statMultiplier.outgoingDamageAdd += value;
+                break;
+
+            case "outgoingDamageMultiple":
+                target.statMultiplier.outgoingDamageMultiple += value;
+                break;
+        }
     }
     
 }

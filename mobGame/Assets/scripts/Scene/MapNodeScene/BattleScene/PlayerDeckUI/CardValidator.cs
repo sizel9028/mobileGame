@@ -10,8 +10,17 @@ public static class CardValidator
         switch (data.costType)
         {
             case CostType.Mana:
-                if (!ManaSystem.Instance.HasEnoughMana(data.cost))
-                    return false;
+                if (isPlayer)
+                {
+                    if (!ManaSystem.Instance.HasEnoughMana(data.cost))
+                        return false;
+                }
+                else
+                {
+                    if (!EnemyManaSystem.Instance.HasEnoughMana(data.cost))
+                        return false;
+                }
+            
                 break;
 
             case CostType.Hp:

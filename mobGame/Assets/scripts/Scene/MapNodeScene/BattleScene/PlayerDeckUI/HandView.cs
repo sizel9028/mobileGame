@@ -28,6 +28,7 @@ public class HandView : MonoBehaviour
 
     private CardProcessor processor = new();  // 카드 실행 클래스
 
+
     public IEnumerator AddCard(CardUI card)
     {
         cards.Add(card);

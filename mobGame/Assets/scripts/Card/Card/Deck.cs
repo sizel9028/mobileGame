@@ -25,4 +25,11 @@ public class Deck
         return card;
     }
 
+    public CardData PeekDraw(int index)
+    {
+        if (index < 0 || index >= cards.Count) return null;
+
+        return cards[index];
+    }
+
 }

@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 
 // 동적 정보를 저장하는 클래스
 // 데이터 값을 변경 > UI에 변동된 값을 넘김
-public class Character
+public class Character : ICloneable
 {
 
     //정보
@@ -19,7 +20,7 @@ public class Character
     // 스탯과 이펙트 카드 매니저를 따로 들고있음
     public StatMultiplier statMultiplier = new();
     public EffectCardManager effectCardManager = new();
-    
+
 
     public Character()
     {
@@ -48,6 +49,28 @@ public class Character
     {
         currentHp = Mathf.Min(currentHp + amount, maxHp);
         Debug.Log($"[Character] 힐 {amount} 적용됨, 현재 HP: {currentHp}");
+    }
+
+    public object Clone()
+    {
+        var clone = new Character();
+
+        //클래스 내부 값 복사
+        clone.characterArtName = this.characterArtName;
+        clone.maxHp = this.maxHp;
+        clone.currentHp = this.currentHp;
+        clone.shield = this.shield;
+        clone.isPlayer = this.isPlayer;
+
+        // 스탯과 효과 매니저도 복사
+        clone.statMultiplier = (StatMultiplier)this.statMultiplier.Clone();
+        clone.effectCardManager = (EffectCardManager)this.effectCardManager.Clone();
+
+        //effectCardManager 세팅
+        clone.effectCardManager.SetupCh(clone);
+        clone.effectCardManager.Setup(clone.statMultiplier);
+
+        return clone;
     }
 
 }

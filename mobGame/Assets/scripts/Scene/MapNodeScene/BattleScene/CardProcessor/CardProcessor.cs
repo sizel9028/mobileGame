@@ -7,7 +7,13 @@ public class CardProcessor
     private CardEffectProcessor effectProcessor = new();
     private CoefficientModifier coefficientModifier = new();
 
-
+    public void ProcessCard(CardData card, List<CharacterUI> casterUIs, List<CharacterUI> targetUIs)
+    {
+        foreach (var casterUI in casterUIs)
+        {
+            ProcessCard(card, casterUI, targetUIs);
+        }
+    }
     //카드 데이터와 caster, targets을 넣으면 카드를 적용시킴
     public void ProcessCard(CardData card, CharacterUI casterUI, List<CharacterUI> targetUIs)
     {
@@ -33,37 +39,77 @@ public class CardProcessor
     //casterUI랑 targetUI를 넣으면 바로 알아서 세팅해줌
     public void ProcessCardWithTarget(CardData card, CharacterUI casterUI, CharacterUI targetUI)
     {
-
-        switch (card.cardTarget)
+        if (!card.effectMap.ContainsKey("Damage"))
         {
-            case CardTarget.nop:
-            case CardTarget.oneEnemy:
-            case CardTarget.onePlayer:
-                ProcessCard(card, casterUI, targetUI);
-                break;
-
-            case CardTarget.allEnemy:
-                {
-                    var targets = casterUI.isPlayer 
-                        ? CharacterUIManager.Instance.enemyUIs 
-                        : CharacterUIManager.Instance.playerUIs;
-
-                    var validTargets = targets.FindAll(t => t != null && t.character != null);
-                    ProcessCard(card, casterUI, validTargets);
+            switch (card.cardTarget)
+            {
+                case CardTarget.nop:
+                case CardTarget.oneEnemy:
+                case CardTarget.onePlayer:
+                    ProcessCard(card, casterUI, targetUI);
                     break;
-                }
 
-            case CardTarget.allPlayer:
-                {
-                    var targets = casterUI.isPlayer 
-                        ? CharacterUIManager.Instance.playerUIs 
-                        : CharacterUIManager.Instance.enemyUIs;
+                case CardTarget.allEnemy:
+                    {
+                        var targets = casterUI.isPlayer
+                            ? CharacterUIManager.Instance.enemyUIs
+                            : CharacterUIManager.Instance.playerUIs;
 
-                    var validTargets = targets.FindAll(t => t != null && t.character != null);
-                    ProcessCard(card, casterUI, validTargets);
-                    break;
-                }
+                        var validTargets = targets.FindAll(t => t != null && t.character != null);
+                        ProcessCard(card, casterUI, validTargets);
+                        break;
+                    }
+
+                case CardTarget.allPlayer:
+                    {
+                        var targets = casterUI.isPlayer
+                            ? CharacterUIManager.Instance.playerUIs
+                            : CharacterUIManager.Instance.enemyUIs;
+
+                        var validTargets = targets.FindAll(t => t != null && t.character != null);
+                        ProcessCard(card, casterUI, validTargets);
+                        break;
+                    }
+            }
         }
+        else
+        {
+            var allCasters = casterUI.isPlayer
+                ? CharacterUIManager.Instance.playerUIs
+                : CharacterUIManager.Instance.enemyUIs;
+
+            switch (card.cardTarget)
+            {
+                case CardTarget.oneEnemy:
+                    foreach (var caster in allCasters)
+                    {
+                        ProcessCard(card, caster, targetUI);
+                    }
+                    break;
+
+                case CardTarget.allEnemy:
+                    {
+                        var targets = casterUI.isPlayer
+                            ? CharacterUIManager.Instance.enemyUIs
+                            : CharacterUIManager.Instance.playerUIs;
+
+                        var validTargets = targets.FindAll(t => t != null && t.character != null);
+                        foreach (var caster in allCasters)
+                        {
+                            ProcessCard(card, caster, validTargets);
+                        }
+                        break;
+                    }
+
+                case CardTarget.onePlayer:
+                case CardTarget.allPlayer:
+                case CardTarget.nop:
+                    // 데미지 카드인데 플레이어 대상이거나 nop? → 그대로 단일 처리
+                    ProcessCard(card, casterUI, targetUI);
+                    break;
+            }
+        }
+        //TODO 여기에 기믹카드 추가 
 
         // 게임이 끝났는지 확인
         BattleResult result = CharacterUIManager.Instance.CheckCharacter();
@@ -74,6 +120,7 @@ public class CardProcessor
         }
     }
 
+    //플레이어 코스트만 사용
     public void SpendCost(CardData card, CharacterUI ui, HandView handView)
     {
         Debug.Log("실행");

@@ -122,6 +122,11 @@ public partial class CardEffectProcessor
         }
         else if (source == "targetStat")
         {
+            Debug.Log($"targetUI: {targetUI}");
+            Debug.Log($"character: {targetUI?.character}");
+            Debug.Log($"effectCardManager: {targetUI?.character?.effectCardManager}");
+            Debug.Log($"dirtyFlag: {targetUI?.character?.effectCardManager?.dirtyFlag}");
+
             if (doMotion) targetUI.character.effectCardManager.dirtyFlag.Add(fieldName);
 
             var field = targetStat.GetType().GetField(fieldName);

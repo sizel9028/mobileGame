@@ -46,7 +46,7 @@ public class EffectCardManager : ICloneable
     {
         foreach (var tcc in turnCards)
         {
-            tcc.remainCount--;
+            tcc.remainTurn--;
             Debug.Log($"[EffectCardManager] {tcc.GetCard().nameKey} → 남은 턴: {tcc.remainTurn}");
         }
 

@@ -11,7 +11,7 @@ public class DeckManager : Singleton<DeckManager>
     public List<CardData> scrollCards = new();
     //TODO 숫자 바꿈
     public int maxHandSize = 8;
-    private int firstDraw = 4;
+    private int firstDraw = 5;
 
     public Transform handPanel;
     public CardUIManager cardUIManager;    // 이외의 모든 UI관리

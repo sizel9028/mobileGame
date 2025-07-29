@@ -1,16 +1,22 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MapSceneManager : MonoBehaviour
 {
     public UImanager uimanager;
     //ButtonManager이랑 간접 연결
 
+    [SerializeField] private Image background;
+
     void Start()
     {
         //TODO currentMap 데이터를 게임 매니저로부터 받아옴 
         MapNode currentMap = GameManager.gameManager.playerData.currentMap;
-        
+
+        //백그라운드 로드
+        background.sprite = BackgroundLoader.LoadBackgroundSprite(currentMap.stageNumber, true);
+
         uimanager.InitMap(currentMap);
     }
 

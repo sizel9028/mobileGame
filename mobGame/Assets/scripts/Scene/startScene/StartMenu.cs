@@ -13,6 +13,7 @@ public class StartMenu : MonoBehaviour
     public Button btnContinue;
     public Button btnExit;
     public Button btnLanguage;
+    public Button btnRunes;
     //언어 패널
     public GameObject langPanel;
     public GameObject quitMsg;
@@ -33,7 +34,7 @@ public class StartMenu : MonoBehaviour
         btnContinue.onClick.AddListener(onClickContinue);
         btnExit.onClick.AddListener(onClickQuit);
         btnLanguage.onClick.AddListener(showLangPanel);
-
+        btnRunes.onClick.AddListener(OnClickRuneScene);
     }
 
     void ChangeLanguage(string langCodes)
@@ -42,7 +43,7 @@ public class StartMenu : MonoBehaviour
             return;
 
         //TODO 언어값을 데이터 저장소에 저장
-            
+
         if (quitMsg != null)
             quitMsg.SetActive(true);
 
@@ -81,5 +82,10 @@ public class StartMenu : MonoBehaviour
         {
             langPanel.SetActive(!langPanel.activeSelf);
         }
+    }
+    
+    void OnClickRuneScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("RuneScene");
     }
 }

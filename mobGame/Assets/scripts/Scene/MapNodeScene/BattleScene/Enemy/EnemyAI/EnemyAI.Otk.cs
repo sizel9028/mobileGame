@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public partial class EnemyAI
@@ -27,7 +26,7 @@ public partial class EnemyAI
         {
             var (usedCombo, remainCh, totalDamage) = SimCardCombo(perm);
 
-            if (usedCombo.Count == 0) { continue; }
+            if (usedCombo == null || usedCombo.Count == 0) { continue; }
 
 
             if (remainCh == 0)
@@ -59,6 +58,16 @@ public partial class EnemyAI
 
         foreach (var card in combo)
         {
+            if (simPlayerUIs.Count == 0)
+            {
+                Debug.Log("[SimCardCombo] 모든 플레이어가 사망하여 시뮬레이션을 중단합니다.");
+                break;
+            }
+
+            if (simEnemyUIs.Count == 0)
+            {
+                return (null, 3, -1); //이 콤보는 쓰면 안됨
+            }
             //TODO 사용한 가능한 카드인지 검사
             if (!CardValidator.IsCardAble(card, isPlayer: false)) continue; //불가능하면 패스
 

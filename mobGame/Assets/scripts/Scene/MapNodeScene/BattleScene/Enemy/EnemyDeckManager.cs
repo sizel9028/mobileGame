@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,10 +58,12 @@ public class EnemyDeckManager : Singleton<EnemyDeckManager>
         }
     }
 
-    public void PlayCard()
+    public IEnumerator PlayCard()
     {
         DrawCards(5);
         enemyAI.SetCards(handCards, simRoot);  //패에 있는 카드 셋팅
-        enemyAI.PlayCard();
+        yield return StartCoroutine(enemyAI.PlayCard());
+
+        Debug.Log("PlayCard 정상작동 완료");
     }
 }

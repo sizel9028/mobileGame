@@ -1,18 +1,20 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Battle : Singleton<Battle>
 {
     //BattleScene의 최상위 매니저
     [SerializeField] private EndTurnButtonUI endTurnBtn;
     public int turnCount { get; private set; }  //에너미 기준
+    public bool isProcessingCard = false;
 
 
     void Start()
     {
+        isProcessingCard = false;
         turnCount = 0; //턴 초기화
-        EnemyManaSystem.Instance.InitMana();
-        ManaSystem.Instance.InitManaSystem();  //마나 초기화 먼저
         DeckManager.Instance.InitDeck(); //플레이어 덱을 세팅
         EnemyDeckManager.Instance.InitEnemyDeck(); //에너미 덱을 세팅
 
@@ -22,6 +24,9 @@ public class Battle : Singleton<Battle>
             EnemyDeckManager.Instance.passiveCards
         );
 
+        EnemyManaSystem.Instance.InitMana();
+        ManaSystem.Instance.InitManaSystem();  //마나 초기화 먼저
+
         InitializeBattle(); //플레이어 적을 소환
 
     }
@@ -30,7 +35,11 @@ public class Battle : Singleton<Battle>
     public void InitializeBattle()
     {
         //--- test --- //TODO 스테이 정보를 진짜 스테이지로 함
-        List<string> enemyNames = StageLoader.Load(1, 1);
+        int stageNumber = GameManager.gameManager.playerData.currentMap.stageNumber;
+        int[] level = LevelGenerator.GetLevelInfo(GameManager.gameManager.playerData.currentMap);
+
+        //TODO 1대신 level을 넣음
+        List<string> enemyNames = StageLoader.Load(stageNumber, 1);
 
         if (enemyNames == null)
         {
@@ -45,29 +54,53 @@ public class Battle : Singleton<Battle>
         }
 
         //플레이어 소환
-        var playerName = GameManager.gameManager.playerData.characterData.name;
-        CharacterUIManager.Instance.AddCharacterByName(playerName, true);
+        var chData = GameManager.gameManager.playerData.characterData;
+        CharacterUIManager.Instance.AddCharacterByData(chData);
     }
 
-    public void EndGame()
+    public IEnumerator EndGame(BattleResult result)
     {
-        //TODO 씬전환 + 정보넘김
+        endTurnBtn.SetActive(false);
+        //TODO 씬전환 + 정보넘김s
+        yield return new WaitForSeconds(2f);
+
+        if (result == BattleResult.PlayerWin)
+        {
+            GameManager.gameManager.endHp = CharacterUIManager.Instance.playerUIs[0].character.currentHp;
+            Debug.Log("플레이어 승리");
+            SceneManager.LoadScene("GachaScene");
+        }
+        else if (result == BattleResult.EnemyWin)
+        {
+            Debug.Log("에너미 승리");
+            SceneManager.LoadScene("GameOverScene");
+        }
+        else
+        {
+            Debug.LogWarning("끝나지 않았는데 end 함수 호출");
+            //예외 처리
+            SceneManager.LoadScene("MapScene");
+        }
     }
 
     public void PlayerTurn()
     {
+        MapEffectProcessor.Instance.ProcessMapEffect();  //플레이어 턴 시작때 맵의 효과를 받음
         endTurnBtn.SetActive(true);  //턴 버튼 UI 보여줌
         CheckTurnEffects(true); // 플레이어 턴 체크
     }
 
-    public void EnemyTurn()
+    public IEnumerator EnemyTurn()
     {
         ++turnCount;
         endTurnBtn.SetActive(false); // 턴 버튼 UI 숨김
         CheckTurnEffects(false); // 플레이어 턴 체크
 
         EnemyManaSystem.Instance.refillMana();
-        EnemyDeckManager.Instance.PlayCard();  //적이 카드를 낸다
+        yield return EnemyDeckManager.Instance.PlayCard();  //적이 카드를 낸다
+
+        Debug.Log("섹스 직전");
+        Debug.Log("섹스");
 
         ManaSystem.Instance.Refill();
         PlayerTurn(); //플레이어 턴으로 넘어감

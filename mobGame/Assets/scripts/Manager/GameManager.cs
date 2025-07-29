@@ -6,7 +6,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager gameManager;
     public PlayerData playerData;
+    public RuneData runeData;
 
+    public int maxReset;
+    public int nodeId;  //노드 실행시 현재 실행 노드저장
+    public int endHp; // 게임이 끝나고 playerHp저장 공간
     void Awake()
     {
         if (gameManager == null)
@@ -20,13 +24,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //룬 정보 불러오기
+    void Start()
+    {
+        maxReset = 0;
+        runeData = SaveManager.saveManager.LoadRune();
+    }
+
     public void LoadGame()
     {
-        playerData = SaveManager.saveManager.Load();
+        playerData = SaveManager.saveManager.LoadPlayer();
     }
 
     public void StartNewGame()
     {
-        playerData = SaveManager.saveManager.CreateNew();
+        playerData = InitData.CreateNewPlayerData();
+
+        if (playerData == null)
+        {
+            Debug.LogWarning("[StartNewGame] character is NULL in playerData");
+        }
+        else
+        {
+            Debug.Log($"[StartNewGame] character 초기화 완료");
+        }
     }
 }

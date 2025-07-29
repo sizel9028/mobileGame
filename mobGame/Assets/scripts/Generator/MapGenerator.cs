@@ -6,7 +6,7 @@ public class MapGenerator : MonoBehaviour
 {
     // csv파일로 저장되어 있는 맵을 불러옴
 
-    public static MapNode LoadMap(int stage, int mapKind = -1)
+    public static MapNode LoadMap(int stage, int themeNumber, int mapKind = -1)
     {
         if (mapKind < 0)
         {
@@ -15,7 +15,7 @@ public class MapGenerator : MonoBehaviour
             mapKind = UnityEngine.Random.Range(0, maxKind);
         }
 
-        string path = $"Maps/Stage{stage}_{mapKind}";
+        string path = $"Maps/Stage{stage}_{themeNumber}_{mapKind}";
         TextAsset csvFile = Resources.Load<TextAsset>(path);
 
         if (csvFile == null)
@@ -25,7 +25,16 @@ public class MapGenerator : MonoBehaviour
 
         MapNode map = new MapNode();
         map.stageNumber = stage;
-        map.theme = MapTheme.FROST;  // 맵 생성후 테마는 기존껄 사용
+
+        if (stage == 0)
+        {
+            map.theme = MapTheme.NOP;
+        }
+        else
+        {
+            map.theme = GameManager.gameManager.playerData.currentMap.theme;
+        }
+        
         map.nodes = new MapNodeData[50];
 
         string[] lines = csvFile.text.Split('\n');

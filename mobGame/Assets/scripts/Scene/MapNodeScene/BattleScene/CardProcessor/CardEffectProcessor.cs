@@ -94,7 +94,7 @@ public partial class CardEffectProcessor
 
 
     //카드 효과가 발동되면 이 값을 effectCardManager에 넘겨서 턴, 횟수 체크
-    private float StatWithDirty(string expr, bool doMotion = true)
+    public float StatWithDirty(string expr, bool doMotion = true)
     {
         string[] parts = expr.Split('.'); // ex: "casterStat.outgoingDamageAdd"
         if (parts.Length != 2)

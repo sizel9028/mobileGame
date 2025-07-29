@@ -109,8 +109,11 @@ public class HandView : MonoBehaviour
         var ui = arrowUI.EndArrow();
 
         bool isCancel = arrowUI.GetInCancleZone(); //취소 카드인지 확인
+        bool isProcessingCard = Battle.Instance.isProcessingCard;  //카드 작동중이면 다음카드 실행을 불가능하게 함
 
-        if (!isZooming && !isCancel && !isZoom)   // 실행 가능한 상태인지
+        bool canUseCard = !isZooming && !isCancel && !isZoom && !isProcessingCard;
+        
+        if (canUseCard)   // 실행 가능한 상태인지
         {
             ProcessCard(ui);
         }
@@ -159,7 +162,7 @@ public class HandView : MonoBehaviour
         //Debug.Log($"[ProcessCard] 실행, selectCard: {(selectCard != null ? selectCard.data.nameKey : "null")}, targetUI: {(ui != null ? ui.name : "null")}");
         processor.SpendCost(card, ui, this);
         var characterUI = CharacterUIManager.Instance.playerUIs[0]; // 플레이어 UI를 받아서 caster로 넘김
-        processor.ProcessCardWithTarget(card, characterUI, ui);
+        StartCoroutine(processor.ProcessCardWithTarget(card, characterUI, ui));
 
         //TODO 카드 실행후 삭제 로직 추가
         RemoveCard(selectCard);

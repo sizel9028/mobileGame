@@ -10,6 +10,8 @@ public class PlayerData
     //재화
     public int gold;
 
+    public int DecreaseMaxHp;
+
     //현재 맵
     public MapNode currentMap;
     //현재 카드

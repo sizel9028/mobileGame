@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using System.Collections;
 
 public class CharacterUI : MonoBehaviour
 {
@@ -39,6 +40,8 @@ public class CharacterUI : MonoBehaviour
     private Tween damageTween; //데미지 트윈
     private Vector2 originalAnchoredPos;
 
+    private CharacterMotionController motionController = new();
+
 
     public void Setup()
     {
@@ -58,10 +61,10 @@ public class CharacterUI : MonoBehaviour
         //hp 정보 셋팅
 
         if (hpBar == null) return;
-        
+
         hpBar.maxValue = MaxHealth;
         hpBar.value = CurrentHealth;
-        
+
 
         //텍스트 갱신
         UpdateHealthText();
@@ -149,20 +152,19 @@ public class CharacterUI : MonoBehaviour
 
     public void DestroySelf()
     {
-        if (characterImage.sprite != null)
-        {
-            if (characterImage.sprite.texture != null)
-            {
-                Destroy(characterImage.sprite.texture);
-            }
-            Destroy(characterImage.sprite);
+        StartCoroutine(DestroyRoutine());
+    }
 
-        }
+    private IEnumerator DestroyRoutine()
+    {
+        //죽는 모션 먼저 보여줌
+        yield return CharacterUIManager.Instance.StartCoroutine(motionController.DeathRoutine(this));
 
         damageTween?.Kill();  // 데미지 트윈을 수동 삭제
         damageTween = null;
 
         Destroy(gameObject);
+
     }
     
     

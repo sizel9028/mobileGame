@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,7 +19,7 @@ public partial class EnemyAI
     }
 
     //OTK를 실행
-    public void PlayCard()
+    public IEnumerator PlayCard()
     {
         useHpCard = true;
         EnemyManaSystem.Instance.refillMana();
@@ -31,7 +32,7 @@ public partial class EnemyAI
         if (isOtk)
         {
             //무조건 원턴킬 콤보 사용
-            PlayOtk(combo);
+            yield return Battle.Instance.StartCoroutine(PlayOtkRoutine(combo));
             Debug.Log("원턴킬 파악");
         }
         else  // 25% 확률로 최적 콤보 사용 (딜만함)
@@ -39,15 +40,16 @@ public partial class EnemyAI
             float rand = Random.value;
             if (rand < 0f)
             {
-                PlayOtk(combo);
+                yield return Battle.Instance.StartCoroutine(PlayOtkRoutine(combo));
             }
             else
             {
-                PlayStrategically();
+                yield return Battle.Instance.StartCoroutine(PlayStrategicallyRoutine());
             }
         }
 
         ClearSimRoot(); //원턴킬에서 시뮬레이션 돌렸던 모든 UI들을 삭제시킴
+        Debug.Log("[EnemyAI] PlayCard 정상 종료");
     }
 
     private void ClearSimRoot()
@@ -63,21 +65,30 @@ public partial class EnemyAI
 
     private void PlayOtk(List<CardData> combo)
     {
+        Battle.Instance.StartCoroutine(PlayOtkRoutine(combo));
+    }
+
+    private IEnumerator PlayOtkRoutine(List<CardData> combo)
+    {
         Debug.Log("[EnemyAI] OTK or 최적 콤보 실행");
         if (combo == null)
         {
-            return;
+            yield break;
         }
 
         foreach (var card in combo)
         {
-            EnemySystem.Instance.PlayCard(card);
+            yield return EnemyCardView.Instance.ShowEnemyCardAndWait(card);
         }
 
     }
 
-    //전략적 카드 사용
     private void PlayStrategically()
+    {
+        Battle.Instance.StartCoroutine(PlayStrategicallyRoutine());
+    }
+    //전략적 카드 사용
+    private IEnumerator PlayStrategicallyRoutine()
     {
         //카드 사용이 없을때까지 반복
 
@@ -132,7 +143,8 @@ public partial class EnemyAI
             var chosenCard = candidates[Random.Range(0, candidates.Count)]; //랜덤 선택
 
             Debug.Log($"[EnemyAI] 전략적 선택: {chosenType} → {chosenCard.nameKey}");
-            EnemySystem.Instance.PlayCard(chosenCard);
+
+            yield return EnemyCardView.Instance.ShowEnemyCardAndWait(chosenCard);
 
             usableCards.Remove(chosenCard); //사용한 카드는 삭제
         }

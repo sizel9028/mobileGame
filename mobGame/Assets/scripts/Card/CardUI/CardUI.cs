@@ -1,6 +1,5 @@
 using DG.Tweening;
 using TMPro;
-using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -114,17 +113,6 @@ public class CardUI : MonoBehaviour
     public void DestroyCard()
     {
         transform.DOKill(true);
-        
-        if (cardImage.sprite != null)
-        {
-            Texture2D tex = cardImage.sprite.texture;
-            if (tex != null)
-            {
-                Destroy(tex);
-            }
-
-            Destroy(cardImage.sprite);
-        }
 
         Destroy(gameObject);
     }

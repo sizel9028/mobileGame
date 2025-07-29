@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -20,6 +21,9 @@ public class Character : ICloneable
     // 스탯과 이펙트 카드 매니저를 따로 들고있음
     public StatMultiplier statMultiplier = new();
     public EffectCardManager effectCardManager = new();
+
+    //기믹 정보
+    public List<Gimmick> gimmicks;
 
 
     public Character()
@@ -51,6 +55,19 @@ public class Character : ICloneable
         Debug.Log($"[Character] 힐 {amount} 적용됨, 현재 HP: {currentHp}");
     }
 
+    public void DecreaseMaxHp(int amount)
+    {
+        GameManager.gameManager.playerData.DecreaseMaxHp += amount;
+        maxHp = Mathf.Max(1, maxHp - amount);
+        currentHp = Mathf.Min(currentHp, maxHp);
+    }
+
+    public void RestoreMaxHp()
+    {
+        maxHp += GameManager.gameManager.playerData.DecreaseMaxHp;
+        GameManager.gameManager.playerData.DecreaseMaxHp = 0;
+    }
+
     public object Clone()
     {
         var clone = new Character();
@@ -61,6 +78,13 @@ public class Character : ICloneable
         clone.currentHp = this.currentHp;
         clone.shield = this.shield;
         clone.isPlayer = this.isPlayer;
+
+        //기믹 복사
+        clone.gimmicks = new List<Gimmick>();
+        foreach (var g in this.gimmicks)
+        {
+            clone.gimmicks.Add(new Gimmick(g.gimmickName, g.gimmicCondition, g.gimmicCount));
+        }
 
         // 스탯과 효과 매니저도 복사
         clone.statMultiplier = (StatMultiplier)this.statMultiplier.Clone();

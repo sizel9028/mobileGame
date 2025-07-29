@@ -10,7 +10,7 @@ public static class LevelGenerator
         int currentMapLevel = currentMap.GetMaxClearedNode();
         int totalMapLevel = currentMap.GetTotalNode();
 
-        int totalLevel = 7;  //stage에 존재하는 총 난이도 갯수
+        int totalLevel = 7;  //stage에 존재하는 총 난이도 갯수(스테이지에 존재하는 몬스터 숫자)
 
         float progressRatio = totalMapLevel == 0 ? 0f : (float)currentMapLevel / totalMapLevel;
 

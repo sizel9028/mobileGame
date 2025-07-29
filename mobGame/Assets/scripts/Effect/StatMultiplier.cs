@@ -26,6 +26,10 @@ public class StatMultiplier : ICloneable
     // 회복 증가량 곱연산
     public float outgoingHealMultiple = 1f;
 
+    //추가 마나
+    public float addMana = 0f;
+
+
     // 카드 코스트 절감 계수 (예: 일시적인 마나 절감 효과)
     public float manaCostReduction = 1f;
     // 상태이상 지속 시간 계수 (예: 상태이상 저항이 있으면 0.8f)

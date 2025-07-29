@@ -8,10 +8,9 @@ public class CardUIManager : MonoBehaviour
     public GameObject cardPrefab;  //[SerializeField] 어차피 2명인데 다 public으로 넘기자
     public List<CardUI> handCards = new(); // 카드 담음
     //private Dictionary<CardUI, CardData> cardLookup = new(); //CardUI를 얻으면 그 CardData를 반환
-
+    public int selectedIdx => selectedIndex;
     private int selectedIndex = -1; //어떤 인덱스가 선택되었는지(리스트 기준)
-                                    //public bool isBattleUI = false; //배틀 UI는 카드 배치를 사용
-                                    //public HandView handView; handView는 따로 관리(역할이 다름 패에 보여주게 하는녀석)
+
 
     //카드 등록함수 (드로우 패는 HandView에서 관리) CardUI를 반환해서 움직임을 변환 가능
     public CardUI Register(CardData cardData, Transform handParent, Vector2 anchoredPos = default)
@@ -88,6 +87,21 @@ public class CardUIManager : MonoBehaviour
     public void RemoveSelectedCard()
     {
         RemoveCard(selectedIndex);
+    }
+
+    //모든 카드 삭제
+    public void ClearAllCards()
+    {
+        foreach (var ui in handCards)
+        {
+            if (ui != null)
+            {
+                GameObject.Destroy(ui.gameObject);
+            }
+        }
+
+        handCards.Clear();
+        selectedIndex = -1;
     }
 
 }

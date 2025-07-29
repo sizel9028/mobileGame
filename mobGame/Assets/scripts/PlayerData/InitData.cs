@@ -1,21 +1,36 @@
+
 using UnityEngine;
 
-public class InitData : MonoBehaviour
+public static class InitData
 {
-    public static PlayerData CreateNewPlaterData()
+    public static PlayerData CreateNewPlayerData()
     {
-        CharacterData testData = new();
-        testData.name = "Slime";
-        testData.maxHp = 50;
-        testData.hp = 20;
-        testData.baseShield = 0;
         return new PlayerData
         {
             //TODO 초기값 설정
-            gold = 0,
-            currentMap = MapGenerator.LoadMap(1, 0),
-            playerDeck = CardGenerator.LoadDeck(0, 0, 0),
-            characterData = testData
+            gold = 50,
+            DecreaseMaxHp = 0,
+            currentMap = MapGenerator.LoadMap(0, 0, 0),  //튜토리얼 맵
+            playerDeck = null,
+            characterData = null,
+            difficulty = 0
         };
+    }
+
+    public static RuneData CreateNewRuneData()
+    {
+        RuneData runeData = new RuneData();
+
+        foreach (MapTheme theme in System.Enum.GetValues(typeof(MapTheme)))
+        {
+            Rune rune = new Rune
+            {
+                level = 0,
+                mapTheme = theme
+            };
+            runeData.runes.Add(rune);
+        }
+
+        return runeData;
     }
 }

@@ -1,10 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class EnemySystem : Singleton<EnemySystem>
 {
-    public void PlayCard(CardData card)
+    public IEnumerator PlayCard(CardData card)
     {
         Debug.Log($"[EnemyActionSystem] 적이 카드를 사용합니다: {card.nameKey}");
 
@@ -17,7 +18,7 @@ public class EnemySystem : Singleton<EnemySystem>
         if (caster == null)
         {
             Debug.LogWarning("[EnemyActionSystem] 적 캐스터를 찾을 수 없습니다.");
-            return;
+            yield break;
         }
 
         var target = GetTargetUI(card);
@@ -25,11 +26,11 @@ public class EnemySystem : Singleton<EnemySystem>
         if (target == null)
         {
             Debug.LogWarning($"[EnemyActionSystem] 대상이 없어 {card.nameKey} 카드를 사용할 수 없습니다.");
-            return;
+            yield break;
         }
 
         var processor = new CardProcessor();
-        processor.ProcessCardWithTarget(card, caster, target);
+        yield return processor.ProcessCardWithTarget(card, caster, target);
 
     }
 

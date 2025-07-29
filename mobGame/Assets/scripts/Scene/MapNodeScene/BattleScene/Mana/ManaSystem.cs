@@ -10,14 +10,30 @@ public class ManaSystem : Singleton<ManaSystem>
 
     public void InitManaSystem()
     {
-        getMaxMana();
-        Refill();
+        //마나 초기화
+        if (PassiveProcessor.Instance.playerCh == null)
+        {
+            Max_Mana = 3;
+        }
+        else
+        {
+            Max_Mana += Mathf.RoundToInt(PassiveProcessor.Instance.playerCh.statMultiplier.addMana);
+        }
+        currentMana = Max_Mana;
         ManaUI.UpdateManaText(currentMana);
     }
 
     public void getMaxMana()
     {
         //TODO 최대 마나 얻기
+        if (CharacterUIManager.Instance.playerUIs[0] == null)
+        {
+            Max_Mana = 3; return;
+        }
+
+        float addMana = CharacterUIManager.Instance.playerUIs[0].character.statMultiplier.addMana; //캐릭터 ui에서 들고옴
+        int totalMana = 3 + Mathf.RoundToInt(addMana);
+        Max_Mana = totalMana;
     }
 
     public bool HasEnoughMana(int mana)
@@ -34,7 +50,15 @@ public class ManaSystem : Singleton<ManaSystem>
 
     public void Refill()
     {
+        getMaxMana();
         currentMana = Max_Mana;
+        ManaUI.UpdateManaText(currentMana);
+    }
+
+    public void Fill(int amount)
+    {
+        currentMana += amount;
+        currentMana = Mathf.Min(currentMana, Max_Mana);
         ManaUI.UpdateManaText(currentMana);
     }
 

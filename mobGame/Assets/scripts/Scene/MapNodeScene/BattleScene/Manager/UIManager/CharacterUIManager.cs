@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum BattleResult
@@ -23,34 +24,55 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
     [Header("캐릭터 prefab")]
     [SerializeField] private CharacterUI characterUIPrefab;
 
+    private CharacterMotionController motionController = new();  //모션 컨트롤러
+
     //2 1 0순으로 채움
     public void AddCharacter(Character character)
     {
         if (character.isPlayer)
         {
-            int index = playerSlots.Count - 1 - playerUIs.Count;
-            if (index < 0)
+            EnsureListSize(playerUIs, playerSlots.Count);
+
+            for (int i = 0; i < playerUIs.Count; i++)
             {
-                Debug.LogWarning("[CharacterUIManager] 플레이어 슬롯 부족");
-                return;
+                if (playerUIs[i] == null)
+                {
+                    int slotIndex = playerSlots.Count - 1 - i; // 역방향 매핑
+                    var ui = CreateCharacter(character, playerSlots[slotIndex], playerRoot);
+                    playerUIs[i] = ui;
+                    return;
+                }
             }
 
-            var ui = CreateCharacter(character, playerSlots[index], playerRoot);
-            playerUIs.Add(ui);
+            Debug.LogWarning("[CharacterUIManager] 플레이어 슬롯 부족");
         }
         else
         {
-            int index = enemySlots.Count - 1 - enemyUIs.Count;
-            if (index < 0)
+            EnsureListSize(enemyUIs, enemySlots.Count);
+
+            for (int i = 0; i < enemyUIs.Count; i++)
             {
-                Debug.LogWarning("[CharacterUIManager] 적 슬롯 부족");
-                return;
+                if (enemyUIs[i] == null)
+                {
+                    int slotIndex = enemySlots.Count - 1 - i;
+                    var ui = CreateCharacter(character, enemySlots[slotIndex], enemyRoot);
+                    enemyUIs[i] = ui;
+                    return;
+                }
             }
 
-            var ui = CreateCharacter(character, enemySlots[index], enemyRoot);
-            enemyUIs.Add(ui);
+            Debug.LogWarning("[CharacterUIManager] 적 슬롯 부족");
         }
     }
+
+    private void EnsureListSize(List<CharacterUI> list, int size)
+    {
+        while (list.Count < size)
+        {
+            list.Add(null);
+        }
+    }
+
 
     public CharacterUI CreateCharacter(Character character, RectTransform slot, Transform root)
     {
@@ -64,6 +86,7 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
 
         ui.Setup(character);  //정보 세팅
 
+        CharacterUIManager.Instance.StartCoroutine(motionController.SpawnRoutine(ui));
         return ui;
     }
 
@@ -80,6 +103,9 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
         Character character = new Character();
         character.Setup(data);
         character.isPlayer = isPlayer;
+
+        //TODO기믹추가
+        character.gimmicks = GimmickLoader.GetGimmickByName(character.characterArtName);
 
         Character baseCh;
         if (isPlayer)
@@ -102,6 +128,38 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
         }
 
         //현재 캐릭터랑 effectCardManager을 연결시킴
+        character.effectCardManager.SetupCh(character);
+
+        AddCharacter(character);
+    }
+
+    public void AddCharacterByData(CharacterData data, bool isPlayer = true)
+    {
+        if (data == null)
+        {
+            Debug.LogWarning("[CharacterUIManager] 전달된 CharacterData가 null입니다.");
+            return;
+        }
+
+        Character character = new Character();
+        character.Setup(data);
+        character.isPlayer = isPlayer;
+
+        character.gimmicks = GimmickLoader.GetGimmickByName(data.name);
+
+        Character baseCh = isPlayer ?
+            PassiveProcessor.Instance.playerCh :
+            PassiveProcessor.Instance.enemyCh;
+
+        if (baseCh.statMultiplier != null)
+        {
+            character.statMultiplier = (StatMultiplier)baseCh.statMultiplier.Clone();
+        }
+        if (baseCh.effectCardManager != null)
+        {
+            character.effectCardManager = (EffectCardManager)baseCh.effectCardManager.Clone();
+        }
+
         character.effectCardManager.SetupCh(character);
 
         AddCharacter(character);
@@ -131,32 +189,34 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
     public BattleResult CheckCharacter()
     {
 
-        // 체력 0을 모두 제거시킴
-        playerUIs.RemoveAll(ui =>
+        for (int i = 0; i < playerUIs.Count; i++)
         {
-            if (ui.character.currentHp <= 0)
+            var ui = playerUIs[i];
+            if (ui != null && ui.character.currentHp <= 0)
             {
                 ui.DestroySelf();
-                return true;
+                playerUIs[i] = null; // null로 비워서 슬롯 유지
             }
-            return false;
-        });
+        }
 
-        enemyUIs.RemoveAll(ui =>
+        for (int i = 0; i < enemyUIs.Count; i++)
         {
-            if (ui.character.currentHp <= 0)
+            var ui = enemyUIs[i];
+            if (ui != null && ui.character.currentHp <= 0)
             {
                 ui.DestroySelf();
-                return true;
+                enemyUIs[i] = null;
             }
-            return false;
-        });
+        }
 
-        if (playerUIs.Count == 0)
+        bool allPlayersDead = playerUIs.All(ui => ui == null);
+        bool allEnemiesDead = enemyUIs.All(ui => ui == null);
+
+        if (allPlayersDead)
         {
             return BattleResult.EnemyWin;
         }
-        else if (enemyUIs.Count == 0)
+        else if (allEnemiesDead)
         {
             return BattleResult.PlayerWin;
         }

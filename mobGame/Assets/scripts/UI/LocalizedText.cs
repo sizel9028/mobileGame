@@ -40,4 +40,12 @@ public class LocalizedText : MonoBehaviour
         }
     }
 
+    public void AppendText(string extra)
+    {
+        if (text != null)
+        {
+            text.text += extra;
+        }
+    }
+
 }

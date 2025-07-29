@@ -53,9 +53,68 @@ public class CardGenerator : MonoBehaviour
                     costType = Enum.Parse<CostType>(tokens[8]),
                     maxTurn = int.Parse(tokens[9]),
                     maxCount = int.Parse(tokens[10]),
-                    effectMapRaw = tokens[11].Replace("\"","").Trim()
+                    effectMapRaw = tokens[11].Replace("\"", "").Trim()
                 };
-                
+
+                card.ParseEffectMap();
+                deck.cards.Add(card);
+            }
+            catch (Exception err)
+            {
+                Debug.LogError($"[CardGenerator] 카드 생성 중 오류 발생 (줄 {i + 1}): {err.Message}");
+            }
+        }
+
+        return deck;
+    }
+
+    public static Deck LoadDeck(string filename = "SharedCard")
+    {
+        string path = $"CardData/{filename}";
+        var deck = new Deck
+        {
+            cards = new List<CardData>()
+        };
+
+        TextAsset csv = Resources.Load<TextAsset>(path);
+        if (csv == null)
+        {
+            Debug.LogWarning($"[CardGenerator] CSV 파일을 찾을 수 없음: {path}");
+            return deck;
+        }
+
+        string[] lines = csv.text.Split('\n');
+        for (int i = 1; i < lines.Length; ++i)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+
+            string[] tokens = line.Split(',');
+            if (tokens.Length < 12)
+            {
+                Debug.LogWarning($"[CardGenerator] 잘못된 CSV 라인: {line}");
+                continue;
+            }
+
+            try
+            {
+                var card = new CardData
+                {
+                    nameKey = tokens[0],
+                    descriptionKey = tokens[1],
+                    cardArtName = tokens[2],
+                    path = path,
+                    cardType = Enum.Parse<CardType>(tokens[3]),
+                    actionType = Enum.Parse<ActionType>(tokens[4]),
+                    cardTarget = Enum.Parse<CardTarget>(tokens[5]),
+                    rare = Enum.Parse<Rare>(tokens[6]),
+                    cost = int.Parse(tokens[7]),
+                    costType = Enum.Parse<CostType>(tokens[8]),
+                    maxTurn = int.Parse(tokens[9]),
+                    maxCount = int.Parse(tokens[10]),
+                    effectMapRaw = tokens[11].Replace("\"", "").Trim()
+                };
+
                 card.ParseEffectMap();
                 deck.cards.Add(card);
             }

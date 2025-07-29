@@ -8,49 +8,25 @@ public static class CardArtLoader
 {
     public static IEnumerator LoadCardArt(CardData data, Action<Sprite> onLoaded)
     {
-        string relativePath = Path.Combine(
-            "Card",
+        string resourcePath = Path.Combine(
+            "CardArts",
             data.cardType.ToString(),
             data.costType.ToString(),
             data.actionType.ToString(),
             data.rare.ToString(),
-            data.cardTarget.ToString(),
-            data.cardArtName + ".png"
+            data.cardArtName  // .png 확장자 제거
         );
 
-        string fullPath = Path.Combine(Application.streamingAssetsPath, relativePath);
+        ResourceRequest request = Resources.LoadAsync<Sprite>(resourcePath);
+        yield return request;
 
-#if UNITY_ANDROID && !UNITY_EDITOR
-        UnityWebRequest www = UnityWebRequestTexture.GetTexture(fullPath);
-        yield return www.SendWebRequest();
-
-        if (www.result != UnityWebRequest.Result.Success)
+        if (request.asset == null)
         {
-            Debug.LogError($"[CardArtLoader] Android 로딩 실패: {www.error}");
+            Debug.LogError($"[CardArtLoader] 리소스 로드 실패: {resourcePath}");
             onLoaded?.Invoke(null);
             yield break;
         }
 
-        Texture2D tex = DownloadHandlerTexture.GetContent(www);
-#else
-        if (!File.Exists(fullPath))
-        {
-            Debug.LogError($"[CardArtLoader] 파일 없음: {fullPath}");
-            onLoaded?.Invoke(null);
-            yield break;
-        }
-
-        byte[] bytes = File.ReadAllBytes(fullPath);
-        Texture2D tex = new Texture2D(2, 2);
-        tex.LoadImage(bytes);
-#endif
-
-        Sprite sprite = Sprite.Create(
-            tex,
-            new Rect(0, 0, tex.width, tex.height),
-            new Vector2(0.5f, 0.5f)
-        );
-
-        onLoaded?.Invoke(sprite);
+        onLoaded?.Invoke((Sprite)request.asset);
     }
 }

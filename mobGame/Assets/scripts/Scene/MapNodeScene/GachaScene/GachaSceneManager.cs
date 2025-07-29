@@ -27,6 +27,7 @@ public class GachaSceneManager : MonoBehaviour
         //TODO 텍스트 세팅
     }
 
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))

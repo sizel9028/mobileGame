@@ -24,10 +24,10 @@ public enum CostType
 
 public enum Rare
 {
-    Tier0, Tier1, Tier2, Tier3
+    Tier0, Tier1, Tier2, Tier3, TierRage
 }
 
-public class CardData
+public class CardData : ICloneable
 {
     //카드 설명 이름 localized Text에 해당하는 key
     public string nameKey;
@@ -57,27 +57,72 @@ public class CardData
     public string effectMapRaw; // "Damage::20,Heal::20" 같은 효과들 전부 모아둠
     [NonSerialized] public Dictionary<string, float> effectMap = new();
 
+    public List<Gimmick> gimmickEffects = new();
+
 
     public void ParseEffectMap()
     {
         effectMap.Clear();
+        gimmickEffects.Clear();
 
         if (string.IsNullOrWhiteSpace(effectMapRaw)) return;
 
-        var entries = effectMapRaw.Split(',');
+        var entries = effectMapRaw.Split('|');
 
         foreach (var entry in entries)
         {
             var parts = entry.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+
             if (parts.Length == 2 && float.TryParse(parts[1], out float value))
             {
+                // 일반 효과
                 effectMap[parts[0].Trim()] = value;
+            }
+            else if (parts.Length == 4 && parts[0] == "Gimmick")
+            {
+                // 기믹 효과
+                string gimmickName = parts[1];
+                float condition = float.Parse(parts[2]);
+                int gimmickValue = int.Parse(parts[3]);
+                gimmickEffects.Add(new Gimmick(gimmickName, condition, gimmickValue));
             }
             else
             {
                 Debug.LogWarning($"[CardData] 효과 파싱 실패: {entry}");
             }
         }
+    }
+
+    public object Clone()
+    {
+        CardData copy = new CardData
+        {
+            nameKey = this.nameKey,
+            descriptionKey = this.descriptionKey,
+            path = this.path,
+            cardArtName = this.cardArtName,
+            cardType = this.cardType,
+            actionType = this.actionType,
+            cardTarget = this.cardTarget,
+            rare = this.rare,
+            cost = this.cost,
+            costType = this.costType,
+            maxTurn = this.maxTurn,
+            maxCount = this.maxCount,
+            effectMapRaw = this.effectMapRaw
+        };
+
+        foreach (var kv in this.effectMap)
+        {
+            copy.effectMap[kv.Key] = kv.Value;
+        }
+
+        foreach (var g in this.gimmickEffects)
+        {
+            copy.gimmickEffects.Add(new Gimmick(g.gimmickName, g.gimmicCondition, g.gimmicCount));
+        }
+
+        return copy;
     }
 
 }

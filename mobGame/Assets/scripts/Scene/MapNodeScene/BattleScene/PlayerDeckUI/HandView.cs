@@ -8,7 +8,7 @@ public class HandView : MonoBehaviour
 {
     //카드를 저장 + 배치
     [SerializeField] private SplineContainer splineContainer;
-    private List<CardUI> cards = new();
+    public List<CardUI> cards = new();
 
     //선택 카드 + 화살표 표현하기 위함
     private CardUI selectCard = null;
@@ -69,7 +69,7 @@ public class HandView : MonoBehaviour
         Debug.Log($"[HandView] 카드 다운: {card.data.nameKey}, 코스트: {card.data.cost}, 사용 가능 여부: {CardValidator.IsCardAble(card.data, true)}");
 
 
-        if (isDragging) return;
+        if (isDragging || isZoom) return;
         if (!CardValidator.IsCardAble(card.data, true)) return;
 
         selectCard = card;
@@ -173,7 +173,11 @@ public class HandView : MonoBehaviour
         if (!cards.Contains(card)) return;
 
         // 1) 덱에 폐기 등록
-        DeckManager.Instance.discardPile.cards.Add(card.data);
+        if (card.data.rare != Rare.TierRage)
+        {
+            DeckManager.Instance.discardPile.cards.Add(card.data);
+        }
+
         cards.Remove(card);
 
         // 2) RectTransform 가져오기
@@ -254,6 +258,11 @@ public class HandView : MonoBehaviour
         {
             CardUI card = cards[i];
             if (card == null || card.gameObject == null) continue;
+
+            if (card.data.rare != Rare.TierRage)
+            {
+                DeckManager.Instance.discardPile.cards.Add(card.data);
+            }
 
             RectTransform rect = card.GetComponent<RectTransform>();
             Vector2 targetAnchorPos = new Vector2(800f, -300f);

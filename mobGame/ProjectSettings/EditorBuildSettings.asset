@@ -29,6 +29,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RuneScene.unity
     guid: 14deb56d994898946a423a2bd97c60b6
+  - enabled: 1
+    path: Assets/Scenes/CardViewerScene.unity
+    guid: 4fba53efbbe38a04abb9a2a21a3b8876
+  - enabled: 1
+    path: Assets/Scenes/MapNodeScene/Shop.unity
+    guid: 5be30c97e7dc66a4c839fb91429468cd
+  - enabled: 1
+    path: Assets/Scenes/MapNodeScene/Campfire.unity
+    guid: 3133558a77df4e94f85d653542d520e6
+  - enabled: 1
+    path: Assets/Scenes/MapNodeScene/Treasure.unity
+    guid: 9d4213a76104bda4499a1e2bbf77cf67
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 00d5fe00a7366f44fb0c9519c582083f, type: 2}
     com.unity.addressableassets: {fileID: 11400000, guid: 1a315eb3cd6ef0942942502106663ffb, type: 2}

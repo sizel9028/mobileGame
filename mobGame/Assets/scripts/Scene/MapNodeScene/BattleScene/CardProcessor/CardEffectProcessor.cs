@@ -9,6 +9,8 @@ public partial class CardEffectProcessor
     private CharacterUI casterUI;
     private CharacterUI targetUI;
 
+    private CoefficientModifier modifier = new();
+
 
     public void ProcessCardEffect(CardData card, CharacterUI casterUI, List<CharacterUI> targetUIs)
     {
@@ -87,6 +89,18 @@ public partial class CardEffectProcessor
 
             case "Heal":
                 ApplyHeal(effect);
+                break;
+
+            case "Summon":
+                ApplySummon(effect);
+                break;
+
+            case "CorpseExplode":
+                ApplyCorpseExplode(effect);
+                break;
+
+            case "BoneShield":
+                ApplyBoneShield(effect);
                 break;
 
         }

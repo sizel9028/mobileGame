@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 //모든 기믹을 관리하는 클래스
-public class GimmickManager : Singleton<GimmickManager>
+public partial class GimmickManager : Singleton<GimmickManager>
 {
+    private CardEffectProcessor processor = new();  //기믹 효과도 일부는 카드처럼 작동함
+    private CoefficientModifier modifier = new();
 
 
     //기믹중 사용가능하면 true를 반환, 아니면 false
@@ -16,6 +19,24 @@ public class GimmickManager : Singleton<GimmickManager>
         {
             case "Summon":
                 if (character.currentHp <= gimmick.gimmicCondition) return true;
+                break;
+
+            case "Explode":
+                if (character.currentHp <= 0)
+                {
+                    if (Random.value <= gimmick.gimmicCondition) return true;
+                }
+                break;
+
+            case "RageGain":
+                return true;
+
+            case "RageUse":
+                if (character.statMultiplier.rage >= gimmick.gimmicCondition) return true;
+                break;
+
+            case "ReturnCorpse":
+                if (character.currentHp <= 0) return true;
                 break;
         }
 
@@ -33,6 +54,23 @@ public class GimmickManager : Singleton<GimmickManager>
             case "Summon":
                 PlaySummon(character, gimmick);
                 break;
+
+            case "Explode":
+                PlayExplode(character, gimmick);
+                break;
+
+            case "RageGain":
+                PlayRageGain(character, gimmick);
+                break;
+
+            case "RageUse":
+                PlayRageUse(character, gimmick);
+                break;
+
+            case "ReturnCorpse":
+                PlayReturnCorpse(character, gimmick);
+                break;
+                
         }
     }
 

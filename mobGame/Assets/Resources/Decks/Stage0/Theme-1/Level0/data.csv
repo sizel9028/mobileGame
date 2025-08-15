@@ -1,8 +1,5 @@
 nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
-fireball_name,fireball_desc,Fireball,Action,Skill,allEnemy,Tier1,0,Mana,0,0,"Damage::5"
-fireball_name,fireball_desc,Fireball,Action,Skill,onePlayer,Tier1,0,Mana,0,0,"Shield::5"
-fireball_name,fireball_desc,Fireball,Action,Skill,allPlayer,Tier1,0,Mana,0,0,"Heal::10"
-fireball_name,fireball_desc,Fireball,Action,Skill,nop,Tier1,0,Mana,0,0,"Draw::2"
-fireball_name,fireball_desc,Fireball,Passive,Power,allEnemy,Tier1,0,Mana,0,1,"incomingDamage::1"
-fireball_name,fireball_desc,Fireball,Action,Power,oneEnemy,Tier1,0,Mana,0,1,"incomingDamage::1"
-    
+fireball_name,fireball_desc,Fireball,Action,Skill,allEnemy,Tier1,0,Mana,0,0,"Damage::500"
+fireball_name,fireball_desc,Fireball,Action,Skill,onePlayer,Tier1,0,Mana,0,0,"Summon::0"
+fireball_name,fireball_desc,Fireball,Action,Skill,nop,Tier1,0,Mana,0,0,"Draw::3"
+bone_shield,bone_shield_desc,BoneShield,Action,Skill,onePlayer,Tier1,2,Mana,0,0,"Shield::1|BoneShield::0.5"

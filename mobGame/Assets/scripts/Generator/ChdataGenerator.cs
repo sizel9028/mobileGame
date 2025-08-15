@@ -22,7 +22,7 @@ public static class ChdataGenerator
 
             string[] tokens = lines[i].Split(',');
 
-            if (tokens.Length < 4)
+            if (tokens.Length < 5)
             {
                 Debug.LogWarning($"[ChDataGenerator] 잘못된 줄: {lines[i]}");
                 continue;
@@ -36,7 +36,8 @@ public static class ChdataGenerator
                 name = entryName,
                 maxHp = int.Parse(tokens[1]),
                 hp = int.Parse(tokens[2]),
-                baseShield = int.Parse(tokens[3])
+                baseShield = int.Parse(tokens[3]),
+                atkCoef = float.Parse(tokens[4])
             };
 
             return data;

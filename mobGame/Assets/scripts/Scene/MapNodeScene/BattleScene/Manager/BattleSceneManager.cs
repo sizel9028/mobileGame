@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+
+public enum TurnType
+{
+    PlayerTurn, EnemyTurn
+}
+
 public class Battle : Singleton<Battle>
 {
     //BattleScene의 최상위 매니저
     [SerializeField] private EndTurnButtonUI endTurnBtn;
     public int turnCount { get; private set; }  //에너미 기준
     public bool isProcessingCard = false;
+    public TurnType turnType;  // 누구 턴인지 체크
 
 
     void Start()
     {
+        turnType = TurnType.PlayerTurn;
         isProcessingCard = false;
         turnCount = 0; //턴 초기화
         DeckManager.Instance.InitDeck(); //플레이어 덱을 세팅
@@ -27,6 +35,9 @@ public class Battle : Singleton<Battle>
         EnemyManaSystem.Instance.InitMana();
         ManaSystem.Instance.InitManaSystem();  //마나 초기화 먼저
 
+        //사용가능한 패 확인
+        DeckManager.Instance.handView.CheckUsableCard();
+
         InitializeBattle(); //플레이어 적을 소환
 
     }
@@ -36,7 +47,7 @@ public class Battle : Singleton<Battle>
     {
         //--- test --- //TODO 스테이 정보를 진짜 스테이지로 함
         int stageNumber = GameManager.gameManager.playerData.currentMap.stageNumber;
-        int[] level = LevelGenerator.GetLevelInfo(GameManager.gameManager.playerData.currentMap);
+        //int[] level = LevelGenerator.GetLevelInfo(GameManager.gameManager.playerData.currentMap);
 
         //TODO 1대신 level을 넣음
         List<string> enemyNames = StageLoader.Load(stageNumber, 1);
@@ -85,6 +96,7 @@ public class Battle : Singleton<Battle>
 
     public void PlayerTurn()
     {
+        turnType = TurnType.PlayerTurn;
         MapEffectProcessor.Instance.ProcessMapEffect();  //플레이어 턴 시작때 맵의 효과를 받음
         endTurnBtn.SetActive(true);  //턴 버튼 UI 보여줌
         CheckTurnEffects(true); // 플레이어 턴 체크
@@ -92,15 +104,16 @@ public class Battle : Singleton<Battle>
 
     public IEnumerator EnemyTurn()
     {
+        //턴 관리
+        turnType = TurnType.EnemyTurn;
         ++turnCount;
+        
         endTurnBtn.SetActive(false); // 턴 버튼 UI 숨김
         CheckTurnEffects(false); // 플레이어 턴 체크
 
         EnemyManaSystem.Instance.refillMana();
         yield return EnemyDeckManager.Instance.PlayCard();  //적이 카드를 낸다
 
-        Debug.Log("섹스 직전");
-        Debug.Log("섹스");
 
         ManaSystem.Instance.Refill();
         PlayerTurn(); //플레이어 턴으로 넘어감

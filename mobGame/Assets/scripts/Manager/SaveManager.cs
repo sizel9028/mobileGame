@@ -68,7 +68,23 @@ public class SaveManager : MonoBehaviour
     public void SaveAll()
     {
         MarkCurrentNodeCleared();
+        SaveCharacterData();
         SavePlayer(GameManager.gameManager.playerData);
+    }
+
+    private void SaveCharacterData()
+    {
+        var chManager = CharacterUIManager.Instance;
+        if (chManager == null) return;
+
+        var playerUI = chManager.playerUIs[0];
+        if (playerUI == null) return;
+
+        var characterData = GameManager.gameManager.playerData.characterData;
+
+        characterData.maxHp = playerUI.character.maxHp;
+        characterData.hp = playerUI.character.currentHp;
+
     }
 
     public void MarkCurrentNodeCleared()

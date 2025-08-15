@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoefficientModifier
+public partial class CoefficientModifier
 {
     public void ProcessCardEffect(CardData card, CharacterUI playerUI, List<CharacterUI> enemyUIs)
     {
@@ -57,21 +57,29 @@ public class CoefficientModifier
 
     private void ApplySingle(string effectKey, float value, Character caster, Character target)
     {
-        //TODO 계수 변경
+        //특수 케이스 먼저 찾음
         switch (effectKey)
         {
-            case "incomingDamage":
-                target.statMultiplier.incomingDamage += value;
-                break;
+            case "Rage":
+                ApplyRage(value, caster, target);
+                return;
 
-            case "outgoingDamageAdd":
-                target.statMultiplier.outgoingDamageAdd += value;
-                break;
 
-            case "outgoingDamageMultiple":
-                target.statMultiplier.outgoingDamageMultiple += value;
-                break;
+                // 여기까지는 특수 케이스
+        }
+
+        // 나머지는 statMultiplier에서 자동 처리
+        var statObj = target.statMultiplier;
+
+        var field = statObj.GetType().GetField(effectKey,
+            System.Reflection.BindingFlags.Public |
+            System.Reflection.BindingFlags.Instance);
+
+        if (field != null && field.FieldType == typeof(float))
+        {
+            float current = (float)field.GetValue(statObj);
+            field.SetValue(statObj, current + value);
         }
     }
-    
+
 }

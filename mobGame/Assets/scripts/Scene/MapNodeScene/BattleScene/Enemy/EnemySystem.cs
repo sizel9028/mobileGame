@@ -62,10 +62,10 @@ public class EnemySystem : Singleton<EnemySystem>
         return card.cardTarget switch
         {
             CardTarget.oneEnemy => CharacterUIManager.Instance.playerUIs
-                .FirstOrDefault(ui => ui != null && ui.character != null),
+                .LastOrDefault(ui => ui != null && ui.character != null),
 
             CardTarget.onePlayer => CharacterUIManager.Instance.enemyUIs
-                .FirstOrDefault(ui => ui != null && ui.character != null),
+                .LastOrDefault(ui => ui != null && ui.character != null),
 
             _ => null // allEnemy, allPlayer 등은 내부 처리
         };

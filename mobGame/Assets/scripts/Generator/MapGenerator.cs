@@ -1,10 +1,21 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
     // csv파일로 저장되어 있는 맵을 불러옴
+
+    private static readonly Dictionary<NodeType, float> nodeProbabilities = new()
+    {
+        { NodeType.Battle, 1f },
+        { NodeType.Campfire, 0.15f },
+        { NodeType.Elite, 0.15f },
+        { NodeType.Shop, 0.1f },
+        { NodeType.Unknown, 0.6f },
+        { NodeType.Treasure, 0.15f },
+    };
 
     public static MapNode LoadMap(int stage, int themeNumber, int mapKind = -1)
     {
@@ -34,8 +45,9 @@ public class MapGenerator : MonoBehaviour
         {
             map.theme = GameManager.gameManager.playerData.currentMap.theme;
         }
-        
+
         map.nodes = new MapNodeData[50];
+        int lastNodeId = -1;
 
         string[] lines = csvFile.text.Split('\n');
         for (int i = 1; i < lines.Length; ++i)
@@ -47,7 +59,9 @@ public class MapGenerator : MonoBehaviour
             string[] parts = line.Split(',');
 
             int id = int.Parse(parts[0]);
-            NodeType type = Enum.Parse<NodeType>(parts[1]);
+            lastNodeId = Mathf.Max(lastNodeId, id);
+            //NodeType type = Enum.Parse<NodeType>(parts[1]);
+            NodeType type = GetRandomNodeType();
             float posX = float.Parse(parts[2]);
             float posY = float.Parse(parts[3]);
 
@@ -73,6 +87,29 @@ public class MapGenerator : MonoBehaviour
             map.nodes[id] = node;
         }
 
+        //마지막 노드 보스로 바꿈
+        if (lastNodeId >= 0 && map.nodes[lastNodeId] != null)
+        {
+            map.nodes[lastNodeId].nodeType = NodeType.Boss;
+        }
+
         return map;
     }
+
+    private static NodeType GetRandomNodeType()
+    {
+        float rand = UnityEngine.Random.value;
+        float cumulative = 0f;
+
+        foreach (var pair in nodeProbabilities)
+        {
+            cumulative += pair.Value;
+            if (rand <= cumulative)
+                return pair.Key;
+        }
+
+        // 만약 float 오차로 인해 못 뽑는 경우 fallback
+        return NodeType.Unknown;
+    }
+
 }

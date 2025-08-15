@@ -3,25 +3,21 @@ using UnityEngine.UI;
 
 public class RuneUI : MonoBehaviour
 {
-    public LocalizedText nameText;
-    public LocalizedText descText;
     [SerializeField] private Image runeImage;
+    public Button button;
+    public Rune rune;
 
-    private RuneProcessor runeProcessor = new();
-
+    void Awake()
+    {
+        if (button != null)
+        {
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(OnClick);
+        }
+    }
     public void Setup(Rune data)
     {
-        nameText.SetText(data.GetNameKey());
-        if (data.level != 0)
-        {
-            descText.SetText(data.GetDescKey());
-            float effectVal = runeProcessor.GetRuneCoefficient(data);
-            descText.AppendText(GetEffectDisplay(data, effectVal));
-        }
-        else descText.SetText($"theme_{data.mapTheme}_0level");
-
-        nameText.AppendText($" (lv{data.level})");
-
+        rune = data;
         LoadRuneArt(data);
     }
 
@@ -38,16 +34,16 @@ public class RuneUI : MonoBehaviour
             Debug.LogWarning($"[RuneUI] 이미지 로드 실패: {data.GetArtPath()}");
         }
     }
-    
-    //비율이면 % 아니면 숫자로 나옴
-    private string GetEffectDisplay(Rune rune, float val)
+
+    private void OnClick()
     {
-        return rune.mapTheme switch
+        Debug.Log("[RuneUI] 클릭됨");
+        FloatingRuneUI floating = FindAnyObjectByType<FloatingRuneUI>();
+
+        if (floating != null)
         {
-            MapTheme.FOREST => $" (+{val * 100:0.#}%)",  // 흡혈 비율
-            MapTheme.OCEAN => $" (+{(int)val})",         // 리셋
-            MapTheme.VOID => $" (+{(int)val} HP)",      // 최대 체력 증가
-            _ => $" (+{val})"
-        };
+            floating.DisplayRune(rune);
+        }
+
     }
 }

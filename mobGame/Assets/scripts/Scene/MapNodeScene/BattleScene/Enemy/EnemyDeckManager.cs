@@ -16,7 +16,7 @@ public class EnemyDeckManager : Singleton<EnemyDeckManager>
     public void InitEnemyDeck()
     {
         var currMap = GameManager.gameManager.playerData.currentMap;
-        int[] levelInfo = LevelGenerator.GetLevelInfo(currMap);
+        //int[] levelInfo = LevelGenerator.GetLevelInfo(currMap);
 
         //deck = CardGenerator.LoadDeck(levelInfo[0], levelInfo[1], levelInfo[2]); //덱 로드
         //--- test ---

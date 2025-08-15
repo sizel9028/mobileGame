@@ -9,5 +9,6 @@ public class CharacterData
     public int maxHp;
     public int hp;
     public int baseShield;
+    public float atkCoef;  // 공격 계수
 
 }

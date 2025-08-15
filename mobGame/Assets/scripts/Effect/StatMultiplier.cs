@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class StatMultiplier : ICloneable
 {
+    public float outgoingDamageTotal = 1f;
     // 받은 데미지 계수 (예: 약화 디버프에 의해 1.3f)
     public float incomingDamage = 1f;
     // 주는 데미지 계수 (곱연산)
@@ -40,6 +41,37 @@ public class StatMultiplier : ICloneable
 
     // 흡혈 계수 (예: Lifesteal 상태일 때 피해량의 50%를 체력 회복)
     public float lifesteal = 0f;
+
+    // 버서커 계수
+
+
+    // 분노 수치
+    public float rage = 0f;
+
+    //분노 추가 계수
+    public float rageAddFactor = 1f;
+
+
+    // 소환사 계수
+
+    // (소환수 자푝)
+    //자폭 확률 계수
+    public float DeathBlastChance = 1f;
+
+    //자폭 데미지 계수
+    public float DeathBlastDamageFactor = 1f;
+
+    //시체 갯수 카운트
+    public float CorpseCount = 6f;
+
+    // 시체 폭발 계수 증가
+    public float CorpseDamageAdd = 0f;
+
+    // 시체 폭발 계수 증가
+    public float CorpseDamageMultiple = 1f;
+
+
+
 
     public object Clone()
     {

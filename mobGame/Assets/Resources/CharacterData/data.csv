@@ -1,2 +1,2 @@
-name,maxHp,hp,baseShield
-Slime,50,20,0
+name,maxHp,hp,baseShield,atkCoef
+Slime,10,10,0,1.2

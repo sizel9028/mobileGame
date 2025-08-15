@@ -15,6 +15,7 @@ public class NodeUI : MonoBehaviour
     public Sprite treasureIcon;
     public Sprite unknownIcon;
     public Sprite clearedIcon;
+    public Sprite bossIcon;
 
     private int nodeIndex;
     //씬 매니저 호출, 정보 전달
@@ -68,6 +69,7 @@ public class NodeUI : MonoBehaviour
             NodeType.Treasure => treasureIcon,
             NodeType.Unknown => unknownIcon,
             NodeType.Cleared => clearedIcon,
+            NodeType.Boss => bossIcon,
             _ => unknownIcon
         };
     }

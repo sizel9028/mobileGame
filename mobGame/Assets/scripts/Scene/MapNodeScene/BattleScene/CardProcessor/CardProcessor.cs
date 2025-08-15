@@ -37,6 +37,24 @@ public class CardProcessor
             targetUIs = validTargets;
         }
 
+        if (card.gimmickEffects != null && card.gimmickEffects.Count > 0)
+        {
+            foreach (var targetUI in targetUIs)
+            {
+                if (targetUI?.character == null) continue;
+
+                foreach (var gimmick in card.gimmickEffects)
+                {
+                    targetUI.character.gimmicks.Add(new Gimmick(
+                        gimmick.gimmickName,
+                        gimmick.gimmicCondition,
+                        gimmick.gimmicCount
+                    ));
+                    Debug.Log($"[CardProcessor] 기믹 '{gimmick.gimmickName}' 추가됨 → 타겟: {targetUI.name}");
+                }
+            }
+        }
+
 
         switch (card.actionType)
         {
@@ -48,6 +66,8 @@ public class CardProcessor
                 coefficientModifier.ProcessCardEffect(card, casterUI, targetUIs);
                 break;
         }
+
+
     }
 
     //target이 하나인 함수

@@ -2,6 +2,45 @@ key,ko,en,ja
 btn_new_game,새로하기,New Game,新しく始める
 btn_continue,이어하기,Continue,続きから
 btn_exit,종료하기,Exit,終了
+btn_rune,룬 연구소,1,1
 change_language,언어,Language,言語
+rune_frost_name,설원룬,1,1
+rune_frost_desc,마나를 증가시킵니다,1,1
+rune_FROST_0level,설원맵 클리어 필요,1,1
+rune_forest_name,수풀룬,1,1
+rune_forest_desc,1,1,1
+rune_FOREST_0level,수풀맵 클리어 필요,1,1
+rune_ocean_name,바다룬,1,1
+rune_ocean_desc,1,1,1
+rune_OCEAN_0level,바다맵 클리어 필요,1,1
+rune_desert_name,사막룬,1,1
+rune_desert_desc,1,1,1
+rune_DESERT_0level,사막맵 클리어 필요,1,1
+rune_volcano_name,화산룬,1,1
+rune_volcano_desc,1,1,1
+rune_VOLCANO_0level,화산맵 클리어 필요
+rune_ruins_name,묘지룬,1,1
+rune_ruins_desc,1,1,1
+rune_RUINS_0level,묘지맵 클리어 필요,1,1
+rune_void_name,공허룬,1,1
+rune_void_desc,1,1,1
+rune_VOID_0level,공허맵 클리어 필요
+shop_sale,방금 전이랑 가격이 다르다고? 그건 네 착각이야,1,1
+shop_random_1,너같이 재능이 없어도 내 카드만 있으면 몬스터쯤은 쓸어버릴 수 있지,1,1
+shop_random_2,살 때는 비싸도 안 사면 두고두고 후회하는 법이야,1,1
+shop_random_3,난 바가지를 잘 씌운다고. 그게 상인의 덕목이지,1,1
+shop_random_4,빈 주머니면 구경도 사치야. 저리 가,1,1
+shop_random_5,이걸 사면 너도 잠깐은 소환사 흉내쯤은 낼 수 있을 거야,1,1
+shop_random_6,이 가게에선 돈이 많을수록 카드도 비싸져. 공평하지?,1,1
+shop_random_7,1억을 들고 와도 여기 있는 전부는 못 사,1,1 
+shop_buyrandom_1,이렇게 호구 잡히는 손님 오랜만이네,1,1
+shop_buyrandom_2,한 번 쓰고 나면 알게 될 거야. 왜 비쌌는지 말이지,1,1
+shop_buyrandom_3,너무 무리하는 거 아니야?,1,1
+shop_buyrandom_4,너무 과했어 친구. 그 카드가 널 구할 거란 보장은 없거든,1,1
+shop_buyrandom_5,그 카드 진짜 필요한 순간에 나와주면 좋겠네,1,1
+BattlePreview_DeckBtn,덱 보기,1,1
+BattlePreview_nothing,특수능력 없음,1,1
+Summon,소환,1,1
+enemy_Slime,슬라임,1,1
 fireball_name,파이어볼,1,1
-fireball_desc,5데미지를 입힌다,1,1
+fireball_desc,{Damage} 데미지를 입힌다,1,1

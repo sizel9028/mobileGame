@@ -42,7 +42,8 @@ public class ChSceneManager : MonoBehaviour
         {
             case 0: //소환사
                 characterData.name = "summoner";
-                characterData.maxHp = characterData.hp = 10;
+                characterData.maxHp = 30;
+                characterData.hp = 30;
                 break;
 
             case 1: //블라디

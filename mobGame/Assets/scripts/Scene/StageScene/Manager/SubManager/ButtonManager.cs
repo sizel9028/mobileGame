@@ -1,17 +1,17 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class ButtonManager : MonoBehaviour
+public class ButtonManager : MonoBehaviour, IPushable
 {
     public Button startButton;
-    public Button backButton;
+
 
     public MapSceneManager manager;
 
     void Start()
     {
         startButton.onClick.AddListener(OnStartClick);
-        backButton.onClick.AddListener(OnBackClick);
     }
 
 
@@ -20,8 +20,14 @@ public class ButtonManager : MonoBehaviour
         manager.HandleStart();
     }
 
-    void OnBackClick()
+    public void PushBtnBack()
     {
-        manager.HandleBack();
+        SceneManager.LoadScene("startScene");
     }
+    public void PushBtnInventory()
+    {
+        GameManager.gameManager.CardViewCards = (SceneType.InventoryScene, GameManager.gameManager.playerData.playerDeck.cards);
+        SceneManager.LoadScene("CardViewerScene");
+    }
+
 }

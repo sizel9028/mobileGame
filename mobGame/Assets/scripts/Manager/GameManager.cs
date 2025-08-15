@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,9 +9,12 @@ public class GameManager : MonoBehaviour
     public PlayerData playerData;
     public RuneData runeData;
 
+    public (SceneType sceneType, List<CardData> cards) CardViewCards;  //덱을 보여줄때 쓸 정보
+    public List<CardData> shopSceneCards; // 샵씬에서 카드 제거로 넘어가는중 임시로 저장하는 씬정보
     public int maxReset;
     public int nodeId;  //노드 실행시 현재 실행 노드저장
     public int endHp; // 게임이 끝나고 playerHp저장 공간
+    public bool CfSceneUpgrade = false; //campfire씬에서 강화를 했는지 체크
     void Awake()
     {
         if (gameManager == null)

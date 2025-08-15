@@ -23,11 +23,12 @@ public class CardUI : MonoBehaviour
     //2개의 관리 매니저(handView :: 패에 있는 카드, manager : 이외의 상황)
     private CardUIManager manager;
     private HandView handView;
+    private ShopView shopView; // 인터페이스 쓸걸...
 
     private static readonly Color[] rareColors = new Color[]
     {
         //TODO 색 채우기 rare 별로
-        Color.gray, Color.gray, Color.gray, Color.gray
+        Color.gray, Color.gray, Color.gray, Color.gray, Color.red
     };
 
 
@@ -37,7 +38,8 @@ public class CardUI : MonoBehaviour
         manager = uiManager;
         //TODO 카드 데이터로 저걸 채움
         nameText.SetText(newData.nameKey);
-        descriptionText.SetText(newData.descriptionKey);  // key를 바탕으로 값 결정
+        //descriptionText.SetText(newData.descriptionKey);  // key를 바탕으로 값 결정
+        SetDescText(newData.descriptionKey, newData);
         costText.text = newData.cost.ToString();
 
         StartCoroutine(CardArtLoader.LoadCardArt(newData, (sprite) =>
@@ -57,12 +59,22 @@ public class CardUI : MonoBehaviour
 
     }
 
-    private void OnClick()
+    private void SetDescText(string key, CardData cardData)
     {
-        //manager?.OnCardClick(index);
-        //manager?.OnCardClick(this);  // 자신을 넘겨서 인덱스를 사용x
-        //handView?.OnCardClick(this);
+        string rawText = LocalizationManager.languageM.GetText(key);
+
+        foreach (var kvp in cardData.effectMap)
+        {
+            string placeholder = "{" + kvp.Key + "}"; // Damage >> {Damage} 로 바꿈
+            string value = ((int)kvp.Value).ToString(); 
+            rawText = rawText.Replace(placeholder, value);
+        }
+
+        descriptionText.Clear();
+        descriptionText.AppendText(rawText);
+        
     }
+
 
     public void SetSelected(bool isSelected)
     {
@@ -84,11 +96,19 @@ public class CardUI : MonoBehaviour
         this.manager = null; // cardUImanager과의 연결을 끊음 (무조건 패로만 사용함)
     }
 
+    public void SetShopView(ShopView shopView)
+    {
+        this.shopView = shopView;
+        this.manager = null;
+        this.handView = null;
+    }
+
     public void OnPointerDown(BaseEventData data)
     {
         //Debug.Log("Button Pressed: " + gameObject.name);  // 현재 버튼 이름 출력
         manager?.OnCardClick(this);  // 자신을 넘겨서 인덱스를 사용x
         handView?.OnCardDown(this);
+        shopView?.OnCardDown(this);
     }
 
     // 버튼에서 손을 뗐을 때 호출
@@ -96,6 +116,7 @@ public class CardUI : MonoBehaviour
     {
         //Debug.Log("Button Released: " + gameObject.name);  // 현재 버튼 이름 출력
         handView?.OnCardUp(this);
+        shopView?.OnCardUp(this);
     }
 
     public void UpdateUsableVisual()
@@ -116,5 +137,6 @@ public class CardUI : MonoBehaviour
 
         Destroy(gameObject);
     }
+
 
 }

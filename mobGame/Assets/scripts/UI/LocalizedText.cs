@@ -5,6 +5,7 @@ public class LocalizedText : MonoBehaviour
 {
     public string key;
     private TMP_Text text;
+    public bool skipStart = false;
 
     void Awake()
     {
@@ -14,6 +15,7 @@ public class LocalizedText : MonoBehaviour
 
     void Start()
     {
+        if (skipStart) return;
         //text = GetComponent<TMP_Text>();
         if (LocalizationManager.languageM != null)
         {
@@ -45,6 +47,15 @@ public class LocalizedText : MonoBehaviour
         if (text != null)
         {
             text.text += extra;
+        }
+    }
+
+    public void Clear()
+    {
+        if (text != null)
+        {
+            text.text = "";
+            text.font = LocalizationManager.languageM.GetFont();
         }
     }
 

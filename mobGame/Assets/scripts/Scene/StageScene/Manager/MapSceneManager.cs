@@ -31,17 +31,17 @@ public class MapSceneManager : MonoBehaviour
             return;
         }
 
+        GameManager.gameManager.nodeId = uimanager.SelectedIdx;
+
         switch (nodeType)
         {
             case NodeType.Battle:
+                //SceneManager.LoadScene("Campfire");
+                //SceneManager.LoadScene("Shop");
                 SceneManager.LoadScene("BattleScene");
                 break;
         }
     }
 
-    public void HandleBack()
-    {
-        //TODO start씬으로 넘김
-    }
 
 }

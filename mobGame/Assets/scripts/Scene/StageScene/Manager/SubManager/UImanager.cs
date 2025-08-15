@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UImanager : MonoBehaviour
+public class UImanager : Singleton<UImanager>
 {
     //노드 프리팹
     public GameObject nodePrefab;
@@ -32,6 +32,15 @@ public class UImanager : MonoBehaviour
         if (!nodeUIs[index].CanSelect())
             return;
 
+        if (selectedIdx == index)
+        {
+            nodeUIs[index].SetSelected(false);
+            selectedIdx = -1;
+            BattlePreviewUIManager.Instance.Hide();
+
+            return;
+        }
+
         if (selectedIdx != -1 && nodeUIs.ContainsKey(selectedIdx))
             nodeUIs[selectedIdx].SetSelected(false);
 
@@ -39,6 +48,18 @@ public class UImanager : MonoBehaviour
 
         if (nodeUIs.ContainsKey(index))
             nodeUIs[index].SetSelected(true);
+
+        NodeType type = nodeUIs[index].GetNodeType();
+
+        if (type == NodeType.Battle || type == NodeType.Elite || type == NodeType.Boss)
+        {
+            BattlePreviewUIManager.Instance.ShowPreview(index);
+        }
+        else
+        {
+            BattlePreviewUIManager.Instance.Hide();
+        }
+
     }
 
     //버튼 활성화 또는 잠금 시키기
@@ -157,6 +178,13 @@ public class UImanager : MonoBehaviour
             return null;
 
         return nodeUIs[selectedIdx].GetNodeType();
+    }
+
+    public NodeUI GetNodeUI(int nodeId)
+    {
+        if (nodeUIs.TryGetValue(nodeId, out var ui))
+            return ui;
+        return null;
     }
 
 }

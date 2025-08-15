@@ -306,6 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: btn_new_game
+  skipStart: 0
 --- !u!114 &179514264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,6 +762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: btn_exit
+  skipStart: 0
 --- !u!114 &347520738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,6 +990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: btn_continue
+  skipStart: 0
 --- !u!114 &532339638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1268,6 +1271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: change_language
+  skipStart: 0
 --- !u!114 &693281247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1490,6 +1494,9 @@ MonoBehaviour:
     gold: 0
     DecreaseMaxHp: 0
     difficulty: 0
+  maxReset: 0
+  nodeId: 0
+  endHp: 0
 --- !u!4 &868698606
 Transform:
   m_ObjectHideFlags: 0
@@ -2620,6 +2627,7 @@ GameObject:
   - component: {fileID: 2135447277}
   - component: {fileID: 2135447279}
   - component: {fileID: 2135447278}
+  - component: {fileID: 2135447280}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2745,6 +2753,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135447276}
   m_CullTransparentMesh: 1
+--- !u!114 &2135447280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135447276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6681cda451fd40648bfaaf916681aa45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: btn_rune
+  skipStart: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

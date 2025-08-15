@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UpgradeButtonController : MonoBehaviour
@@ -12,7 +13,12 @@ public class UpgradeButtonController : MonoBehaviour
 
     void UpgradeCard()
     {
-        // TODO: 카드 강화 UI 열기 및 카드 선택 후 업그레이드 처리
-        Debug.Log("카드 강화 버튼 클릭됨 - TODO: 카드 강화 기능 구현 예정");
+        // TODO 카드 강화 UI 열기 및 카드 선택 후 업그레이드 처리
+        //Debug.Log("카드 강화 버튼 클릭됨 - TODO: 카드 강화 기능 구현 예정");
+
+        GameManager.gameManager.CfSceneUpgrade = true;
+        GameManager.gameManager.CardViewCards = (SceneType.UpgradeScene, GameManager.gameManager.playerData.playerDeck.cards);
+
+        SceneManager.LoadScene("CardViewerScene");
     }
 }

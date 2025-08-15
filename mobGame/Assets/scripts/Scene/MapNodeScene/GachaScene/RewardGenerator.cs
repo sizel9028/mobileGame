@@ -35,7 +35,20 @@ public class RewardGenerator
         allCandidates.AddRange(SharedDeck);
         allCandidates.AddRange(jobDeck);
 
-        var validCards = allCandidates.Where(card => (int)card.rare <= maxTier).ToList();
+        int selectedNode = GameManager.gameManager.nodeId;
+        var nodeType = GameManager.gameManager.playerData.currentMap.nodes[selectedNode].nodeType;
+        List<CardData> validCards;
+
+        if (nodeType == NodeType.Battle)
+        {
+            validCards = allCandidates.Where(card => (int)card.rare <= maxTier && card.cardType == CardType.Action).ToList();
+        }
+        else  // elite 몬스터 or 보스일때만 
+        {
+            validCards = allCandidates
+                .Where(card => (int)card.rare <= maxTier && (card.cardType == CardType.Action || card.cardType == CardType.Passive))
+                .ToList();
+        }
 
         if (validCards.Count == 0)
         {

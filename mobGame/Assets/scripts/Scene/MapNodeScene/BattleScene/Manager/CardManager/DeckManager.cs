@@ -51,7 +51,6 @@ public class DeckManager : Singleton<DeckManager>
             DrawCard();
         }
 
-        handView.CheckUsableCard();
     }
 
     public void DrawCard()

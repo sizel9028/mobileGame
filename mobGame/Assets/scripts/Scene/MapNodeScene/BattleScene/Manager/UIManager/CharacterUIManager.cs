@@ -121,6 +121,9 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
         if (baseCh.statMultiplier != null)
         {
             character.statMultiplier = (StatMultiplier)baseCh.statMultiplier.Clone();
+
+            //몬스터 시작 공격력 계수에 비례 (플레이어는 영향없음)
+            character.statMultiplier.outgoingDamageTotal = data.atkCoef;
         }
         if (baseCh.effectCardManager != null)
         {

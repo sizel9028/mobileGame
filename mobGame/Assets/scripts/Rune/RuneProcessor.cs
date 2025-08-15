@@ -60,10 +60,11 @@ public class RuneProcessor
             case MapTheme.VOLCANO:
                 return 0f;
 
-            
+            //부활
             case MapTheme.RUINS:
                 return 0f;
 
+            //회피율
             case MapTheme.DESERT:
                 return 0f;
 

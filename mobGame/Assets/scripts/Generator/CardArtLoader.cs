@@ -11,9 +11,7 @@ public static class CardArtLoader
         string resourcePath = Path.Combine(
             "CardArts",
             data.cardType.ToString(),
-            data.costType.ToString(),
             data.actionType.ToString(),
-            data.rare.ToString(),
             data.cardArtName  // .png 확장자 제거
         );
 

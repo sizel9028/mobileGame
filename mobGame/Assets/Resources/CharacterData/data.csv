@@ -1,2 +1,4 @@
 name,maxHp,hp,baseShield,atkCoef
-Slime,10,10,0,1.2
+Slime,50,50,0,1
+Goblin,20,20,0,1
+SlimeGoblin,50,50,0,1

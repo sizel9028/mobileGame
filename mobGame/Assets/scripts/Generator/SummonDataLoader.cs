@@ -23,4 +23,43 @@ public static class SummonDataLoader
 
         return lines[index].Trim();
     }
+
+    public static string GetFusionResult(string name1, string name2, int currentLevel)
+    {
+        TextAsset ta = Resources.Load<TextAsset>("SummonData/fusionData");
+        if (ta == null)
+        {
+            Debug.LogError("fusionData.csv 파일을 찾을 수 없습니다.");
+            return null;
+        }
+
+        string[] lines = ta.text.Split(new[] { '\n', '\r' }, System.StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (string raw in lines)
+        {
+            string[] tokens = raw.Split(',');
+            if (tokens.Length < 3) continue; // 최소 3칸은 있어야 함
+
+            string mat1 = tokens[0].Trim();
+            string mat2 = tokens[1].Trim();
+            string result = tokens[2].Trim();
+            int requiredLevel = 0;
+
+            if (tokens.Length >= 4)
+                int.TryParse(tokens[3].Trim(), out requiredLevel);
+
+            // 순서 무관 비교
+            if ((mat1 == name1 && mat2 == name2) || (mat1 == name2 && mat2 == name1))
+            {
+                if (currentLevel < requiredLevel)
+                {
+                    Debug.Log($"[Fusion] 레벨 부족: 필요 {requiredLevel}, 현재 {currentLevel}");
+                    return null;
+                }
+                return result;
+            }
+        }
+
+        return null; // 조합 없음
+    }
 }

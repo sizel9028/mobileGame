@@ -38,6 +38,9 @@ public partial class GimmickManager : Singleton<GimmickManager>
             case "ReturnCorpse":
                 if (character.currentHp <= 0) return true;
                 break;
+
+            case "Poison":
+                return true;
         }
 
         Debug.Log("기믹 실행 안됨");
@@ -70,7 +73,10 @@ public partial class GimmickManager : Singleton<GimmickManager>
             case "ReturnCorpse":
                 PlayReturnCorpse(character, gimmick);
                 break;
-                
+
+            case "Poison":
+                PlayPoison(character, gimmick);
+                break;
         }
     }
 

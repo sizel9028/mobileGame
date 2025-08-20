@@ -99,28 +99,28 @@ public class Battle : Singleton<Battle>
         turnType = TurnType.PlayerTurn;
         MapEffectProcessor.Instance.ProcessMapEffect();  //플레이어 턴 시작때 맵의 효과를 받음
         endTurnBtn.SetActive(true);  //턴 버튼 UI 보여줌
-        CheckTurnEffects(true); // 플레이어 턴 체크
     }
 
     public IEnumerator EnemyTurn()
     {
+        CheckTurnEffects(true); // 플레이어 턴 체크
         //턴 관리
         turnType = TurnType.EnemyTurn;
         ++turnCount;
-        
+
         endTurnBtn.SetActive(false); // 턴 버튼 UI 숨김
-        CheckTurnEffects(false); // 플레이어 턴 체크
 
         EnemyManaSystem.Instance.refillMana();
         yield return EnemyDeckManager.Instance.PlayCard();  //적이 카드를 낸다
 
 
         ManaSystem.Instance.Refill();
+        CheckTurnEffects(false); // 플레이어 턴 체크
         PlayerTurn(); //플레이어 턴으로 넘어감
     }
 
     //턴 기반 카드 횟수 체크
-    private void CheckTurnEffects(bool isPlayerTurn)
+    /*private void CheckTurnEffects(bool isPlayerTurn)
     {
         var UIs = isPlayerTurn ? CharacterUIManager.Instance.playerUIs : CharacterUIManager.Instance.enemyUIs;
 
@@ -130,6 +130,51 @@ public class Battle : Singleton<Battle>
 
             ui.character.effectCardManager?.CheckTurn();
         }
+    }*/
+
+    //턴 기반 효과 처리 담당 (고정피해)
+    private void CheckTurnEffects(bool isPlayerTurn)
+    {
+        var UIs = isPlayerTurn ? CharacterUIManager.Instance.playerUIs : CharacterUIManager.Instance.enemyUIs;
+
+        foreach (var ui in UIs)
+        {
+            if (ui == null || ui.character == null) continue;
+
+            // 카드 효과 체크
+            ui.character.effectCardManager?.CheckTurn();
+
+            // --- 재생/부패 체크 ---
+            var sm = ui.character.statMultiplier;
+
+            int addHp = Mathf.RoundToInt(sm.turnAddHp);
+            int decHp = Mathf.RoundToInt(sm.turnDecreaseHp);
+
+            var processor = new CardEffectProcessor();
+
+            if (addHp > 0)
+            {
+                var healCard = new CardData
+                {
+                    effectMap = new Dictionary<string, float> { { "Heal", addHp } },
+                    cardTarget = CardTarget.onePlayer
+                };
+
+                processor.ProcessCardEffect(healCard, null, new List<CharacterUI> { ui });
+            }
+
+            if (decHp > 0)
+            {
+                var dmgCard = new CardData
+                {
+                    effectMap = new Dictionary<string, float> { { "Damage", decHp } },
+                    cardTarget = CardTarget.onePlayer
+                };
+
+                processor.ProcessCardEffect(dmgCard, null, new List<CharacterUI> { ui });
+            }
+        }
     }
+
 
 }

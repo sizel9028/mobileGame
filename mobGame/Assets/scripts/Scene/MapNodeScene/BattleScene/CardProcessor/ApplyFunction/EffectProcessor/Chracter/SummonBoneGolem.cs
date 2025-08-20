@@ -3,7 +3,7 @@ using UnityEngine;
 
 public partial class CardEffectProcessor
 {
-    private void ApplySummonBoneGolem()
+    private void ApplySummonBoneGolem(float amount)
     {
         bool isPlayer = casterUI.character.isPlayer;
 
@@ -31,7 +31,7 @@ public partial class CardEffectProcessor
             CharacterUI summoned = characters[targetSlot];
             if (summoned != null)
             {
-                int hp = 20 + (corpseCount * 5);
+                int hp = 20 + (int)(corpseCount * amount);
 
                 summoned.character.maxHp = hp;
                 summoned.character.currentHp = hp;

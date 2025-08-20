@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CharacterUI : MonoBehaviour
 {
@@ -41,6 +42,49 @@ public class CharacterUI : MonoBehaviour
     private Vector2 originalAnchoredPos;
 
     private CharacterMotionController motionController = new();
+
+
+    private static readonly int GrayID = Shader.PropertyToID("_GrayAmount");
+    private Material grayMat;
+    private Shader grayShader;
+
+    void Awake()
+    {
+        // UI/Grayscale 쉐이더 찾기
+        grayShader = Shader.Find("UI/Grayscale");
+        if (grayShader == null)
+        {
+            Debug.LogError("Shader 'UI/Grayscale' 를 찾을 수 없습니다. UI_Grayscale.shader를 프로젝트에 넣으세요!");
+        }
+    }
+
+    public void SetGrayState(int stunValue)
+    {
+        if (characterImage == null || grayShader == null)
+            return;
+
+        if (stunValue > 0)
+        {
+            // 아직 머티리얼 없으면 새로 생성
+            if (grayMat == null)
+            {
+                grayMat = new Material(grayShader);
+                characterImage.material = grayMat;
+            }
+            grayMat.SetFloat(GrayID, 1f); // 완전 회색
+        }
+        else // stunValue == 0
+        {
+            // 원래 머티리얼로 돌리기 (null 로 지정하면 기본 UI 머티리얼)
+            characterImage.material = null;
+            if (grayMat != null)
+            {
+                Destroy(grayMat);
+                grayMat = null;
+            }
+        }
+    }
+
 
 
     public void Setup()

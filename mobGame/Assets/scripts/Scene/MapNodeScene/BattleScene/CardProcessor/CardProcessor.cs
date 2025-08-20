@@ -118,6 +118,17 @@ public class CardProcessor
         {
             if (caster == null || caster.character == null) continue;
 
+            float stun = caster.character.statMultiplier.stun;
+
+            if (stun > 0)
+            {
+                Debug.Log($"[Stun] {caster.character.characterArtName} 스턴상태 공격카드 가!");
+                ProcessCard(card, caster, targets);
+                yield return new WaitForSeconds(delay);
+
+                continue; // 스턴이면 모션, 카드 처리 둘 다 건너뜀
+            }
+
             yield return motionController.AttackRoutine(caster);
             ProcessCard(card, caster, targets); // 모션 후 처리
             yield return new WaitForSeconds(delay);

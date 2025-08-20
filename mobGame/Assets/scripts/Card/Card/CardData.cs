@@ -55,13 +55,15 @@ public class CardData : ICloneable
     public int maxCount;
 
     public string effectMapRaw; // "Damage::20,Heal::20" 같은 효과들 전부 모아둠
-    [NonSerialized] public Dictionary<string, float> effectMap = new();
+    public Dictionary<string, float> effectMap = new();
 
     public List<Gimmick> gimmickEffects = new();
 
 
     public void ParseEffectMap()
     {
+        if (effectMap.Count > 0) return;
+
         effectMap.Clear();
         gimmickEffects.Clear();
 
@@ -73,10 +75,54 @@ public class CardData : ICloneable
         {
             var parts = entry.Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (parts.Length == 2 && float.TryParse(parts[1], out float value))
+            if (parts.Length == 2)
             {
-                // 일반 효과
-                effectMap[parts[0].Trim()] = value;
+                string key = parts[0].Trim();
+                string valueStr = parts[1].Trim();
+
+                // 범위 처리 ex) "1:3"
+                if (valueStr.Contains(":"))
+                {
+                    var range = valueStr.Split(':');
+                    if (range.Length >= 2 &&
+                        float.TryParse(range[0], out float min) &&
+                        float.TryParse(range[1], out float max))
+                    {
+                        if (min > max)
+                        {
+                            float tmp = min;
+                            min = max;
+                            max = tmp;
+                        }
+                        bool isInt = range.Length == 3 && range[2].ToLower() == "d";
+
+                        if (isInt)
+                        {
+                            // 정수 랜덤 (max 포함되도록 +1)
+                            int randValue = UnityEngine.Random.Range(Mathf.RoundToInt(min), Mathf.RoundToInt(max + 1));
+                            effectMap[key] = randValue;
+                        }
+                        else
+                        {
+                            // 소수 랜덤 (소수점 둘째 자리까지)
+                            float randValue = UnityEngine.Random.Range(min, max);
+                            randValue = (float)Math.Round(randValue, 2, MidpointRounding.AwayFromZero);
+                            effectMap[key] = randValue;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[CardData] 잘못된 범위 값: {valueStr}");
+                    }
+                }
+                else if (float.TryParse(valueStr, out float value))
+                {
+                    effectMap[key] = value;
+                }
+                else
+                {
+                    Debug.LogWarning($"[CardData] 일반 효과 파싱 실패: {entry}");
+                }
             }
             else if (parts.Length == 4 && parts[0] == "Gimmick")
             {

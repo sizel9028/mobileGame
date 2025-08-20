@@ -173,12 +173,15 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
     {
         foreach (var ui in playerUIs)
         {
+            if (ui == null) continue;
+
             if (ui.character == character)
                 return ui;
         }
 
         foreach (var ui in enemyUIs)
         {
+            if (ui == null) continue;
             if (ui.character == character)
                 return ui;
         }
@@ -210,6 +213,11 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
                 ui.DestroySelf();
                 enemyUIs[i] = null;
             }
+        }
+
+        if (playerUIs.Count > 0 && playerUIs[0] == null)
+        {
+            return BattleResult.EnemyWin;
         }
 
         bool allPlayersDead = playerUIs.All(ui => ui == null);

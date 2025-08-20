@@ -64,6 +64,14 @@ public partial class CoefficientModifier
                 ApplyRage(value, caster, target);
                 return;
 
+            case "stun":
+                ApplyStun(value, caster, target);
+                return;
+
+            case "fusionLevel":
+                ApplyFusionLevel(value, caster, target);
+                return;
+
 
                 // 여기까지는 특수 케이스
         }

@@ -6,6 +6,7 @@ public class PassiveProcessor : Singleton<PassiveProcessor>
 {
     public Character playerCh = new();  // 아군 소환시 적용되는 캐릭터
     public Character enemyCh = new();   // 적군 소환시 적용되는 캐릭터
+
     public CoefficientModifier modifier = new();
     private RuneProcessor runeProcessor = new(); //룬을 수정함
 

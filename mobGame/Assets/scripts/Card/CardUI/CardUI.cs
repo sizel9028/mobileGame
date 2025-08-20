@@ -58,6 +58,30 @@ public class CardUI : MonoBehaviour
             borderImage.color = rareColors[(int)newData.rare];
 
     }
+    
+    //분노 상태일때 카드 아트바뀜
+    public void ReloadArt()
+    {
+        if (data == null)
+        {
+            Debug.LogError("[CardUI] 데이터가 없어 아트 재로딩 불가");
+            return;
+        }
+
+        StartCoroutine(CardArtLoader.LoadCardArt(data, (sprite) =>
+        {
+            if (sprite != null)
+            {
+                cardImage.sprite = sprite;
+                Debug.Log($"[CardUI] 카드 아트 재로딩 성공: {data.cardArtName}");
+            }
+            else
+            {
+                Debug.LogError($"[CardUI] 카드 아트 재로딩 실패: {data.cardArtName}");
+            }
+        }));
+    }
+
 
     private void SetDescText(string key, CardData cardData)
     {
@@ -66,13 +90,26 @@ public class CardUI : MonoBehaviour
         foreach (var kvp in cardData.effectMap)
         {
             string placeholder = "{" + kvp.Key + "}"; // Damage >> {Damage} 로 바꿈
-            string value = ((int)kvp.Value).ToString(); 
+            float fVal = kvp.Value;
+
+            string value;
+            if (Mathf.Abs(fVal % 1) < 0.001f) 
+            {
+                // 정수면 소수점 없이
+                value = ((int)fVal).ToString();
+            }
+            else
+            {
+                // 소수면 소수점 둘째 자리까지
+                value = fVal.ToString("0.##"); 
+            }
+
             rawText = rawText.Replace(placeholder, value);
         }
 
         descriptionText.Clear();
         descriptionText.AppendText(rawText);
-        
+
     }
 
 

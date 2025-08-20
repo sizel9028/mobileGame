@@ -46,6 +46,8 @@ public partial class CardEffectProcessor
             }
         }
 
+        casterStat = null; casterUI = null; targetStat = null; targetUI = null;
+
     }
 
     //target이 여러명일때
@@ -103,6 +105,21 @@ public partial class CardEffectProcessor
                 ApplyBoneShield(effect);
                 break;
 
+            case "Fusion":
+                ApplyFusion();
+                break;
+
+            case "Sacrifice":
+                ApplySacrifice();
+                break;
+
+            case "BoneSpear":
+                ApplyBoneSpear(effect);
+                break;
+
+            case "BoneGolem":
+                ApplySummonBoneGolem(effect);
+                break;
         }
     }
 
@@ -122,8 +139,13 @@ public partial class CardEffectProcessor
 
         if (source == "casterStat")
         {
+            //null을 입력받으면
+            if (casterStat == null)
+            {
+                casterStat = new StatMultiplier();
+            }
             // motion을 안하면 값만 단순히 반환시킴
-            if (doMotion) casterUI.character.effectCardManager.dirtyFlag.Add(fieldName);
+            if (doMotion && casterUI != null) casterUI.character.effectCardManager.dirtyFlag.Add(fieldName);
 
             var field = casterStat.GetType().GetField(fieldName);
             if (field != null && field.GetValue(casterStat) is float val)
@@ -136,12 +158,16 @@ public partial class CardEffectProcessor
         }
         else if (source == "targetStat")
         {
+            if (targetStat == null)
+            {
+                targetStat = new StatMultiplier();
+            }
             Debug.Log($"targetUI: {targetUI}");
             Debug.Log($"character: {targetUI?.character}");
             Debug.Log($"effectCardManager: {targetUI?.character?.effectCardManager}");
             Debug.Log($"dirtyFlag: {targetUI?.character?.effectCardManager?.dirtyFlag}");
 
-            if (doMotion) targetUI.character.effectCardManager.dirtyFlag.Add(fieldName);
+            if (doMotion && targetUI != null) targetUI.character.effectCardManager.dirtyFlag.Add(fieldName);
 
             var field = targetStat.GetType().GetField(fieldName);
             if (field != null && field.GetValue(targetStat) is float val)

@@ -3,13 +3,28 @@ using UnityEngine;
 
 public class StatMultiplier : ICloneable
 {
+    //(적의 소환시 공격 계수)
     public float outgoingDamageTotal = 1f;
+    
     // 받은 데미지 계수 (예: 약화 디버프에 의해 1.3f)
     public float incomingDamage = 1f;
+
     // 주는 데미지 계수 (곱연산)
     public float outgoingDamageMultiple = 1f;
+
     // 주는 데미지 합연산 (힘 상태이상)
     public float outgoingDamageAdd = 0f;
+
+    //턴당 피회복+피감소
+    public float turnAddHp = 0f;
+    public float turnDecreaseHp = 0f;
+
+    //반사 계수
+    //받은 피해 비율만큼 반사
+    public float reflectDamageRate = 0f;
+
+    //반사 추가
+    public float reflectDamageAdd = 0f;
 
 
     // 방어력 증가 합연산 (민첩 상태이상)
@@ -30,17 +45,14 @@ public class StatMultiplier : ICloneable
     //추가 마나
     public float addMana = 0f;
 
+    //상태이상(스턴) :: 공격 불가 (+1 스턴)
+    public float stun = 0f;
 
-    // 카드 코스트 절감 계수 (예: 일시적인 마나 절감 효과)
-    public float manaCostReduction = 1f;
-    // 상태이상 지속 시간 계수 (예: 상태이상 저항이 있으면 0.8f)
-    public float debuffDuration = 1f;
-    // 힐 계수 (받는 회복량 증감)
-    public float healReceive = 1f;
-    // bool 스턴 유무 T/F
 
-    // 흡혈 계수 (예: Lifesteal 상태일 때 피해량의 50%를 체력 회복)
-    public float lifesteal = 0f;
+
+    
+
+
 
     // 버서커 계수
 
@@ -70,8 +82,14 @@ public class StatMultiplier : ICloneable
     // 시체 폭발 계수 증가
     public float CorpseDamageMultiple = 1f;
 
+    // 융합 가능 레벨
+    public float fusionLevel = 0f;  //초기 융합 가능 레벨
+    //융합시 일정 확률 융합체 복제
+    public float fusionClone = 1f; //확률적으로 복제 소환()
 
-
+    //소환물 파괴시 얻는 값
+    public float manaGainChanceWithSummon = 1f;  //소환물 파괴시 일정확률 마나얻음
+    public float drawChanceWithSummon = 1f;
 
     public object Clone()
     {

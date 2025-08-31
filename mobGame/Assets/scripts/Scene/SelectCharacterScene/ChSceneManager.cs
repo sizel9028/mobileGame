@@ -11,10 +11,13 @@ public class ChSceneManager : MonoBehaviour
     public SelectUI difficultySelector;
     public Button startButton;
 
+    [SerializeField] private LocalizedText descTxt;
+
     void Start()
     {
-        characterSelector.Init();
-        difficultySelector.Init();
+        descTxt.Clear();
+        characterSelector.Init("character", descTxt);
+        difficultySelector.Init("difficulty", descTxt);
 
         startButton.onClick.AddListener(onClickStart);
     }

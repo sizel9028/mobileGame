@@ -8,13 +8,23 @@ public partial class CardEffectProcessor
 
         if (stun > 0) return 0;
 
+        float luckyCoinCount = StatWithDirty("casterStat.LuckMultipleDamage");
+        if (luckyCoinCount < 0) return 0;
+
         damage += StatWithDirty("casterStat.outgoingDamageAdd", doMotion);
         damage *= StatWithDirty("casterStat.outgoingDamageMultiple", doMotion);
         damage *= StatWithDirty("targetStat.incomingDamage", doMotion);
+        damage *= Mathf.Pow(2f, luckyCoinCount);
 
         int intDamage = Mathf.RoundToInt(damage);
         if (intDamage < 0) return 0;
-        
+
+        if (CheckEvasion())
+        {
+            Debug.Log($"[Evasion] {targetUI.character.characterArtName} 공격 회피!");
+            return 0;
+        }
+
         if (doMotion) AssistDamage(intDamage);
 
         //반사처리
@@ -50,5 +60,12 @@ public partial class CardEffectProcessor
                 targetUI.Damage();
             }
         }
+    }
+
+    //민첩인지 체크
+    private bool CheckEvasion()
+    {
+        float agility = StatWithDirty("targetStat.agility");
+        return Random.value < agility;
     }
 }

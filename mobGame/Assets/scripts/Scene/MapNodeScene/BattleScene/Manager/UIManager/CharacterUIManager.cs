@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public enum BattleResult
@@ -29,6 +30,12 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
     //2 1 0순으로 채움
     public void AddCharacter(Character character)
     {
+        var baseCh = character.isPlayer ? PassiveProcessor.Instance.playerCh : PassiveProcessor.Instance.enemyCh;
+        character.currentHp += (int)baseCh.statMultiplier.addHp;
+        character.maxHp += (int)baseCh.statMultiplier.addHp;
+
+        character.shield += (int)baseCh.statMultiplier.addShield;
+
         if (character.isPlayer)
         {
             EnsureListSize(playerUIs, playerSlots.Count);
@@ -237,4 +244,6 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
         }
 
     }
+
+
 }

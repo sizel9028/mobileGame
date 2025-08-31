@@ -11,6 +11,7 @@ public static class LevelGenerator
 
     private const int EliteStartLevel = TotalBattleLevels + 1; // 6
     private const int BossLevel = TotalBattleLevels + TotalEliteLevels + 1; // 8
+    private const int GoblinLevel = BossLevel + 1;
 
     public static int GetLevelInfo(int nodeId)
     {
@@ -24,6 +25,8 @@ public static class LevelGenerator
         var nodeType = currentMap.nodes[nodeId].nodeType;
 
         if (nodeType == NodeType.Boss) return BossLevel; //최고 난이도
+
+        if (nodeType == NodeType.Treasure) return GoblinLevel; //고블린 레벨
 
         if (nodeType == NodeType.Elite)
         {

@@ -7,19 +7,19 @@ public class RewardGenerator
     //확률
     private Dictionary<int, Dictionary<int, float>> stageTierWeights = new()
     {
-        { 0, new() { {1, 1f} } },
-        { 1, new() { {1, 0.8f}, {2, 0.2f} } },
-        { 2, new() { {1, 0.6f}, {2, 0.3f}, {3, 0.1f} } },
-        { 3, new() { {1, 0.4f}, {2, 0.4f}, {3, 0.15f}, {4, 0.05f} } },
-        { 4, new() { {1, 0.2f},  {2, 0.3f},  {3, 0.3f},  {4, 0.2f} } },
-        { 5, new() { {1, 0.1f},  {2, 0.25f}, {3, 0.35f}, {4, 0.3f} } },
-        { 6, new() { {1, 0.0f},  {2, 0.2f},  {3, 0.4f},  {4, 0.4f} } }
+        { 0, new() { {0, 1f} } },
+        { 1, new() { {0, 0.8f}, {1, 0.2f} } },
+        { 2, new() { {0, 0.6f}, {1, 0.3f}, {2, 0.1f} } },
+        { 3, new() { {0, 0.4f}, {1, 0.4f}, {2, 0.15f}, {3, 0.05f} } },
+        { 4, new() { {0, 0.2f}, {1, 0.3f}, {2, 0.3f}, {3, 0.2f} } },
+        { 5, new() { {0, 0.1f}, {1, 0.25f}, {2, 0.35f}, {3, 0.3f} } },
+        { 6, new() { {0, 0.0f}, {1, 0.2f}, {2, 0.4f}, {3, 0.4f} } }
     };
 
     public List<CardData> GetRewardCard()
     {
         int stage = GameManager.gameManager.playerData.currentMap.stageNumber;
-        int maxTier = Mathf.Clamp(stage, 1, 4);
+        int maxTier = Mathf.Clamp(stage, 0, 3);
         string jobName = GameManager.gameManager.playerData.characterData.name;
 
         MapTheme theme = GameManager.gameManager.playerData.currentMap.theme;

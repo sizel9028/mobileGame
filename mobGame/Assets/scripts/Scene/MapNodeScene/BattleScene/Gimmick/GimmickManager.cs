@@ -41,6 +41,11 @@ public partial class GimmickManager : Singleton<GimmickManager>
 
             case "Poison":
                 return true;
+
+            case "SelfDelete":
+                float hpRatio = (float)character.currentHp / character.maxHp;
+                if (hpRatio <= gimmick.gimmicCondition) return true;
+                break;
         }
 
         Debug.Log("기믹 실행 안됨");
@@ -77,10 +82,13 @@ public partial class GimmickManager : Singleton<GimmickManager>
             case "Poison":
                 PlayPoison(character, gimmick);
                 break;
+
+            case "SelfDelete":
+                PlaySelfDelete(character, gimmick);
+                break;
         }
     }
 
-    //Count에 따라서 어떤걸 소환할지 하드코딩... ㅋㅋㅋ
     private void PlaySummon(Character character, Gimmick gimmick)
     {
         switch (gimmick.gimmicCount)

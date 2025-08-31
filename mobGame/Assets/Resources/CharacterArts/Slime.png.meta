@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Test \uC0AC\uC9C4_0"
+      name: Slime_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 7
-        width: 99
-        height: 116
+        x: 0
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 90b3ddfebefc058b0800000000000000
-      internalID: -5165400160345441527
+      spriteID: 9140cae424ccd7b44a143764b0329eb7
+      internalID: -1451048328
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 810cdbc97d798d1479ca274d43d8e25d
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "Test \uC0AC\uC9C4_0": -5165400160345441527
+      Slime_0: -1451048328
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

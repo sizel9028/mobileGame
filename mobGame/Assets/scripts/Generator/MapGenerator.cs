@@ -43,7 +43,9 @@ public class MapGenerator : MonoBehaviour
         }
         else
         {
-            map.theme = GameManager.gameManager.playerData.currentMap.theme;
+            //TODO 맵별 기믹이 잘 작동하는지 체크용도
+            map.theme = MapTheme.VOID;
+            //map.theme = GameManager.gameManager.playerData.currentMap.theme;
         }
 
         map.nodes = new MapNodeData[50];
@@ -61,7 +63,15 @@ public class MapGenerator : MonoBehaviour
             int id = int.Parse(parts[0]);
             lastNodeId = Mathf.Max(lastNodeId, id);
             //NodeType type = Enum.Parse<NodeType>(parts[1]);
-            NodeType type = GetRandomNodeType();
+            NodeType type;
+            if (stage == 0)
+            {
+                type = Enum.Parse<NodeType>(parts[1]);
+            }
+            else
+            {
+                type = GetRandomNodeType();
+            }
             float posX = float.Parse(parts[2]);
             float posY = float.Parse(parts[3]);
 

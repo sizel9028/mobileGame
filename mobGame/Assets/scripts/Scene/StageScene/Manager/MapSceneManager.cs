@@ -36,8 +36,32 @@ public class MapSceneManager : MonoBehaviour
         switch (nodeType)
         {
             case NodeType.Battle:
-                //SceneManager.LoadScene("Campfire");
+                SceneManager.LoadScene("BattleScene");
                 //SceneManager.LoadScene("Shop");
+                //SceneManager.LoadScene("BattleScene");
+                break;
+
+            case NodeType.Shop:
+                SceneManager.LoadScene("Shop");
+                break;
+
+            case NodeType.Campfire:
+                SceneManager.LoadScene("Campfire");
+                break;
+
+            case NodeType.Treasure:
+                SceneManager.LoadScene("BattleScene");
+                break;
+
+            case NodeType.Elite:
+                SceneManager.LoadScene("BattleScene");
+                break;
+
+            case NodeType.Unknown:
+                //TODO 랜덤 노드 이동
+                break;
+
+            case NodeType.Boss:
                 SceneManager.LoadScene("BattleScene");
                 break;
         }

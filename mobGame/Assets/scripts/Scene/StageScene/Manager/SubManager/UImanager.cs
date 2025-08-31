@@ -51,7 +51,7 @@ public class UImanager : Singleton<UImanager>
 
         NodeType type = nodeUIs[index].GetNodeType();
 
-        if (type == NodeType.Battle || type == NodeType.Elite || type == NodeType.Boss)
+        if (type == NodeType.Battle || type == NodeType.Elite || type == NodeType.Boss || type == NodeType.Treasure)
         {
             BattlePreviewUIManager.Instance.ShowPreview(index);
         }

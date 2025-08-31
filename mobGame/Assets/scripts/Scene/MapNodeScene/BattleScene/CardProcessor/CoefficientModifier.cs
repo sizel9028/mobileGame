@@ -72,6 +72,9 @@ public partial class CoefficientModifier
                 ApplyFusionLevel(value, caster, target);
                 return;
 
+            case "LuckMultipleDamage":
+                ApplyLuckyCoin(value, caster, target);
+                return;
 
                 // 여기까지는 특수 케이스
         }

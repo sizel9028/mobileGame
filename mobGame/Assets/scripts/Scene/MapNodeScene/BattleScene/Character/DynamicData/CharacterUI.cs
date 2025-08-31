@@ -47,6 +47,7 @@ public class CharacterUI : MonoBehaviour
     private static readonly int GrayID = Shader.PropertyToID("_GrayAmount");
     private Material grayMat;
     private Shader grayShader;
+    private Material originalMaterial;
 
     void Awake()
     {
@@ -85,6 +86,43 @@ public class CharacterUI : MonoBehaviour
         }
     }
 
+    // -1: 보라색, 0: 검은색, 1: 황금색
+    public void SetLuckyCoinOutline(int state)
+    {
+        if (characterBoldImage == null) return;
+
+        // 기본 셰이더
+        Shader shader = Shader.Find("UI/SolidColorWithAlpha");
+        if (shader == null)
+        {
+            Debug.LogError("Shader 'UI/SolidColorWithAlpha' 를 찾을 수 없습니다!");
+            return;
+        }
+
+        switch (state)
+        {
+            case 1: // 황금색
+            {
+                Material goldMat = new Material(shader);
+                goldMat.color = new Color(1f, 0.84f, 0f, 1f); // 골드 컬러
+                characterBoldImage.material = goldMat;
+                break;
+            }
+            case -1: // 보라색
+            {
+                Material purpleMat = new Material(shader);
+                purpleMat.color = new Color(0.5f, 0f, 1f, 1f); // 보라색
+                characterBoldImage.material = purpleMat;
+                break;
+            }
+            default: // 0 → 검은색
+            {
+                characterBoldImage.material = null;
+                characterBoldImage.color = Color.black;
+                break;
+            }
+        }
+    }
 
 
     public void Setup()
@@ -182,6 +220,7 @@ public class CharacterUI : MonoBehaviour
 
         if (isRed)
         {
+            originalMaterial = characterBoldImage.material;
             Material redOverride = new Material(Shader.Find("UI/SolidColorWithAlpha"));
             redOverride.color = Color.red;
 
@@ -189,8 +228,10 @@ public class CharacterUI : MonoBehaviour
         }
         else
         {
-            characterBoldImage.material = null;             // 기본 머티리얼로 되돌림(검은색 만들기 위함)
-            characterBoldImage.color = Color.black;
+            if (originalMaterial != null)
+            {
+                characterBoldImage.material = originalMaterial;
+            }
         }
     }
 

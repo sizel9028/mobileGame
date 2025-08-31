@@ -9,6 +9,7 @@ public class SaveManager : MonoBehaviour
     public static SaveManager saveManager;
     private string playerSavePath;
     private string runeSavePath;
+    public bool isTutorialEnd = false;
 
     void Awake()
     {
@@ -112,6 +113,16 @@ public class SaveManager : MonoBehaviour
 
         if (map.IsAllCleared())
         {
+            if (map.theme == MapTheme.NOP)
+            {
+                isTutorialEnd = false;
+                MapTheme mapTheme = MapTheme.FOREST;
+                MapNode nextRandomMap = MapGenerator.LoadMap(1, (int)mapTheme,0);  //현재는 첫번째 theme으로 고정 추후 랜덤값 사용
+                GameManager.gameManager.playerData.currentMap = nextRandomMap;
+                GameManager.gameManager.nodeId = 0;
+                return;
+            }
+            
             int nextStage = map.stageNumber + 1;
 
             if (nextStage > difficulty + 3)

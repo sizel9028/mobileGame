@@ -26,13 +26,17 @@ public class ManaSystem : Singleton<ManaSystem>
     public void getMaxMana()
     {
         //TODO 최대 마나 얻기
-        if (CharacterUIManager.Instance.playerUIs[0] == null)
+        var chUI = CharacterUIManager.Instance.playerUIs[0];
+        if (chUI == null)
         {
             Max_Mana = 3; return;
         }
 
-        float addMana = CharacterUIManager.Instance.playerUIs[0].character.statMultiplier.addMana; //캐릭터 ui에서 들고옴
-        int totalMana = 3 + Mathf.RoundToInt(addMana);
+        float addMana = chUI.character.statMultiplier.addMana; //캐릭터 ui에서 들고옴
+        chUI.character.effectCardManager.dirtyFlag.Add("addMana");
+        float addTurnMana = chUI.character.statMultiplier.addTurnMana;
+        int totalMana = 3 + Mathf.RoundToInt(addMana) + Mathf.RoundToInt(addTurnMana);
+        
         Max_Mana = totalMana;
     }
 

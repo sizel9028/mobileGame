@@ -1,5 +1,2 @@
 nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
 fireball_name,fireball_desc,Fireball,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"Damage::2"
-fireball_name,fireball_desc,Fireball,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"Damage::2"
-fireball_name,fireball_desc,Fireball,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"Damage::2"
-fireball_name,fireball_desc,Fireball,Passive,Power,allPlayer,Tier1,1,Mana,0,0,"incomingDamage::2"

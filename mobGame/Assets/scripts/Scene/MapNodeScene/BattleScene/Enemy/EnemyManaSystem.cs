@@ -13,6 +13,7 @@ public class EnemyManaSystem : Singleton<EnemyManaSystem>
         refillMana();
     }
 
+
     public void refillMana()
     {
         currentMana = maxMana;

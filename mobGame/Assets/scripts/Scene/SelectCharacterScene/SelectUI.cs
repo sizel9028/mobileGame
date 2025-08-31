@@ -13,7 +13,10 @@ public class SelectUI : MonoBehaviour
     // 읽기전용
     public int SelectedIdx => selectedIdx;
 
-    public void Init()
+    private string type;
+    private LocalizedText descTxt;
+
+    public void Init(string type, LocalizedText descTxt)
     {
         for (int i = 0; i < buttons.Length; ++i)
         {
@@ -23,13 +26,22 @@ public class SelectUI : MonoBehaviour
 
         if (images.Length > 0)
             images[0].color = selectedColor;
+
+        this.type = type;
+        this.descTxt = descTxt;
     }
 
     public void Select(int index)
     {
         images[selectedIdx].color = defaultColor;
         images[index].color = selectedColor;
-        selectedIdx = index;    
+        selectedIdx = index;
+
+        if (descTxt != null)
+        {
+            string key = $"{type}_{selectedIdx}";
+            descTxt.SetText(key);
+        }
     }
 
 }

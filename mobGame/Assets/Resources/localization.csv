@@ -3,6 +3,9 @@ btn_new_game,새로하기,New Game,新しく始める
 btn_continue,이어하기,Continue,続きから
 btn_exit,종료하기,Exit,終了
 btn_rune,룬 연구소,1,1
+btn_skip_reward,스킵,1,1
+btn_get_reward,선택,1,1
+btn_click_continue,아무 곳이나 클릭하여 계속,1,1
 change_language,언어,Language,言語
 rune_frost_name,설원룬,1,1
 rune_frost_desc,마나를 증가시킵니다,1,1
@@ -38,6 +41,9 @@ shop_buyrandom_2,한 번 쓰고 나면 알게 될 거야. 왜 비쌌는지 말�
 shop_buyrandom_3,너무 무리하는 거 아니야?,1,1
 shop_buyrandom_4,너무 과했어 친구. 그 카드가 널 구할 거란 보장은 없거든,1,1
 shop_buyrandom_5,그 카드 진짜 필요한 순간에 나와주면 좋겠네,1,1
+character_0,소환술사\n여러 소환수를 소환해 전투를 이끄는 마법사,1,1
+
+MapDesc_frost_1,
 BattlePreview_DeckBtn,덱 보기,1,1
 BattlePreview_nothing,특수능력 없음,1,1
 Summon,소환,1,1

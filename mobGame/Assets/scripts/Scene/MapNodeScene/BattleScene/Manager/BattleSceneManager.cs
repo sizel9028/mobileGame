@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 
 public enum TurnType
@@ -13,6 +15,7 @@ public class Battle : Singleton<Battle>
 {
     //BattleScene의 최상위 매니저
     [SerializeField] private EndTurnButtonUI endTurnBtn;
+    [SerializeField] private Image backgroundImage;
     public int turnCount { get; private set; }  //에너미 기준
     public bool isProcessingCard = false;
     public TurnType turnType;  // 누구 턴인지 체크
@@ -20,6 +23,9 @@ public class Battle : Singleton<Battle>
 
     void Start()
     {
+        int stage = GameManager.gameManager.playerData.currentMap.stageNumber;
+        backgroundImage.sprite = BackgroundLoader.LoadBackgroundSprite(stage, isMap: false);
+
         turnType = TurnType.PlayerTurn;
         isProcessingCard = false;
         turnCount = 0; //턴 초기화
@@ -98,24 +104,30 @@ public class Battle : Singleton<Battle>
     {
         turnType = TurnType.PlayerTurn;
         MapEffectProcessor.Instance.ProcessMapEffect();  //플레이어 턴 시작때 맵의 효과를 받음
+
+        ManaSystem.Instance.Refill();
         endTurnBtn.SetActive(true);  //턴 버튼 UI 보여줌
     }
 
     public IEnumerator EnemyTurn()
     {
-        CheckTurnEffects(true); // 플레이어 턴 체크
         //턴 관리
-        turnType = TurnType.EnemyTurn;
         ++turnCount;
-
+        turnType = TurnType.EnemyTurn;
         endTurnBtn.SetActive(false); // 턴 버튼 UI 숨김
+
+        if (!(turnCount <= 1))
+        {
+            CheckTurnEffects(false); // 에너미 턴 체크
+            yield return new WaitForSeconds(0.6f); // 데미지 입고 바로 카드 안씀
+        }
+
+        MapEffectProcessor.Instance.ProcessMapEffect();  //에너미 효과
 
         EnemyManaSystem.Instance.refillMana();
         yield return EnemyDeckManager.Instance.PlayCard();  //적이 카드를 낸다
 
-
-        ManaSystem.Instance.Refill();
-        CheckTurnEffects(false); // 플레이어 턴 체크
+        CheckTurnEffects(true);
         PlayerTurn(); //플레이어 턴으로 넘어감
     }
 

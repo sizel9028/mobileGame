@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RestButtonController : MonoBehaviour
@@ -18,7 +19,7 @@ public class RestButtonController : MonoBehaviour
             return;
         }
 
-        var playerData = GameManager.gameManager.playerData;
+        var playerData = GameManager.gameManager.playerData.characterData;
 
         if (playerData == null)
         {
@@ -26,9 +27,13 @@ public class RestButtonController : MonoBehaviour
             return;
         }
 
-        //int healAmount = playerData.maxHp * 30 / 100;
+        int healAmount = playerData.maxHp * 30 / 100;
+        playerData.hp = Mathf.Min(playerData.hp + healAmount, playerData.maxHp);
         //playerData.hp = Mathf.Min(playerData.hp + healAmount, playerData.maxHp);
         //Debug.Log($"휴식! {healAmount}만큼 회복됨. 현재 HP: {playerData.hp}");
+
+        SaveManager.saveManager.SaveAll();
+        SceneManager.LoadScene("stageScene");
     }
 
 }

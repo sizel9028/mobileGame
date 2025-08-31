@@ -17,14 +17,14 @@ public class CardReward : MonoBehaviour
 
     public Button resetBtn; // 카드 리셋
 
-    private int maxReset = 1;
+    private int maxReset = 2;
     private RewardGenerator rewardGenerator = new();
 
     private Vector2 defaultCardPos = new Vector2(0f, 800f);  //카드가 생성되는 시작 위치
 
     private Vector2[] cardPos = new Vector2[]
     {
-        new Vector2(-300f,0f), new Vector2(0f,0f), new Vector2(300f,0f)
+        new Vector2(-400f,0f), new Vector2(0f,0f), new Vector2(400f,0f)
     };
 
     void Start()
@@ -45,6 +45,9 @@ public class CardReward : MonoBehaviour
 
     private IEnumerator ShowCard()
     {
+        resetBtn.interactable = false;
+        skipRewardBtn.interactable = false;
+        takeRewardBtn.interactable = false;
         //TODO 랜덤 카드 3장을 뽑음(따로 만들어야 함)
         //  --- Test ---
         //var deck = CardGenerator.LoadDeck(0, 0, 0);
@@ -67,6 +70,7 @@ public class CardReward : MonoBehaviour
 
             var cardUI = cardUIManager.Register(card, cardParent, defaultCardPos);
             var rect = cardUI.GetComponent<RectTransform>();
+            rect.localScale = Vector3.one * 4f;
             yield return new WaitForSeconds(0.1f);  //리소스 로딩 시간
 
             if (rect == null) continue;
@@ -74,6 +78,13 @@ public class CardReward : MonoBehaviour
             rect.DOAnchorPos(cardPos[i], 0.5f).SetEase(Ease.OutBack); // SetEase 애니메이션 튀기는 효과 + 딜레이
         }
 
+        --maxReset;
+        if (maxReset != 0)
+        {
+            resetBtn.interactable = true;
+        }
+        takeRewardBtn.interactable = true;
+        skipRewardBtn.interactable = true;
     }
 
     private void OnResetReward()
@@ -82,12 +93,6 @@ public class CardReward : MonoBehaviour
         {
             cardUIManager.ClearAllCards();
             StartCoroutine(ShowCard());
-            --maxReset;
-
-            if (maxReset == 0)
-            {
-                resetBtn.interactable = false;  //리셋 비활성화
-            }
         }
     }
 
@@ -123,6 +128,11 @@ public class CardReward : MonoBehaviour
         SaveManager.saveManager.SaveAll();
 
         yield return new WaitForSeconds(1f);
+
+        if (SaveManager.saveManager.isTutorialEnd)
+        {
+            //TODO 맵 설명 맵으로 이동
+        }
 
         //saveall에서 게임이 끝나면 이건 작동안함
         UnityEngine.SceneManagement.SceneManager.LoadScene("StageScene");

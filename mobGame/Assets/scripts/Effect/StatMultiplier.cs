@@ -44,14 +44,21 @@ public class StatMultiplier : ICloneable
 
     //추가 마나
     public float addMana = 0f;
+    //맵기믹으로 얻는 추가마나
+    public float addTurnMana = 0f;
 
     //상태이상(스턴) :: 공격 불가 (+1 스턴)
     public float stun = 0f;
 
+    public float addHp = 0f; //추가 hp
+    public float addShield = 0f; //추가 실드
 
+    //행운
+    public float absoluteLuck = 0f; //절대 행운 체크
+    public float LuckMultipleDamage = 0f;  //행운 동전
 
-    
-
+    //민첩성(공격 회피)
+    public float agility = 0f; //확률 (0.1 :: 10%)
 
 
     // 버서커 계수

@@ -22,6 +22,8 @@ public partial class CardEffectProcessor
         if (CheckEvasion())
         {
             Debug.Log($"[Evasion] {targetUI.character.characterArtName} 공격 회피!");
+            //miss모션을 처리
+            DamageUI.Instance.ShowDamage(targetUI, 0, true);
             return 0;
         }
 
@@ -42,7 +44,14 @@ public partial class CardEffectProcessor
 
                 casterUI.Damage();
                 Debug.Log($"[Reflect] {targetUI.character.characterArtName} → {casterUI.character.characterArtName} {reflectDamage} 반사!");
+
+                DamageUI.Instance.ShowDamage(casterUI, reflectDamage, false);
             }
+        }
+
+        if (intDamage > 0)
+        {
+            DamageUI.Instance.ShowDamage(targetUI, intDamage, false);
         }
 
         return intDamage;

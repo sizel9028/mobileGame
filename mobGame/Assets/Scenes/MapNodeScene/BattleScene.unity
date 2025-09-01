@@ -1591,11 +1591,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9035431196674251008, guid: 8223abf055ec19f4986e4453bca4f714, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -756.3636
+      value: -750
       objectReference: {fileID: 0}
     - target: {fileID: 9035431196674251008, guid: 8223abf055ec19f4986e4453bca4f714, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -176.58179
+      value: -340
       objectReference: {fileID: 0}
     - target: {fileID: 9035431196674251008, guid: 8223abf055ec19f4986e4453bca4f714, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2172,7 +2172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef95eee22221544b90fb458a99de9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showTxtPrefab: {fileID: 1224838472985958492, guid: 623084827ca4ce34c9dd8c9f9fd49a25, type: 3}
+  showTxtPrefab: {fileID: 7195449838998179835, guid: b8165800869aaf64d9f6c958ad43fce1, type: 3}
   textPanel: {fileID: 2063835371}
 --- !u!4 &1461974169
 Transform:

@@ -72,38 +72,30 @@ public class UImanager : Singleton<UImanager>
     public void InitMap(MapNode map)
     {
         nodeUIs.Clear();
-        MapNodeData latestClear = null;
         selectedIdx = -1;
 
-        for (int i = 0; i < map.nodes.Length; ++i)
+        var startNode = map.nodes[0]; // 시작 노드 설정
+        if (startNode == null) return;
+
+        if (startNode.nodeType != NodeType.Cleared)
         {
-            var node = map.nodes[i];
-            if (node == null || node.nodeType != NodeType.Cleared) continue;
-
-            //NodeUI를 인스턴스화 시키고 등록시킴
-            var ui = CreateNodeUI(node);
-            RegisterNode(node.nodeId, ui);
-            ui.SetInteractable(false);
-
-            if (latestClear == null || node.nodeId > latestClear.nodeId)
-                latestClear = node;
-        }
-
-        // 맵의 시작은 하나의 노드만 추가
-        if (latestClear == null)
-        {
-            var startNode = map.nodes[0];
-            if (startNode != null)
-            {
-                var ui = CreateNodeUI(startNode);
-                RegisterNode(startNode.nodeId, ui);
-                ui.SetInteractable(true);
-            }
+            var ui = CreateNodeUI(startNode);
+            RegisterNode(startNode.nodeId, ui);
+            ui.SetInteractable(true);
             return;
         }
 
-        // 실제 움직일수있는 선택지 표시
-        foreach (int nextId in latestClear.connectedNodeIds)
+        MapNodeData lastCleared = FindLastClearedNode(map, startNode);
+
+        foreach (var node in map.nodes)
+        {
+            if (node == null || node.nodeType != NodeType.Cleared) continue;
+            var ui = CreateNodeUI(node);
+            RegisterNode(node.nodeId, ui);
+            ui.SetInteractable(false);
+        }
+
+        foreach (int nextId in lastCleared.connectedNodeIds)
         {
             var node = map.nodes[nextId];
             if (node == null) continue;
@@ -115,6 +107,34 @@ public class UImanager : Singleton<UImanager>
         }
 
         DrawAllLine(map);
+    }
+
+    //DFS 탐색 :: 가장 마지막에 깬 클리어 노드를 리턴
+    private MapNodeData FindLastClearedNode(MapNode map, MapNodeData start)
+    {
+        MapNodeData current = start;
+
+        while (true)
+        {
+            MapNodeData nextCleared = null;
+
+            foreach (int nextId in current.connectedNodeIds)
+            {
+                var node = map.nodes[nextId];
+                if (node != null && node.nodeType == NodeType.Cleared)
+                {
+                    nextCleared = node;
+                    break; // 여러 개면 첫 번째 Cleared만 선택
+                }
+            }
+
+            if (nextCleared == null)
+            {
+                return current;
+            }
+
+            current = nextCleared;
+        }
     }
 
     private NodeUI CreateNodeUI(MapNodeData node)

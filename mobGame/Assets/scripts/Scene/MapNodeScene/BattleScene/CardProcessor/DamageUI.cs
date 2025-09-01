@@ -23,7 +23,12 @@ public class DamageUI : Singleton<DamageUI>
 
         TextMeshProUGUI dmgTxt = Instantiate(showTxtPrefab, textPanel.transform);
         dmgTxt.text = text;
-        dmgTxt.color = isMiss ? Color.gray : Color.red;
+        dmgTxt.color = isMiss ? Color.white : Color.red;
+
+        var mat = new Material(dmgTxt.fontMaterial);
+        mat.SetFloat(TMPro.ShaderUtilities.ID_OutlineWidth, 0f);
+        dmgTxt.fontMaterial = mat;
+        //outline을 없앰(눈에 보기에 안좋음)
 
         RectTransform charRect = targetUI.GetComponent<RectTransform>();
         RectTransform dmgRect = dmgTxt.GetComponent<RectTransform>();

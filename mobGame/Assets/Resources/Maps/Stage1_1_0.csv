@@ -1,0 +1,11 @@
+nodeId,nodeType,posX,posY,connectedIds
+0,Cleared,-850,-75,1;
+1,Cleared,-750,80,2
+2,Cleared,-615,150,2
+3,Cleared,-550,180,2
+4,Cleared,-690,-370,2
+5,Cleared,-470,420,2
+6,Cleared,-490,100,2
+7,Cleared,-380,-25,2
+8,Cleared,-200,0,2
+9,Cleared,-200,0,2

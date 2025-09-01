@@ -58,7 +58,10 @@ public class StatMultiplier : ICloneable
     public float LuckMultipleDamage = 0f;  //행운 동전
 
     //민첩성(공격 회피)
-    public float agility = 1f; //확률 (0.1 :: 10%)
+    public float agility = 0f; //확률 (0.1 :: 10%)
+
+    //치명타 확률
+
 
 
     // 버서커 계수

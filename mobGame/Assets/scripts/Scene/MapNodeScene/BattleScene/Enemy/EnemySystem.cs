@@ -23,12 +23,6 @@ public class EnemySystem : Singleton<EnemySystem>
 
         var target = GetTargetUI(card);
 
-        if (target == null)
-        {
-            Debug.LogWarning($"[EnemyActionSystem] 대상이 없어 {card.nameKey} 카드를 사용할 수 없습니다.");
-            yield break;
-        }
-
         var processor = new CardProcessor();
         yield return processor.ProcessCardWithTarget(card, caster, target);
 

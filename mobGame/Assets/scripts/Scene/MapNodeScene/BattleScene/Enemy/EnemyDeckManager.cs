@@ -17,10 +17,11 @@ public class EnemyDeckManager : Singleton<EnemyDeckManager>
     {
         var currMap = GameManager.gameManager.playerData.currentMap;
         //int[] levelInfo = LevelGenerator.GetLevelInfo(currMap);
-
+        int level = LevelGenerator.GetLevelInfo(GameManager.gameManager.nodeId);
         //deck = CardGenerator.LoadDeck(levelInfo[0], levelInfo[1], levelInfo[2]); //덱 로드
         //--- test ---
-        deck = CardGenerator.LoadDeck(1, 1, 1);
+        var map = GameManager.gameManager.playerData.currentMap;
+        deck = CardGenerator.LoadDeck(map.stageNumber, (int)map.theme, level);
 
         passiveCards.Clear();
 

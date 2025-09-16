@@ -1,9 +1,0 @@
-nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
-fireball_name,fireball_desc,Fireball,Action,Skill,allEnemy,Tier1,0,Mana,0,0,"Damage::100"
-fireball_name,fireball_desc,Fireball,Action,Power,onePlayer,Tier1,1,Mana,0,1,"LuckMultipleDamage::1"
-fireball_name,fireball_desc,Fireball,Action,Power,onePlayer,Tier1,1,Mana,0,1,"LuckMultipleDamage::1"
-summon_1_name,summon_1_desc,Summon,Action,Skill,nop,Tier0,1,Mana,0,0,"Summon::1"
-fireball_name,fireball_desc,Fireball,Action,Skill,nop,Tier1,0,Mana,0,0,"Fusion::1"
-stun_name_2,stun_desc_2,Stun,Action,Power,oneEnemy,Tier1,1,Mana,1,0,"stun::1"
-bone_shield,bone_shield_desc,BoneShield,Passive,Power,allPlayer,Tier1,0,Mana,0,0,"addHp::1"
-magic_book_name,magic_book_desc,MagicBook,Passive,Power,allPlayer,Tier1,0,Mana,0,0,"fusionLevel::1"

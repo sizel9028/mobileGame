@@ -20,5 +20,7 @@ public class PlayerData
     public CharacterData characterData;
     //난이도
     public int difficulty;
+
+    public int seed; //현재 시드
     
 }

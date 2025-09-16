@@ -54,6 +54,10 @@ public partial class CoefficientModifier
 
         foreach (var cardUI in handView.cards)
         {
+            if (cardUI.data.cardType == CardType.Scroll)
+            {
+                continue;  //스크롤은 적용안함
+            }
             CardData copy = (CardData)cardUI.data.Clone();
             upgradeProcessor.UpgradeCard(copy);
             copy.rare = Rare.TierRage;
@@ -66,6 +70,8 @@ public partial class CoefficientModifier
         // DiscardAllCards 애니메이션 시간
         float totalDelay = 1f + (handView.cards.Count * 0.05f);
         yield return new WaitForSeconds(totalDelay);
+
+        DeckManager.Instance.DrawScrollCards();
 
         // Rage 카드로 손패 채우기
         foreach (var card in upgradeCards)

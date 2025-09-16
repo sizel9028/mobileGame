@@ -1,0 +1,2 @@
+nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
+stealgold_name,stealgold_desc,StealGold,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"StealGold::1"

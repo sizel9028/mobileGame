@@ -65,7 +65,7 @@ public class ChSceneManager : MonoBehaviour
                 break;
         }
 
-        GameManager.gameManager.playerData.playerDeck = CardGenerator.LoadDeck(0, -1, selCh); //기본덱 셋팅
+        GameManager.gameManager.playerData.playerDeck = CardGenerator.LoadDeck(-1, 0, selCh); //기본덱 셋팅
         characterData.baseShield = 0;
         GameManager.gameManager.playerData.characterData = characterData;
     }

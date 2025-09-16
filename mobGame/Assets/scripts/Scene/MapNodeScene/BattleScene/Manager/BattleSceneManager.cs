@@ -20,9 +20,14 @@ public class Battle : Singleton<Battle>
     public bool isProcessingCard = false;
     public TurnType turnType;  // 누구 턴인지 체크
 
-
     void Start()
     {
+        //브금 셋팅
+        var nodeId = GameManager.gameManager.nodeId;
+        var type = GameManager.gameManager.playerData.currentMap.nodes[nodeId].nodeType == NodeType.Boss ?
+        SoundManager.BGMType.EliteBattle : SoundManager.BGMType.Battle;
+        SoundManager.soundManager.PlayBGM(type);
+
         int stage = GameManager.gameManager.playerData.currentMap.stageNumber;
         backgroundImage.sprite = BackgroundLoader.LoadBackgroundSprite(stage, isMap: false);
 
@@ -54,9 +59,11 @@ public class Battle : Singleton<Battle>
         //--- test --- //TODO 스테이 정보를 진짜 스테이지로 함
         int stageNumber = GameManager.gameManager.playerData.currentMap.stageNumber;
         //int[] level = LevelGenerator.GetLevelInfo(GameManager.gameManager.playerData.currentMap);
+        int nodeId = GameManager.gameManager.nodeId;
+        int level = LevelGenerator.GetLevelInfo(nodeId);
 
         //TODO 1대신 level을 넣음
-        List<string> enemyNames = StageLoader.Load(stageNumber, 1);
+        List<string> enemyNames = StageLoader.Load(stageNumber, level);
 
         if (enemyNames == null)
         {
@@ -78,12 +85,17 @@ public class Battle : Singleton<Battle>
     public IEnumerator EndGame(BattleResult result)
     {
         endTurnBtn.SetActive(false);
+
         //TODO 씬전환 + 정보넘김s
         yield return new WaitForSeconds(2f);
 
         if (result == BattleResult.PlayerWin)
         {
-            GameManager.gameManager.endHp = CharacterUIManager.Instance.playerUIs[0].character.currentHp;
+            //게임에서 승리하면 사용한 스크롤 카드 다 삭제
+            DeleteUsedScrollCards();
+            var chData = CharacterUIManager.Instance.playerUIs[0].character;
+            GameManager.gameManager.playerData.characterData.hp = chData.currentHp;
+
             Debug.Log("플레이어 승리");
             SceneManager.LoadScene("GachaScene");
         }
@@ -100,9 +112,36 @@ public class Battle : Singleton<Battle>
         }
     }
 
+    private void DeleteUsedScrollCards()
+    {
+        var playerDeck = GameManager.gameManager.playerData.playerDeck.cards;
+
+        var remainingScrolls = new List<CardData>(DeckManager.Instance.scrollCards);
+
+        for (int i = playerDeck.Count - 1; i >= 0; i--)
+        {
+            var card = playerDeck[i];
+            if (card.cardType == CardType.Scroll)
+            {
+                if (remainingScrolls.Contains(card))
+                {
+                    // 살아남은 스크롤이면 리스트에서 하나만 제거 (중복 고려)
+                    remainingScrolls.Remove(card);
+                }
+                else
+                {
+                    // 살아남은 리스트에 없는 스크롤 → 덱에서 제거
+                    playerDeck.RemoveAt(i);
+                }
+            }
+        }
+    }
+
     public void PlayerTurn()
     {
         turnType = TurnType.PlayerTurn;
+
+        DeckManager.Instance.ReDrawCards();  //패에 다시 카드를 넣음
         MapEffectProcessor.Instance.ProcessMapEffect();  //플레이어 턴 시작때 맵의 효과를 받음
 
         ManaSystem.Instance.Refill();
@@ -115,6 +154,11 @@ public class Battle : Singleton<Battle>
         ++turnCount;
         turnType = TurnType.EnemyTurn;
         endTurnBtn.SetActive(false); // 턴 버튼 UI 숨김
+
+        //모든 패를 버림
+        DeckManager.Instance.handView.DiscardAllCards();
+
+        yield return new WaitForSeconds(1f);  //패를 다 버릴때까지 딜레이
 
         if (!(turnCount <= 1))
         {

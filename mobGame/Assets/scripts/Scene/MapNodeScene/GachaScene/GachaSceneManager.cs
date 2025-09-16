@@ -17,6 +17,7 @@ public class GachaSceneManager : MonoBehaviour
 
     void Start()
     {
+        SoundManager.soundManager.PlayBGM(SoundManager.BGMType.Map);
         cardReward.SetActive(false);
         SetMsg();
     }
@@ -42,6 +43,16 @@ public class GachaSceneManager : MonoBehaviour
 
             this.enabled = false; //업데이트 종료
         }
+
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            infoPanel.SetActive(false);
+            cardReward.SetActive(true);
+            buttons.SetActive(true);
+
+            this.enabled = false; //업데이트 종료
+        }
+
     }
 
     private int GetGold()

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Windows;
 using System.IO;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
@@ -42,7 +43,17 @@ public class SaveManager : MonoBehaviour
         }
         else
         {
-            return InitData.CreateNewPlayerData();
+            return null;
+        }
+    }
+
+    //데이터 삭제
+    public void DeletePlayer()
+    {
+        if (System.IO.File.Exists(playerSavePath))
+        {
+            System.IO.File.Delete(playerSavePath);
+            Debug.Log("플레이어 데이터 파일 삭제 완료");
         }
     }
 
@@ -93,7 +104,7 @@ public class SaveManager : MonoBehaviour
         var map = GameManager.gameManager.playerData.currentMap;
         var nodeId = GameManager.gameManager.nodeId;
 
-        if (nodeId >= 0 && nodeId < map.nodes.Length && map.nodes[nodeId] != null)
+        if (nodeId >= 0 && nodeId < map.nodes.Count && map.nodes[nodeId] != null)
         {
             map.nodes[nodeId].nodeType = NodeType.Cleared;
             Debug.Log($"[SaveManager] 노드 {nodeId} 클리어 처리 완료");
@@ -115,9 +126,14 @@ public class SaveManager : MonoBehaviour
         {
             if (map.theme == MapTheme.NOP)
             {
-                isTutorialEnd = false;
-                MapTheme mapTheme = MapTheme.FOREST;
-                MapNode nextRandomMap = MapGenerator.LoadMap(1, (int)mapTheme,0);  //현재는 첫번째 theme으로 고정 추후 랜덤값 사용
+                isTutorialEnd = true;
+                var values = (MapTheme[])System.Enum.GetValues(typeof(MapTheme));
+                int randomIndex = Random.Range(1, values.Length);
+                MapTheme mapTheme = values[randomIndex];
+                //랜덤 맵 테마를 저장시킴
+                GameManager.gameManager.playerData.currentMap.theme = mapTheme;
+
+                MapNode nextRandomMap = MapGenerator.LoadMap(1, (int)mapTheme);  //현재는 첫번째 theme으로 고정 추후 랜덤값 사용
                 GameManager.gameManager.playerData.currentMap = nextRandomMap;
                 GameManager.gameManager.nodeId = 0;
                 return;
@@ -125,9 +141,13 @@ public class SaveManager : MonoBehaviour
             
             int nextStage = map.stageNumber + 1;
 
+            //Debug.Log(nextStage - difficulty - 1);
             if (nextStage > difficulty + 3)
             {
+                Debug.Log("게임 종료, 스타트 씬 이동");
                 //TODO 게임 종료 씬으로 이동
+                SceneManager.LoadScene("EndGame");
+                return;
             }
 
             int theme = (int)map.theme;

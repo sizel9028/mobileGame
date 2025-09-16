@@ -1,0 +1,3 @@
+nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
+atk_name,atk_desc_3,Attack_3,Action,Skill,allEnemy,Tier1,1,Mana,0,0,"Damage::50"
+shield_name,shield_desc_1,Shield_1,Action,Skill,onePlayer,Tier0,1,Mana,0,0,"Shield::3"

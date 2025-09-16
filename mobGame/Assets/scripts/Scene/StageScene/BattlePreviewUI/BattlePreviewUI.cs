@@ -22,9 +22,9 @@ public class BattlePreviewUI : MonoBehaviour
     public void Setup(int nodeId)
     {
         this.nodeId = nodeId;
-        //int level = LevelGenerator.GetLevelInfo(nodeId);
+        int level = LevelGenerator.GetLevelInfo(nodeId);
         //---test---
-        int level = 1;
+        //int level = 1;
         //어떤 적이 나오는지
         List<string> enemies = StageLoader.Load(GameManager.gameManager.playerData.currentMap.stageNumber, level);
         CreateEnemies(enemies);
@@ -47,6 +47,8 @@ public class BattlePreviewUI : MonoBehaviour
                     Debug.LogWarning($"[BattlePreviewUI] '{enemyName}'에 대한 CharacterData를 찾을 수 없습니다.");
                     continue;
                 }
+
+                MonsterStatScaler.ApplyDifficultyScalingWithData(data);
 
                 int index = i;
 
@@ -83,7 +85,7 @@ public class BattlePreviewUI : MonoBehaviour
 
         foreach (string enemy in enemies)
         {
-            //중복 방지용
+            // 중복 방지
             if (handledEnemies.Contains(enemy))
                 continue;
 
@@ -93,7 +95,6 @@ public class BattlePreviewUI : MonoBehaviour
 
             if (gimmicks != null && gimmicks.Count > 0)
             {
-                // 각 키를 다국어 문자열로 변환
                 List<string> translated = new();
                 foreach (var gimmick in gimmicks)
                 {
@@ -105,8 +106,10 @@ public class BattlePreviewUI : MonoBehaviour
                 }
 
                 string combined = string.Join(", ", translated);
-                string enemyName = LocalizationManager.languageM.GetText($"enemy_{enemy}");
-                gimmickDescriptions.Add($"<b>{enemyName}</b>: {combined}");
+
+                // "특수능력 :" + 기믹 설명 붙이기
+                string prefix = LocalizationManager.languageM.GetText("BattlePreview_specialAbility"); 
+                gimmickDescriptions.Add($"{prefix} : {combined}");
             }
         }
 

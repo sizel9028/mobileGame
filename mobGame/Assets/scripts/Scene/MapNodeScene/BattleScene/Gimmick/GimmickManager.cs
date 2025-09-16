@@ -18,7 +18,7 @@ public partial class GimmickManager : Singleton<GimmickManager>
         switch (gimmick.gimmickName)
         {
             case "Summon":
-                if (character.currentHp <= gimmick.gimmicCondition) return true;
+                if (character.currentHp <= gimmick.gimmicCondition * character.maxHp) return true;
                 break;
 
             case "Explode":
@@ -45,6 +45,11 @@ public partial class GimmickManager : Singleton<GimmickManager>
             case "SelfDelete":
                 float hpRatio = (float)character.currentHp / character.maxHp;
                 if (hpRatio <= gimmick.gimmicCondition) return true;
+                break;
+
+            case "Regeneration":
+                float hpRatio1 = (float)character.currentHp / character.maxHp;
+                if (hpRatio1 <= gimmick.gimmicCondition) return true;
                 break;
         }
 
@@ -86,21 +91,13 @@ public partial class GimmickManager : Singleton<GimmickManager>
             case "SelfDelete":
                 PlaySelfDelete(character, gimmick);
                 break;
-        }
-    }
 
-    private void PlaySummon(Character character, Gimmick gimmick)
-    {
-        switch (gimmick.gimmicCount)
-        {
-            case 1:
-                Debug.Log("소환 기믹 적용");
-                CharacterUIManager.Instance.AddCharacterByName("Slime", character.isPlayer);
+            case "Regeneration":
+                PlayRegeneration(character, gimmick);
                 break;
         }
-
-        gimmick.gimmicCount = 0;
     }
+
 
 
     //캐릭터를 조사한다음에 카운트가 0이면 삭제시킴

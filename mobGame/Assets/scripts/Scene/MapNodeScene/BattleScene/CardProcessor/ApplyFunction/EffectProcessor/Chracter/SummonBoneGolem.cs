@@ -39,6 +39,8 @@ public partial class CardEffectProcessor
                 // 기믹 예시: 사망 시 시체 반환
                 var returnCorpseGimmick = new Gimmick("ReturnCorpse", 1f, 2); // 시체 2개 반환
                 summoned.character.gimmicks.Add(returnCorpseGimmick);
+
+                summoned.Setup();
             }
         }
     }

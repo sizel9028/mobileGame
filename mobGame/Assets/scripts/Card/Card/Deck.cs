@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[Serializable]
 public class Deck
 {
     public List<CardData> cards = new();
@@ -11,7 +12,7 @@ public class Deck
     {
         for (int i = 0; i < cards.Count; ++i)
         {
-            int j = Random.Range(i, cards.Count);
+            int j = UnityEngine.Random.Range(i, cards.Count);
             (cards[i], cards[j]) = (cards[j], cards[i]);
         }
     }

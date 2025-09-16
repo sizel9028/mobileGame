@@ -168,4 +168,18 @@ public class EffectCardManager : ICloneable
         return copy;
     }
 
+    public void ClearWithoutApply()
+    {
+        //TODO 현재 적용된 모든 카드의 디버프를 백하지 않고 전부 해제
+        turnCards.Clear();
+        countCards.Clear();
+    }
+
+    public void ClearWithApply()
+    {
+        //TODO 현재 적용된 모든 카드 버프/디버프를 백하고 해제
+        RevertCardEffects(turnCards);
+        RevertCardEffects(countCards);
+    }
+
 }

@@ -52,11 +52,14 @@ public class CardViewerSceneManager : MonoBehaviour, IPushable
 
             if (sceneType == SceneType.InventoryScene)
             {
-                cardUIManager.CreateCard(
+                var cardUI = cardUIManager.CreateCard(
                     allCards[i],
                     cardParent,
                     new Vector2(xPos, yPos)
                 );
+
+                // 카드 드래그 하는데 불편함이 없게 만듬
+                cardUI.SetRaycastFalse();
             }
             else
             {

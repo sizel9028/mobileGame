@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CardReward : MonoBehaviour
@@ -78,7 +79,6 @@ public class CardReward : MonoBehaviour
             rect.DOAnchorPos(cardPos[i], 0.5f).SetEase(Ease.OutBack); // SetEase 애니메이션 튀기는 효과 + 딜레이
         }
 
-        --maxReset;
         if (maxReset != 0)
         {
             resetBtn.interactable = true;
@@ -89,8 +89,12 @@ public class CardReward : MonoBehaviour
 
     private void OnResetReward()
     {
+        Debug.Log("리셋 버튼 작동함 : 0");
+        Debug.Log("값 : " + maxReset);
         if (maxReset > 0)
         {
+            Debug.Log("리셋 버튼 작동함 : 1");
+            --maxReset;
             cardUIManager.ClearAllCards();
             StartCoroutine(ShowCard());
         }
@@ -132,6 +136,9 @@ public class CardReward : MonoBehaviour
         if (SaveManager.saveManager.isTutorialEnd)
         {
             //TODO 맵 설명 맵으로 이동
+            SaveManager.saveManager.isTutorialEnd = false;
+            SceneManager.LoadScene("MapDescScene");
+            yield break;
         }
 
         //saveall에서 게임이 끝나면 이건 작동안함

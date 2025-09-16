@@ -31,6 +31,9 @@ public class CharacterUIManager : Singleton<CharacterUIManager>
     public void AddCharacter(Character character)
     {
         var baseCh = character.isPlayer ? PassiveProcessor.Instance.playerCh : PassiveProcessor.Instance.enemyCh;
+
+        //난이도 적용
+        MonsterStatScaler.ApplyDifficultyScaling(character);
         character.currentHp += (int)baseCh.statMultiplier.addHp;
         character.maxHp += (int)baseCh.statMultiplier.addHp;
 

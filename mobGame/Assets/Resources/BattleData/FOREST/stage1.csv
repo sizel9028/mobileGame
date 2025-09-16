@@ -1,3 +1,10 @@
 --- Frost 테마 stage1에 등장하는 몬스터 종류 ---
-Slime,Slime
-Slime,Slime,Slime
+FOREST_1
+FOREST_2
+FOREST_3
+FOREST_4
+FOREST_5
+FOREST_1, FOREST_2
+FOREST_3, FOREST_4
+FOREST_6
+GOBLIN

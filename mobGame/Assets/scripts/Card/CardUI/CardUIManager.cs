@@ -28,6 +28,7 @@ public class CardUIManager : MonoBehaviour
     {
         var obj = Instantiate(cardPrefab, handParent);
         var ui = obj.GetComponent<CardUI>();
+        cardData.ParseEffectMap();
         ui.SetCard(cardData, this);
 
         var rt = obj.GetComponent<RectTransform>();

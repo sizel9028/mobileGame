@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum EnemyPlayType
 {
-    Attack, Shield, Heal, BuffSelf, DebuffEnemy, Summon, Nop
+    Attack, Shield, Heal, BuffSelf, DebuffEnemy, Summon, Nop, Others
 }
 public partial class EnemyAI
 {
@@ -228,9 +228,11 @@ public partial class EnemyAI
                 return EnemyPlayType.BuffSelf;
         }
 
+        //hp를 사용하는 코드는 뭔가 오류가 발생, 걍 처리하기 귀찮아서 코스트가 hp인 카드는 사용하지 않을 예정
         if (card.costType == CostType.Hp)
             return EnemyPlayType.Nop;
 
-        return null;
+        //이외에 아무것도 포함되지 않는 카드들의 집합
+        return EnemyPlayType.Others;
     }
 }

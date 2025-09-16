@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StartMenu : MonoBehaviour
@@ -62,6 +63,7 @@ public class StartMenu : MonoBehaviour
     {
         //TODO 저장소에 새로운 값을 채움 + 씬 변환
         GameManager.gameManager.StartNewGame();
+        GameManager.gameManager.playerData.seed = UnityEngine.Random.Range(0, int.MaxValue);
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("SelectCharacterScene");
     }
@@ -69,6 +71,21 @@ public class StartMenu : MonoBehaviour
     void onClickContinue()
     {
         //TODO 저장소에서 이전 값 + 씬
+        var playerData = SaveManager.saveManager.LoadPlayer();
+        //Debug.Log($"maxHp = {playerData.characterData.maxHp}");
+
+        if (playerData == null || playerData.characterData == null || playerData.characterData.maxHp == 0 || playerData.characterData.hp == 0)
+        {
+            GameManager.gameManager.StartNewGame();
+            GameManager.gameManager.playerData.seed = UnityEngine.Random.Range(0, int.MaxValue);
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene("SelectCharacterScene");
+        }
+        else
+        {
+            GameManager.gameManager.playerData = playerData;
+            SceneManager.LoadScene("stageScene");
+        }
     }
 
     void onClickQuit()

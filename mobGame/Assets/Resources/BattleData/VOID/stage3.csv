@@ -1,0 +1,10 @@
+--- Frost 테마 stage1에 등장하는 몬스터 종류 ---
+VOID_6
+VOID_7
+VOID_8
+VOID_6, VOID_7
+VOID_7, VOID_8
+VOID_6, VOID_8
+VOID_6, VOID_7, VOID_8
+VOID_8
+GOBLIN

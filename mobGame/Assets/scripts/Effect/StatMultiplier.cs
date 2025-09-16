@@ -34,7 +34,7 @@ public class StatMultiplier : ICloneable
 
 
     // 카드 드로우 증가 계수 (예: 천리안 같은 버프)
-    public float cardDraw = 1f;
+    public float cardDraw = 0f;   //아직 미적용 (카드 첫 드로우시 or 카드 드로우하는 카드에서 적용할듯?)
 
 
     // 회복 증가량
@@ -60,7 +60,9 @@ public class StatMultiplier : ICloneable
     //민첩성(공격 회피)
     public float agility = 0f; //확률 (0.1 :: 10%)
 
-    //치명타 확률
+    //마나 획득 양
+    public float manaStack = 0f; //죽이면 해당하는 만큼의 마나를 얻음
+    
 
 
 
@@ -71,20 +73,22 @@ public class StatMultiplier : ICloneable
     public float rage = 0f;
 
     //분노 추가 계수
-    public float rageAddFactor = 1f;
+    public float rageAddFactor = 0f;
 
 
     // 소환사 계수
 
+    //소환물 죽을때 뼈 반환
+    public float corpseReturnCount = 1f;
     // (소환수 자푝)
     //자폭 확률 계수
-    public float DeathBlastChance = 1f;
+    public float DeathBlastChance = 0f;
 
     //자폭 데미지 계수
     public float DeathBlastDamageFactor = 1f;
 
     //시체 갯수 카운트
-    public float CorpseCount = 6f;
+    public float CorpseCount = 0f;
 
     // 시체 폭발 계수 증가
     public float CorpseDamageAdd = 0f;
@@ -95,11 +99,11 @@ public class StatMultiplier : ICloneable
     // 융합 가능 레벨
     public float fusionLevel = 0f;  //초기 융합 가능 레벨
     //융합시 일정 확률 융합체 복제
-    public float fusionClone = 1f; //확률적으로 복제 소환()
+    public float fusionClone = 0f; //확률적으로 복제 소환()
 
     //소환물 파괴시 얻는 값
-    public float manaGainChanceWithSummon = 1f;  //소환물 파괴시 일정확률 마나얻음
-    public float drawChanceWithSummon = 1f;
+    public float manaGainChanceWithSummon = 0f;  //소환물 파괴시 일정확률 마나얻음
+    public float drawChanceWithSummon = 0f;
 
     public object Clone()
     {

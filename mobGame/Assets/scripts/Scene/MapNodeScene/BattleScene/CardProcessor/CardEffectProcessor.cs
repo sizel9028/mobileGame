@@ -120,7 +120,31 @@ public partial class CardEffectProcessor
             case "BoneGolem":
                 ApplySummonBoneGolem(effect);
                 break;
-        }
+
+            case "ClearBuffWithApply":
+                ApplyClearBuffWithApply(effect);
+                break;
+
+            case "ClearBuffWithoutApply":
+                ApplyClearBuffWithoutApply(effect);
+                break;
+
+            case "CardCostToInt":
+                ApplyCardCostToInt(effect);
+                break;
+
+            case "StealGold":
+                ApplyStealGold(effect);
+                break;
+
+            case "DrawHighTierCard":
+                ApplyDrawHighTierCard();
+                break;
+
+            case "DiceDamage":
+                DiceDamage();
+                break;
+        }   
     }
 
 

@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public int nodeId;  //노드 실행시 현재 실행 노드저장
     public int endHp; // 게임이 끝나고 playerHp저장 공간
     public bool CfSceneUpgrade = false; //campfire씬에서 강화를 했는지 체크
+
+    public int buyDeleteCard = 0;  //상점씬에서 딜리트 카드를 얼만큼 구매했는지
     void Awake()
     {
         if (gameManager == null)
@@ -26,6 +28,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        shopSceneCards = null;
     }
 
     //룬 정보 불러오기

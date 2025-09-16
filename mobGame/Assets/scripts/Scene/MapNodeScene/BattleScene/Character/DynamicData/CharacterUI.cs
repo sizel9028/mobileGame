@@ -46,18 +46,11 @@ public class CharacterUI : MonoBehaviour
 
     private static readonly int GrayID = Shader.PropertyToID("_GrayAmount");
     private Material grayMat;
-    private Shader grayShader;
     private Material originalMaterial;
 
-    void Awake()
-    {
-        // UI/Grayscale 쉐이더 찾기
-        grayShader = Shader.Find("UI/Grayscale");
-        if (grayShader == null)
-        {
-            Debug.LogError("Shader 'UI/Grayscale' 를 찾을 수 없습니다. UI_Grayscale.shader를 프로젝트에 넣으세요!");
-        }
-    }
+
+    [SerializeField] private Shader grayShader;
+    [SerializeField] private Shader alphaShader;
 
     public void SetGrayState(int stunValue)
     {
@@ -92,7 +85,8 @@ public class CharacterUI : MonoBehaviour
         if (characterBoldImage == null) return;
 
         // 기본 셰이더
-        Shader shader = Shader.Find("UI/SolidColorWithAlpha");
+        //Shader shader = Shader.Find("UI/SolidColorWithAlpha");
+        Shader shader = alphaShader;
         if (shader == null)
         {
             Debug.LogError("Shader 'UI/SolidColorWithAlpha' 를 찾을 수 없습니다!");
@@ -221,7 +215,7 @@ public class CharacterUI : MonoBehaviour
         if (isRed)
         {
             originalMaterial = characterBoldImage.material;
-            Material redOverride = new Material(Shader.Find("UI/SolidColorWithAlpha"));
+            Material redOverride = new Material(alphaShader);
             redOverride.color = Color.red;
 
             characterBoldImage.material = redOverride;

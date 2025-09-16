@@ -13,6 +13,13 @@ public class PassiveProcessor : Singleton<PassiveProcessor>
 
     public void ApplyPassiveCard(List<CardData> playerPassives, List<CardData> enemyPassives)
     {
+        //카드 파서 필요
+        foreach (var card in playerPassives)
+            card?.ParseEffectMap();
+
+        foreach (var card in enemyPassives)
+            card?.ParseEffectMap();
+
         runeProcessor.ProcessRuneEffect(playerCh);
         ApplyPassiveToCh(playerCh, playerPassives);
         ApplyPassiveToCh(enemyCh, enemyPassives);

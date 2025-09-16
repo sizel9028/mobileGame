@@ -1,0 +1,4 @@
+nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
+atk_name,atk_desc_3,Attack_3,Action,Skill,allEnemy,Tier1,1,Mana,0,0,"Damage::600"
+agility_name,agility_desc_2,Agility,Action,Power,onePlayer,Tier1,0,Mana,0,0,"agility::1"
+stun_name,stun_desc_4,Stun,Action,Power,allEnemy,Tier2,1,Mana,1,0,"stun::1"

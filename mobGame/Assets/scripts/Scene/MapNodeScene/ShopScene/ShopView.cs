@@ -31,7 +31,8 @@ public class ShopView : MonoBehaviour
     {
         if (isZooming || isZoomed) return;
 
-        startPos = Input.mousePosition;
+        //startPos = Input.mousePosition;
+        startPos = GetInputPosition();
         originalPos = card.transform.position;
         originalScale = card.transform.localScale;
         originalRot = card.transform.rotation;
@@ -81,7 +82,8 @@ public class ShopView : MonoBehaviour
 
         while (timer < longPressTime)
         {
-            float dist = Vector2.Distance(Input.mousePosition, startPos);
+            // float dist = Vector2.Distance(Input.mousePosition, startPos);
+            float dist = Vector2.Distance(GetInputPosition(), startPos);
             if (dist > 40f)
             {
                 isZooming = false;
@@ -132,4 +134,13 @@ public class ShopView : MonoBehaviour
 
         selectedCard = null;
     }
+
+    private Vector2 GetInputPosition()
+    {
+        if (Input.touchCount > 0)
+            return Input.GetTouch(0).position;
+        else
+            return Input.mousePosition; // 에디터/PC 테스트용
+    }
+
 }

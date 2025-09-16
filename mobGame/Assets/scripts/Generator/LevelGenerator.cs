@@ -32,6 +32,7 @@ public static class LevelGenerator
         {
             int eliteSeed = stageNumber + 10 * themeIdx + 1000;
             System.Random eliteRng = new System.Random(eliteSeed + nodeId);
+
             return eliteRng.Next(EliteStartLevel, EliteStartLevel + TotalEliteLevels);
         }
 

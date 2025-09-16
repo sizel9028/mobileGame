@@ -71,10 +71,10 @@ public class CardDataGenerator
             path = "Shop/DeleteCard",     // Resources 폴더 기준 경로 (없어도 됨 실제로 안씀)
             cardArtName = "DeleteCard",   // 아트 파일 이름 (없으면 기본 처리)
 
-            cardType = CardType.Passive,  // 또는 Scroll, 어차피 UI용
+            cardType = CardType.Scroll,  // 또는 Scroll, 어차피 UI용
             actionType = ActionType.Skill,
             cardTarget = CardTarget.nop,  // 타겟 없음
-            rare = Rare.Tier0,            // 의미 없음, 제일 낮은 값 사용
+            rare = Rare.TierRage,            // 의미 없음, 제일 낮은 값 사용
 
             cost = 0,
             costType = CostType.Mana,     // 의미 없음

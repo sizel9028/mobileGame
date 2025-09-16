@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,42 +8,61 @@ public enum MapTheme
     NOP, FROST, FOREST, OCEAN, DESERT, VOLCANO, RUINS, VOID
 };
 
+[Serializable]
 public class MapNode
 {
     public int stageNumber;
     public MapTheme theme;
-    public MapNodeData[] nodes = new MapNodeData[50];
+    public List<MapNodeData> nodes = new();
 
     //맵의 모든 요소가 클리어 되었으면 참을 넘김 >> 다음 스테이지 이동시 사용
     public bool IsAllCleared()
     {
-        for (int i = nodes.Length - 1; i >= 0; --i)
-        {
-            var node = nodes[i];
-            if (node == null) continue;
+        if (nodes == null || nodes.Count == 0)
+            return false;
 
-            return node.nodeType == NodeType.Cleared;
-        }
-
-        return false;
+        var lastNode = nodes[^1]; // 리스트의 마지막 요소
+        return lastNode != null && lastNode.nodeType == NodeType.Cleared;
     }
 
     //제일 많이 클리어한 노드 반환시킴
     public int GetMaxClearedNode()
     {
-        int maxId = -1;
+        if (nodes == null || nodes.Count == 0) return -1;
+        if (nodes[0] == null) return -1;
 
-        foreach (var node in nodes)
+        // 0번 노드에서 시작
+        var lastCleared = FindLastClearedNode(this, nodes[0]);
+        if (lastCleared == null) return -1;
+
+        return lastCleared.nodeId;
+    }
+
+    private MapNodeData FindLastClearedNode(MapNode map, MapNodeData start)
+    {
+        MapNodeData current = start;
+
+        while (true)
         {
-            if (node == null) continue;
+            MapNodeData nextCleared = null;
 
-            if (node.nodeType == NodeType.Cleared && node.nodeId > maxId)
+            foreach (int nextId in current.connectedNodeIds)
             {
-                maxId = node.nodeId;
+                var node = map.nodes[nextId];
+                if (node != null && node.nodeType == NodeType.Cleared)
+                {
+                    nextCleared = node;
+                    break; // 여러 개면 첫 번째 Cleared만 선택
+                }
             }
-        }
 
-        return maxId;
+            if (nextCleared == null)
+            {
+                return current; // 더 이상 갈 곳 없으면 현재가 마지막 Cleared
+            }
+
+            current = nextCleared;
+        }
     }
 
     public int GetTotalNode()

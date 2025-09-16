@@ -15,6 +15,8 @@ public class HandView : MonoBehaviour
     private bool isDragging = false;
     private bool isZooming = false; //지금 줌을 하기 위해 꾹 누르고 있는지 체크
     private bool isZoom = false; //실제 줌 중인지
+
+    private bool isResettingZoom = false;
     [SerializeField] private ArrowUIBezier arrowUI;
 
     //꾹 누르는거 표현
@@ -55,8 +57,11 @@ public class HandView : MonoBehaviour
             Vector3 up = spline.EvaluateUpVector(p);
 
             Quaternion rotation = Quaternion.LookRotation(-up, Vector3.Cross(-up, forward).normalized);
-            cards[i].transform.DOMove(splinePos + transform.position, duration);
-            cards[i].transform.DORotate(rotation.eulerAngles, duration);
+
+            RectTransform rect = cards[i].GetComponent<RectTransform>();
+            Vector2 targetPos = new Vector2(splinePos.x, splinePos.y - 500f);
+            rect.DOAnchorPos(targetPos, duration);
+            rect.DORotate(rotation.eulerAngles, duration);
         }
         yield return new WaitForSeconds(duration);
     }
@@ -69,7 +74,7 @@ public class HandView : MonoBehaviour
         Debug.Log($"[HandView] 카드 다운: {card.data.nameKey}, 코스트: {card.data.cost}, 사용 가능 여부: {CardValidator.IsCardAble(card.data, true)}");
 
 
-        if (isDragging || isZoom) return;
+        if (isDragging || isZoom || isResettingZoom) return;
         if (!CardValidator.IsCardAble(card.data, true)) return;
 
         selectCard = card;
@@ -77,7 +82,8 @@ public class HandView : MonoBehaviour
         isZooming = true;
         card.SetSelected(true);
 
-        startPos = Input.mousePosition;
+        //startPos = Input.mousePosition; (pc 버전)
+        startPos = GetInputPosition();
         originalCardPos = card.transform.position;
         originalCardScale = card.transform.localScale;
         originalRotation = card.transform.rotation;
@@ -112,7 +118,7 @@ public class HandView : MonoBehaviour
         bool isProcessingCard = Battle.Instance.isProcessingCard;  //카드 작동중이면 다음카드 실행을 불가능하게 함
 
         bool canUseCard = !isZooming && !isCancel && !isZoom && !isProcessingCard;
-        
+
         if (canUseCard)   // 실행 가능한 상태인지
         {
             ProcessCard(ui);
@@ -128,17 +134,19 @@ public class HandView : MonoBehaviour
         float timer = 0f;
         while (timer < longPressTime)
         {
+            //float distance = Vector2.Distance(Input.mousePosition, startPos); pc 버전
             float distance = Vector2.Distance(Input.mousePosition, startPos);
+
             if (distance > 40f)
             {
                 isZooming = false;
-                yield break;   
+                yield break;
             }
 
             timer += Time.deltaTime;
             yield return null;    //다음프레임까지 기다림 (안하면 초당)
         }
-        
+
         ZoomCard(card);
     }
 
@@ -172,6 +180,13 @@ public class HandView : MonoBehaviour
     {
         if (!cards.Contains(card)) return;
 
+        //스크롤 카드라면 스크롤에서 제거
+        if (card.data.cardType == CardType.Scroll)
+        {
+            DeckManager.Instance.scrollCards.Remove(card.data);
+        }
+
+        //일반 카드라면
         // 1) 덱에 폐기 등록
         if (card.data.rare != Rare.TierRage)
         {
@@ -192,7 +207,8 @@ public class HandView : MonoBehaviour
             .SetLink(card.gameObject)                // 카드가 파괴되면 자동으로 트윈도 죽임
             .Append(rect.DOScale(Vector3.zero, duration).SetEase(Ease.InBack))  // 작아지면서 사라짐
             .Join(rect.DORotate(Vector3.zero, duration))            // 회전 초기화
-            .OnComplete(() => {
+            .OnComplete(() =>
+            {
                 card.DestroyCard();                  // 내부에서 transform.DOKill(true) + Destroy(gameObject)
                 StartCoroutine(UpdateCardPositions(0.2f));  //남은 카드 재정렬
             });
@@ -225,21 +241,26 @@ public class HandView : MonoBehaviour
 
         isZooming = false;
         isZoom = false;
+        isResettingZoom = true;
 
         RectTransform rect = selectCard.GetComponent<RectTransform>();
 
         rect.SetSiblingIndex(originalSiblingIndex);  // 원래 위치로
         rect.DOMove(originalCardPos, 0.25f).SetUpdate(true);
         rect.DOScale(originalCardScale, 0.25f).SetUpdate(true);
-        rect.DORotate(originalRotation.eulerAngles, 0.25f).SetUpdate(true); // 회전 복구
+        rect.DORotate(originalRotation.eulerAngles, 0.25f).SetUpdate(true)
+            .OnComplete(() => { isResettingZoom = false; }); // 회전 복구
+
     }
 
     void Update()
     {
         if (isDragging)
         {
-            Vector2 mousePos = Input.mousePosition;
-            arrowUI.UpdateArrow(mousePos);
+            //Vector2 mousePos = Input.mousePosition; (pc)
+
+            Vector2 inputPos = GetInputPosition();
+            arrowUI.UpdateArrow(inputPos);
         }
     }
 
@@ -259,7 +280,7 @@ public class HandView : MonoBehaviour
             CardUI card = cards[i];
             if (card == null || card.gameObject == null) continue;
 
-            if (card.data.rare != Rare.TierRage)
+            if (card.data.rare != Rare.TierRage && card.data.cardType != CardType.Scroll)
             {
                 DeckManager.Instance.discardPile.cards.Add(card.data);
             }
@@ -287,6 +308,19 @@ public class HandView : MonoBehaviour
         foreach (var card in cards)
         {
             card.UpdateUsableVisual();
+        }
+    }
+
+    //PC 테스트용 모바일 버전 용도 함수
+    private Vector2 GetInputPosition()
+    {
+        if (Input.touchCount > 0)
+        {
+            return Input.GetTouch(0).position;
+        }
+        else
+        {
+            return Input.mousePosition; // 에디터/PC 테스트용
         }
     }
 }

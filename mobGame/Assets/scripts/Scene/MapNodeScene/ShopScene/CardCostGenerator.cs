@@ -21,15 +21,20 @@ public class CardCostGenerator
         { CardType.Action, 0 }
     };
 
-    private int currentGold;
-
-    void Start()
-    {
-        currentGold = GameManager.gameManager.playerData.gold;
-    }
-
     public int GetCost(CardData card)
     {
+        int currentGold = ShopSceneManager.Instance.currentGold;
+        if (card.nameKey == "shop_delete_card")
+        {
+            //삭제카드는 로직을 다르게 함
+            int count = GameManager.gameManager.buyDeleteCard;
+            float rawValue = currentGold * count * 0.2f + (count-1) * 20;
+            rawValue = Mathf.Max(0, rawValue);
+            
+            Debug.Log($"count={count}, currentGold={currentGold}, raw={rawValue}");
+            return (int)rawValue;
+        }
+
         float percent = tierPercentage.TryGetValue(card.rare, out var p) ? p : 0.2f;
         int baseCost = Mathf.RoundToInt(currentGold * percent);
 

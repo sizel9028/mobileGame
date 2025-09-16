@@ -17,6 +17,8 @@ public partial class CardEffectProcessor
         totalDamage *= StatWithDirty("casterStat.CorpseDamageMultiple");
 
         int intDamage = ApplyDamage(totalDamage);
+
+        casterStat.CorpseCount = 0;  // 전부 소모
         AssistDamage(intDamage);
     }
 }

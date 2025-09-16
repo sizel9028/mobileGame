@@ -14,6 +14,8 @@ public partial class CardEffectProcessor
         damage += StatWithDirty("casterStat.outgoingDamageAdd", doMotion);
         damage *= StatWithDirty("casterStat.outgoingDamageMultiple", doMotion);
         damage *= StatWithDirty("targetStat.incomingDamage", doMotion);
+        damage *= StatWithDirty("casterStat.outgoingDamageTotal");  // 몬스터 전용
+        //Debug.Log($"[CharacterUIManager]  outgoingDamageTotal = {casterUI.character.statMultiplier.outgoingDamageTotal}");
         damage *= Mathf.Pow(2f, luckyCoinCount);
 
         int intDamage = Mathf.RoundToInt(damage);
@@ -52,6 +54,7 @@ public partial class CardEffectProcessor
         if (intDamage > 0)
         {
             DamageUI.Instance.ShowDamage(targetUI, intDamage, false);
+            //SoundManager.Instance.GetHitSound();
         }
 
         return intDamage;

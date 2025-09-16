@@ -27,6 +27,8 @@ public enum Rare
     Tier0, Tier1, Tier2, Tier3, TierRage
 }
 
+
+[Serializable]
 public class CardData : ICloneable
 {
     //카드 설명 이름 localized Text에 해당하는 key
@@ -55,19 +57,21 @@ public class CardData : ICloneable
     public int maxCount;
 
     public string effectMapRaw; // "Damage::20,Heal::20" 같은 효과들 전부 모아둠
-    public Dictionary<string, float> effectMap = new();
+    [NonSerialized] public Dictionary<string, float> effectMap = new();
 
-    public List<Gimmick> gimmickEffects = new();
+    [NonSerialized] public List<Gimmick> gimmickEffects = new();
 
 
     public void ParseEffectMap()
     {
-        if (effectMap.Count > 0) return;
+        if (effectMap.Count > 0 || gimmickEffects.Count > 0) return;
 
         effectMap.Clear();
         gimmickEffects.Clear();
 
         if (string.IsNullOrWhiteSpace(effectMapRaw)) return;
+        int stage = GameManager.gameManager.playerData.currentMap.stageNumber;
+        System.Random rng = SeedManager.GetNodeRng(stage, cardArtName);
 
         var entries = effectMapRaw.Split('|');
 
@@ -99,15 +103,15 @@ public class CardData : ICloneable
                         if (isInt)
                         {
                             // 정수 랜덤 (max 포함되도록 +1)
-                            int randValue = UnityEngine.Random.Range(Mathf.RoundToInt(min), Mathf.RoundToInt(max + 1));
+                            int randValue = rng.Next(Mathf.RoundToInt(min), Mathf.RoundToInt(max + 1));
                             effectMap[key] = randValue;
                         }
                         else
                         {
                             // 소수 랜덤 (소수점 둘째 자리까지)
-                            float randValue = UnityEngine.Random.Range(min, max);
-                            randValue = (float)Math.Round(randValue, 2, MidpointRounding.AwayFromZero);
-                            effectMap[key] = randValue;
+                            double randValue = rng.NextDouble() * (max - min) + min;
+                            randValue = Math.Round(randValue, 2, MidpointRounding.AwayFromZero);
+                            effectMap[key] = (float)randValue;
                         }
                     }
                     else

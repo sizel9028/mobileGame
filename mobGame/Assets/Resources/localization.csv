@@ -6,6 +6,8 @@ btn_rune,룬 연구소,1,1
 btn_skip_reward,스킵,1,1
 btn_get_reward,선택,1,1
 btn_click_continue,아무 곳이나 클릭하여 계속,1,1
+btn_select_continue,캐릭터 생성,1,1
+btn_end_turn,턴 종료
 change_language,언어,Language,言語
 rune_frost_name,설원룬,1,1
 rune_frost_desc,마나를 증가시킵니다,1,1
@@ -41,12 +43,144 @@ shop_buyrandom_2,한 번 쓰고 나면 알게 될 거야. 왜 비쌌는지 말�
 shop_buyrandom_3,너무 무리하는 거 아니야?,1,1
 shop_buyrandom_4,너무 과했어 친구. 그 카드가 널 구할 거란 보장은 없거든,1,1
 shop_buyrandom_5,그 카드 진짜 필요한 순간에 나와주면 좋겠네,1,1
+shop_nomoney,돈이 부족해
+shop_buy_btn,구매
+shop_delete_card,파쇄
+shop_delete_desc,덱에서 카드 1장을 삭제
+passive_type,[패시브],1,1
+scroll_type,[스크롤],1,1
+action_type,[액티브],1,1
+
 character_0,소환술사\n여러 소환수를 소환해 전투를 이끄는 마법사,1,1
 
-MapDesc_frost_1,
+MapDesc_0,동굴을 나왔더니...
+MapDesc_forest_1,빽빽한 수풀 속에서 바람이 스친다
+MapDesc_forest_2,맵 효과 :\n수풀속의 몬스터는 매턴 hp를 회복한다
+MapDesc_frost_1,얼음이 가득하다
+MapDesc_frost_2,맵 효과 :\n매턴 50% 확률로 아군/적군이\n 추가마나를 얻는다
+MapDesc_ocean_1,바다가 보인다
+MapDesc_ocean_2,맵 효과 :\n높은 티어의 카드를 얻을 확률이 증가한다
+MapDesc_desert_1,모래 바람이 불어온다
+MapDesc_desert_2,맵 효과 :\n아군/적군의 회피율이 소량 상승한다
+MapDesc_volcano_1,화산이 보인다
+MapDesc_volcano_2,맵 효과 :\n아군/적군이 화상 상태이상을 가진다
+MapDesc_ruins_1,시체들이 돌아다닌다
+MapDesc_ruins_2,맵 효과 :\n보호막이 부식된다 \n매턴 일정 보호막이 감소한다
+MapDesc_void_1,주변이 어둡다
+MapDesc_void_2,맵 효과 :\n아군/적군이 공허독에 잠식되어 \n매턴 최대체력을 잃는다
+
 BattlePreview_DeckBtn,덱 보기,1,1
 BattlePreview_nothing,특수능력 없음,1,1
+BattlePreview_specialAbility,특수능력
 Summon,소환,1,1
 enemy_Slime,슬라임,1,1
 fireball_name,파이어볼,1,1
 fireball_desc,{Damage} 데미지를 입힌다,1,1
+
+stun_name,무력화
+atk_up_name,무기 강화
+atk_down_name,약화
+inc_dmg_name,급소 노출
+draw_name,카드 뽑기
+shield_up_name,수호
+shield_name,보호막
+atk_name,공격
+down_dmg_name,방어 태세
+
+stun_desc_1,적 하나를 다음 2번의 공격 동안 기절
+stun_desc_2,적 하나를 1턴 동안 기절
+stun_desc_3,모든 적을 다음 2번의 공격 동안 기절
+stun_desc_4,모든 적을 1턴 동안 기절
+atk_up_desc_1,아군 하나의 공격력이 다음 3번의 공격 동안 {outgoingDamageAdd} 증가
+atk_up_desc_2,아군 하나의 공격력이 다음 3번의 공격 동안 [outgoingDamageMultiple]% 증가
+atk_up_desc_3,아군 하나의 공격력이 1턴 동안 {outgoingDamageAdd} 증가
+atk_up_desc_4,아군 하나의 공격력이 1턴 동안 [outgoingDamageMultiple]% 증가
+atk_up_desc_5,모든 아군의 공격력이 [outgoingDamageMultiple]% 증가
+atk_down_desc_1,적 하나의 공격력이 다음 3번의 공격 동안 [outgoingDamageMultiple]% 감소
+atk_down_desc_2,적 하나의 공격력이 1턴 동안 [outgoingDamageMultiple]% 감소
+inc_dmg_desc_1,적 하나가 다음 3번의 공격 동안 받는 피해 [incomingDamage]% 증가
+inc_dmg_desc_2,적 하나가 2턴 동안 받는 피해 [incomingDamage]% 증가
+inc_dmg_desc_3,모든 적이 항상 받는 피해 [incomingDamage]% 증가
+draw_desc_1,덱에서 1장 드로우
+draw_desc_2,덱에서 2장 드로우
+shield_up_desc_1,보호막 카드 사용 시 추가로 {outgoingShieldAdd} 획득
+shield_up_desc_2,보호막 카드 사용 시 추가로 [outgoingShieldMultiple]% 획득
+shield_desc_1,아군 하나에게 {Shield} 보호막 부여
+shield_desc_2,아군 하나에게 {Shield} 보호막 부여
+shield_desc_3,모든 아군에게 {Shield} 보호막 부여
+atk_desc_1,적 하나에게 {Damage} 피해
+atk_desc_2,적 하나에게 {Damage} 피해
+atk_desc_3,모든 적에게 {Damage} 피해
+down_dmg_desc_1,아군 하나가 2턴 동안 받는 피해 [incomingDamage]% 감소
+down_dmg_desc_2,아군 하나가 다음 3번의 공격 동안 받는 피해 [incomingDamage]% 감소
+
+heart_name,생명의 심장
+dice_attack_name,다이스 어택
+gamblers_coin_name,도박꾼의 동전
+absolute_luck_name,절대 행운
+max_mana_name,마나 샘
+potion_name,엘릭서
+agility_name,민첩성
+rage_name,분노 물약
+clearbuffwithapply_name,천사의 정화
+clearbuffwithoutapply_name,악마의 정화
+drawhightiercard_name,희귀한 선택
+cardcosttoint_name,카드 변환
+
+heart_desc_1,모든 아군의 최대 체력 {MaxHPAdd} 증가
+heart_desc_2,모든 아군의 최대 체력 {MaxHPAdd} 증가 매 턴 {turnAddHp} 회복
+dice_attack_desc,적 하나에게 1~6 무작위 피해
+gamblers_coin_desc,50% 확률로 다음 공격 피해 2배 또는 0배
+absolute_luck_desc,불운을 겪지 않음
+agility_desc_1,모든 아군의 민첩 [agility]% 증가
+agility_desc_2,아군 하나의 민첩이 1턴 동안 민첩 [agility]% 증가
+agility_desc_3,아군 하나가 다음 2번의 공격을 받는 동안 민첩 [agility]% 증가
+max_mana_desc_1,최대 마나 {addMana} 증가
+potion_desc_1,아군 하나의 체력 {Heal} 회복
+potion_desc_2,모든 아군의 체력 {Heal} 회복
+rage_desc,플레이어가 분노 상태를 획득
+clearbuffwithapply_desc,모든 캐릭터의 디버프/버프를 제거
+clearbuffwithoutapply_desc,모든 캐릭터에 적용된 디버프/버프를 유지
+drawhightiercard_desc,덱에서 높은 티어 카드 1장 드로우
+cardcosttoint_desc,모든 카드의 코스트를 {CardCostToInt}로 변환
+
+poison_gas_name,시체 독
+poison_gas_desc,모든 적에게 3번 동안 유지되는 독을 부여
+magic_book_name_1,하급 마법서
+magic_book_desc,새로운 융합 옵션을 해금
+magic_book_name_2,상급 마법서
+bone_golem_name_1,하급 뼈골렘
+bone_golem_desc,뼈를 소모하여 본골렘을 소환
+bone_golem_name_2,상급 뼈골렘
+bone_shield_name,뼈 방패
+bone_shield_desc_1,아군 하나에게 {Shield}보호막 부여 뼈 소모시 [BoneShield]% 데미지 감소 
+bone_shield_desc_2,모든 아군에게 {Shield}보호막 부여 뼈 소모시 [BoneShield]% 데미지 감소
+bone_spear_name,뼈 창
+bone_spear_desc_1,적 하나에게 {BoneSpear}x뼈x최대체력에 해당하는 피해
+bone_spear_desc_2,모든 적에게 {BoneSpear}x뼈x최대체력에 해당하는 피해
+summon_copy_name,반사경
+summon_copy_desc,융합시 [SummonCopy]% 확률로 소환물 복제
+corpse_explosion_name,시체 폭발
+corpse_explosion_desc_1,적 하나에게 {CorpseExplosion}x뼈x최대체력에 해당하는 피해
+corpse_explosion_desc_2,모든 적에게 {CorpseExplosion}x뼈x최대체력에 해당하는 피해
+fusion_name,융합
+fusion_desc,필드 위의 아군 소환수 2기를 융합
+suicide_bomber_name,자폭병
+suicide_bomber_desc,소환시 [DeathBlastChance]% 확률로 자폭 특성을 지님
+suicide_damageup_name,폭탄 강화
+suicide_damageup_desc,소환수의 자폭 데미지가 증가
+sacrifice_name,희생
+sacrifice_desc,하나의 소환수를 필드에서 제거
+sacrifice_mana_name,마나 변환
+sacrifice_mana_desc,[manaGainChanceWithSummon]% 확률로 희생시 마나를 얻음
+sacrifice_draw_name,카드 변환
+sacrifice_draw_desc,[drawChanceWithSummon]% 확률로 희생시 드로우
+summon_name,소환서
+summon_0_desc,들개 소환
+summon_1_desc,폭탄병 소환
+summon_2_desc,구울 소환
+summon_3_desc,그림자 소환
+summon_4_desc,망령 소환
+
+stealgold_name,강탈
+stealgold_desc,{StealGold} 골드를 약탈

@@ -11,6 +11,7 @@ public class CardUI : MonoBehaviour
     public Image cardImage;  //카드 일러스트
     public LocalizedText nameText;
     public LocalizedText descriptionText;
+    public LocalizedText typeText; //카드가 어떤 타입인지
     public Image cardBackImage;  //카드 전반적인 틀
     public Image borderImage;   //카드 테두리(색+선택 상호작용)
 
@@ -27,10 +28,19 @@ public class CardUI : MonoBehaviour
 
     private static readonly Color[] rareColors = new Color[]
     {
-        //TODO 색 채우기 rare 별로
-        Color.gray, Color.gray, Color.gray, Color.gray, Color.red
+        //TODO 색 채우기 rare 별로 (회색,녹색,블루,보라,빨강)
+        new Color(0.8f, 0.8f, 0.8f), new Color(0.0f, 0.39f, 0.0f), new Color(0.0f, 0.0f, 0.55f),
+        new Color(0.5f, 0f, 0.5f), new Color(0.55f, 0.0f, 0.0f)
     };
 
+    //카드 정보를 변경 하고, 그 카드 정보의 UI를 업데이트함
+    public void Setup()
+    {
+        nameText.SetText(data.nameKey);
+        SetDescText(data.descriptionKey, data);
+        costText.text = data.cost.ToString();
+        SetTypeText(data.cardType);
+    }
 
     public void SetCard(CardData newData, CardUIManager uiManager)
     {
@@ -41,6 +51,7 @@ public class CardUI : MonoBehaviour
         //descriptionText.SetText(newData.descriptionKey);  // key를 바탕으로 값 결정
         SetDescText(newData.descriptionKey, newData);
         costText.text = newData.cost.ToString();
+        SetTypeText(newData.cardType);
 
         StartCoroutine(CardArtLoader.LoadCardArt(newData, (sprite) =>
         {
@@ -58,7 +69,27 @@ public class CardUI : MonoBehaviour
             borderImage.color = rareColors[(int)newData.rare];
 
     }
-    
+
+    private void SetTypeText(CardType type)
+    {
+        switch (type)
+        {
+            case CardType.Passive:
+                typeText.SetText("passive_type");
+                break;
+
+            case CardType.Action:
+                typeText.SetText("action_type");
+                break;
+
+            case CardType.Scroll:
+                typeText.SetText("scroll_type");
+                break;
+
+            default:
+                break;
+        }
+    }
     //분노 상태일때 카드 아트바뀜
     public void ReloadArt()
     {
@@ -93,7 +124,18 @@ public class CardUI : MonoBehaviour
             float fVal = kvp.Value;
 
             string value;
-            if (Mathf.Abs(fVal % 1) < 0.001f) 
+            
+            string percentPlaceholder = "[" + kvp.Key + "]";
+
+            if (rawText.Contains(percentPlaceholder))
+            {
+                Debug.Log(cardData.cardArtName + "발견됨");
+                // 예: 0.03 -> 3
+                value = Mathf.RoundToInt(fVal * 100).ToString();
+                rawText = rawText.Replace(percentPlaceholder, value);
+            }
+            
+            if (Mathf.Abs(fVal % 1) < 0.001f)
             {
                 // 정수면 소수점 없이
                 value = ((int)fVal).ToString();
@@ -101,7 +143,7 @@ public class CardUI : MonoBehaviour
             else
             {
                 // 소수면 소수점 둘째 자리까지
-                value = fVal.ToString("0.##"); 
+                value = fVal.ToString("0.##");
             }
 
             rawText = rawText.Replace(placeholder, value);
@@ -109,16 +151,25 @@ public class CardUI : MonoBehaviour
 
         descriptionText.Clear();
         descriptionText.AppendText(rawText);
-
     }
 
+    //이 카드의 하위 오브젝트의 raycast를 전부 꺼버림
+    public void SetRaycastFalse()
+    {
+        Graphic[] graphics = GetComponentsInChildren<Graphic>(true);
+
+        foreach (var g in graphics)
+        {
+            g.raycastTarget = false;
+        }
+    }
 
     public void SetSelected(bool isSelected)
     {
         //TODO 선택되면 변화가 있어야함
         if (borderImage == null) return;
 
-        borderImage.color = isSelected ? Color.white : Color.gray;
+        borderImage.color = isSelected ? new Color(1f, 0.95f, 0.4f) : rareColors[(int)data.rare];
     }
 
     public void SetManager(CardUIManager uiManager)

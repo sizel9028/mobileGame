@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,12 +16,17 @@ public class ShopSceneManager : Singleton<ShopSceneManager>, IPushable
     [SerializeField] private LocalizedText descText;  //상점 주인 텍스트(가격 포함)
     [SerializeField] private Button buyBtn;
 
+    [SerializeField] private TextMeshProUGUI goldText; // 현재 골드
+
     private CardCostGenerator cardCostGenerator = new();
     private CardDataGenerator cardDataGenerator = new();
 
+    public int currentGold = 0;
 
     void Start()
     {
+        currentGold = GameManager.gameManager.playerData.gold;
+        SetGoldTxt();
         buyBtn.onClick.AddListener(PushBtnBuy);
         //배경 투명도
         SetDescBackgroundTransparency();
@@ -38,9 +44,11 @@ public class ShopSceneManager : Singleton<ShopSceneManager>, IPushable
         }
 
         SetStartDescText(); // 초기 대화 생성
-        // --- test ---
-        var deck = CardGenerator.LoadDeck(0, -1, 0);
+                            // --- test ---
+        var deck = cardDataGenerator.GenerateCard();
         var card = cardDataGenerator.MkDeleteCard();
+        //Debug.Log(deck.Count);
+
         for (int i = 0; i < cardSlots.Count; ++i)
         {
             if (i == 9)
@@ -48,9 +56,15 @@ public class ShopSceneManager : Singleton<ShopSceneManager>, IPushable
                 AddCardToShop(card, i);
                 break;
             }
-            AddCardToShop(deck.cards[i], i);
+            AddCardToShop(deck[i], i);
         }
 
+    }
+
+    private void SetGoldTxt()
+    {
+        int gold = GameManager.gameManager.playerData.gold;
+        goldText.text = $"{gold}g";
     }
     
     private void AddCardToShop(CardData cardData, int slotIdx)
@@ -109,31 +123,37 @@ public class ShopSceneManager : Singleton<ShopSceneManager>, IPushable
         var card = shopView.GetSelectedCard();
         if (card == null) return;
 
-        if (card.data.nameKey == "shop_delete_card")
-        {
-            GameManager.gameManager.CardViewCards = (SceneType.ShopScene, GameManager.gameManager.playerData.playerDeck.cards);
-            shopView.RemoveSelectedCard();
-            List<CardData> cardDataLists = shopView.cards.Select(card => card.data).ToList();
-            GameManager.gameManager.shopSceneCards = cardDataLists;
-
-            SceneManager.LoadScene("CardViewerScene");
-            return;
-        }
-
         int cost = cardCostGenerator.GetCost(card.data);
         var player = GameManager.gameManager.playerData;
 
         if (player.gold < cost)
         {
             //TODO 잔액없다는 텍스트 표시
+            descText.SetText("shop_nomoney");
+            return;
         }
 
         player.gold -= cost;
+
+        if (card.data.nameKey == "shop_delete_card")
+        {
+            GameManager.gameManager.buyDeleteCard++;
+            GameManager.gameManager.CardViewCards = (SceneType.ShopScene, GameManager.gameManager.playerData.playerDeck.cards);
+            //shopView.RemoveSelectedCard();
+
+            List<CardData> cardDataLists = shopView.cards.Select(card => card.data).ToList();
+            GameManager.gameManager.shopSceneCards = cardDataLists;
+
+
+            SceneManager.LoadScene("CardViewerScene");
+            return;
+        }
         player.playerDeck.cards.Add(card.data);
 
         shopView.RemoveSelectedCard();
 
         SetBuyText();
+        SetGoldTxt();
     }
 
 
@@ -141,6 +161,7 @@ public class ShopSceneManager : Singleton<ShopSceneManager>, IPushable
     {
         //TODO 화면 나가고 맵 저장
         SaveManager.saveManager.SaveAll();
+        GameManager.gameManager.buyDeleteCard = 0;
 
         SceneManager.LoadScene("stageScene");
     }

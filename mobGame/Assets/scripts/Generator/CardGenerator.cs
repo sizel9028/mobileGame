@@ -6,7 +6,13 @@ public class CardGenerator : MonoBehaviour
 {
     public static Deck LoadDeck(int stage, int theme, int level)
     {
-        string path = $"Decks/Stage{stage}/Theme{theme}/Level{level}";
+        MapTheme mapTheme = (MapTheme)theme;
+
+        string themeName = mapTheme.ToString().ToLower();
+
+        //string path = $"Decks/Stage{stage}/{themeName}/{level}";
+        //theme을 따로 구분하지는 않음
+        string path = $"Decks/Stage{stage}/nop/{level}";
         // Decks > Stage1 > Theme1 > Level1.csv
         //Execept 0 0 0일때는 초기 플레이어 카드
 
@@ -16,7 +22,7 @@ public class CardGenerator : MonoBehaviour
             cards = new List<CardData>()
         };
 
-        TextAsset csv = Resources.Load<TextAsset>($"{path}/data");
+        TextAsset csv = Resources.Load<TextAsset>(path);
         if (csv == null)
         {
             return deck;

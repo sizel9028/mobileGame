@@ -107,6 +107,9 @@ public class CardProcessor
         {
             Battle.Instance.StartCoroutine(Battle.Instance.EndGame(result));
         }
+        
+        //서브 매테리얼을 체크
+        SubMaterialManager.Instance.UpdateTxt();
 
         Battle.Instance.isProcessingCard = false;
     }

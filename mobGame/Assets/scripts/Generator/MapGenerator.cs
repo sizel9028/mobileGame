@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
@@ -9,12 +8,12 @@ public class MapGenerator : MonoBehaviour
 
     private static readonly Dictionary<NodeType, float> nodeProbabilities = new()
     {
-        { NodeType.Battle, 1f },
-        { NodeType.Campfire, 0.15f },
+        { NodeType.Battle, 0.45f },
+        { NodeType.Campfire, 0.12f },
         { NodeType.Elite, 0.15f },
-        { NodeType.Shop, 0.1f },
-        { NodeType.Unknown, 0.6f },
-        { NodeType.Treasure, 0.15f },
+        { NodeType.Shop, 0.15f },
+        //{ NodeType.Unknown, 0.6f },
+        { NodeType.Treasure, 0.13f },
     };
 
     public static MapNode LoadMap(int stage, int themeNumber, int mapKind = -1)
@@ -23,10 +22,12 @@ public class MapGenerator : MonoBehaviour
         {
             //TODo 각 스테이지별로 맵의 갯수를 선언
             int maxKind = 3;
-            mapKind = UnityEngine.Random.Range(0, maxKind);
+            mapKind = UnityEngine.Random.Range(1, maxKind+1);
         }
 
-        string path = $"Maps/Stage{stage}_{themeNumber}_{mapKind}";
+        //string path = $"Maps/Stage{stage}_{themeNumber}_{mapKind}";
+        string path = $"Maps/{mapKind}";
+        //string path = $"Maps/4";    //맵 잘 만들어졌는지 확인용
         TextAsset csvFile = Resources.Load<TextAsset>(path);
 
         if (csvFile == null)
@@ -44,11 +45,11 @@ public class MapGenerator : MonoBehaviour
         else
         {
             //TODO 맵별 기믹이 잘 작동하는지 체크용도
-            map.theme = MapTheme.VOID;
-            //map.theme = GameManager.gameManager.playerData.currentMap.theme;
+            //map.theme = MapTheme.VOID;
+            map.theme = GameManager.gameManager.playerData.currentMap.theme;
         }
 
-        map.nodes = new MapNodeData[50];
+        map.nodes = new List<MapNodeData>();
         int lastNodeId = -1;
 
         string[] lines = csvFile.text.Split('\n');
@@ -94,7 +95,7 @@ public class MapGenerator : MonoBehaviour
                 connectedNodeIds = connections
             };
 
-            map.nodes[id] = node;
+            map.nodes.Add(node);
         }
 
         //마지막 노드 보스로 바꿈

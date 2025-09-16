@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI.Extensions;
@@ -16,12 +17,15 @@ public class ArrowUIBezier : MonoBehaviour
     private bool isDragging = false;
     private Vector2 startAnchoredPos;
 
-    private CharacterUI currentTarget;
+    private CharacterUI currentTarget = null;
     private CancelZoneMarker lastMarker = null; 
     private TargetingValidator targetingValidator = new();
 
     //캔슬존 판단 확인 변수
     private bool isInCancelZone = false;
+
+    // --- test --- (디버그 용도)
+    public TextMeshProUGUI debugText;
 
     void Start()
     {
@@ -60,10 +64,15 @@ public class ArrowUIBezier : MonoBehaviour
 
     private void CheckTargetUnderArrow()
     {
-        Vector2 worldPos = arrowHeadRect.position;
+        /*Vector2 worldPos = arrowHeadRect.position;
 
         PointerEventData eventData = new PointerEventData(EventSystem.current);
-        eventData.position = worldPos;  // 해당 점을 기준으로 충돌 객체 조사
+        eventData.position = worldPos;  // 해당 점을 기준으로 충돌 객체 조사 */
+
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(uiCanvas.worldCamera, arrowHeadRect.position);
+
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = screenPos;
 
         List<RaycastResult> results = new();
         EventSystem.current.RaycastAll(eventData, results); // results에 저장
@@ -91,6 +100,18 @@ public class ArrowUIBezier : MonoBehaviour
             }
         }
 
+        /*if (debugText != null)
+        {
+            if (foundTarget != null && foundTarget.character != null)
+            {
+                debugText.text = $"Found: {foundTarget.character.characterArtName}";
+            }
+            else
+            {
+                debugText.text = "Found: null";
+            }
+        }*/
+
         if (currentTarget != foundTarget)
         {
             if (currentTarget != null) currentTarget.SetOutlineColor(false);
@@ -107,6 +128,7 @@ public class ArrowUIBezier : MonoBehaviour
             lastMarker = foundMarker;   
         }
     }
+
 
     public void UpdateArrow(Vector2 screenEnd)
     {

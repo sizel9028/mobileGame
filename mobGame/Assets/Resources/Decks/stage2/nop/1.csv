@@ -1,0 +1,5 @@
+nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
+atk_name,atk_desc_2,Attack_2,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"Damage::10:20:d"
+atk_name,atk_desc_2,Attack_2,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"Damage::8:18:d"
+shield_name,shield_desc_1,Shield_1,Action,Skill,onePlayer,Tier0,1,Mana,0,0,"Shield::3:6:d"
+atk_up_name,atk_up_desc_1,AttackUp,Action,Power,onePlayer,Tier0,1,Mana,0,3,"outgoingDamageAdd::1:3:d"

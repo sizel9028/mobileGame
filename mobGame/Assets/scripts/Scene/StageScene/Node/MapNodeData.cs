@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public enum NodeType
     Battle, Shop, Campfire, Elite, Treasure, Unknown, Cleared, Boss
 }
 
+[Serializable]
 public class MapNodeData
 {
     public int nodeId;

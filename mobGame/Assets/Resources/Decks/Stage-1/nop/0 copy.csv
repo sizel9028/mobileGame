@@ -1,0 +1,11 @@
+nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
+fireball_name,fireball_desc,Fireball,Action,Skill,oneEnemy,Tier1,0,Mana,0,0,"Damage::200"
+atk_up_name,atk_up_desc_2,AttackUp,Action,Power,onePlayer,Tier0,1,Mana,0,3,"outgoingDamageMultiple::0.1:0.3:f"
+summon_1_name,summon_1_desc,Summon,Action,Power,onePlayer,Tier0,1,Mana,0,1,"outgoingDamageMultiple::1"
+bone_shield_name_1,bone_shield_desc_1,BoneShield_1,Action,Skill,onePlayer,Tier0,1,Mana,0,0,"Shield::10|BoneShield::0.5"
+summon_0_name,summon_0_desc,Summon,Action,Skill,nop,Tier0,1,Mana,0,0,"Summon::0"
+stun_name_2,stun_desc_2,Stun,Action,Power,oneEnemy,Tier1,1,Mana,1,0,"stun::1"
+stun_name_3,stun_desc_2,Stun,Action,Power,oneEnemy,Tier2,1,Mana,1,0,"stun::1"
+stun_name_4,stun_desc_2,Stun,Action,Power,oneEnemy,Tier3,1,Mana,1,0,"stun::1"
+bone_shield,bone_shield_desc,BoneShield,Passive,Power,allPlayer,Tier1,0,Mana,0,0,"addHp::1"
+magic_book_name,magic_book_desc,MagicBook,Passive,Power,allPlayer,Tier1,0,Mana,0,0,"fusionLevel::1"

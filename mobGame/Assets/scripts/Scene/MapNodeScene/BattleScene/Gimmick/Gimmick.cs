@@ -1,5 +1,8 @@
+using System;
 using UnityEngine;
 
+
+[Serializable]
 public class Gimmick
 {
     public int gimmicCount;  //몇번까지 발동

@@ -1,3 +1,3 @@
 nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
 stealgold_name,stealgold_desc,StealGold,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"StealGold:4"
-heart_name,heart_desc_1,Heart_1,Passive,Power,allPlayer,Tier0,0,Mana,0,0,"MaxHPAdd::100"
+heart_name,heart_desc_1,Heart_1,Passive,Power,allPlayer,Tier0,0,Mana,0,0,"addHp::100"

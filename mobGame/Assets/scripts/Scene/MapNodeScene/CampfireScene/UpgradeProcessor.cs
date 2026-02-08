@@ -89,9 +89,13 @@ public class UpgradeProcessor
             case "manaGainChanceWithSummon":
                 value += 0.05f;
                 break;
-                
+
             case "drawChanceWithSummon":
                 value += 0.04f;
+                break;
+
+            case "corpseReturnCount":
+                value += 1;
                 break;
         }
 

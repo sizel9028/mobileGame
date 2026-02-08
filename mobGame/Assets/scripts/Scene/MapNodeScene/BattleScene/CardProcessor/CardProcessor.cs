@@ -111,8 +111,12 @@ public class CardProcessor
         //서브 매테리얼을 체크
         SubMaterialManager.Instance.UpdateTxt();
 
+        Battle.Instance.SetPuck();
+
         Battle.Instance.isProcessingCard = false;
     }
+
+
 
 
     private IEnumerator ProcessCardSequentially(CardData card, List<CharacterUI> casters, List<CharacterUI> targets, float delay = 0.3f)

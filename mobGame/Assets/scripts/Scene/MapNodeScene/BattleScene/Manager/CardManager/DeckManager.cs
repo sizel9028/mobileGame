@@ -46,6 +46,8 @@ public class DeckManager : Singleton<DeckManager>
             }
         }
 
+        drawPile.Shuffle();
+
         StartCoroutine(DrawOpeningHand());
 
     }
@@ -97,12 +99,13 @@ public class DeckManager : Singleton<DeckManager>
     }
 
     //처음을 제외하고 다시 자신의 턴이 되면 카드를 드로우함
-    public void ReDrawCards()
+    public IEnumerator ReDrawCards()
     {
         ClearDiscardDeck(); //버림존에 있는 카드를 전부 덱에 넣음
         drawPile.Shuffle();
         //스크롤 카드 먼저 드로우
-        StartCoroutine(DrawOpeningHand()); 
+        //StartCoroutine(DrawOpeningHand()); 
+        yield return DrawOpeningHand();
         handView.CheckUsableCard();
     }
     

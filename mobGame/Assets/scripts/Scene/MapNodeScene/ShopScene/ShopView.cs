@@ -104,8 +104,8 @@ public class ShopView : MonoBehaviour
         var rect = card.GetComponent<RectTransform>();
 
         rect.SetAsLastSibling();
-        rect.DOAnchorPos(new Vector2(-400f, 0f), 0.25f).SetUpdate(true);
-        rect.DOScale(originalScale * 1.8f, 0.25f).SetUpdate(true);
+        rect.DOAnchorPos(new Vector2(0f, 0f), 0.25f).SetUpdate(true);
+        rect.DOScale(originalScale * 2.2f, 0.25f).SetUpdate(true);
         rect.DORotate(Vector3.zero, 0.25f).SetUpdate(true);
     }
 

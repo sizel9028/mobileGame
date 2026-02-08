@@ -72,6 +72,7 @@ MapDesc_void_2,맵 효과 :\n아군/적군이 공허독에 잠식되어 \n매턴
 BattlePreview_DeckBtn,덱 보기,1,1
 BattlePreview_nothing,특수능력 없음,1,1
 BattlePreview_specialAbility,특수능력
+Regeneration,회복,1,1
 Summon,소환,1,1
 enemy_Slime,슬라임,1,1
 fireball_name,파이어볼,1,1
@@ -127,8 +128,8 @@ clearbuffwithoutapply_name,악마의 정화
 drawhightiercard_name,희귀한 선택
 cardcosttoint_name,카드 변환
 
-heart_desc_1,모든 아군의 최대 체력 {MaxHPAdd} 증가
-heart_desc_2,모든 아군의 최대 체력 {MaxHPAdd} 증가 매 턴 {turnAddHp} 회복
+heart_desc_1,모든 아군의 최대 체력 {addHp} 증가
+heart_desc_2,모든 아군의 최대 체력 {addHp} 증가 매 턴 {turnAddHp} 회복
 dice_attack_desc,적 하나에게 1~6 무작위 피해
 gamblers_coin_desc,50% 확률로 다음 공격 피해 2배 또는 0배
 absolute_luck_desc,불운을 겪지 않음
@@ -184,3 +185,6 @@ summon_4_desc,망령 소환
 
 stealgold_name,강탈
 stealgold_desc,{StealGold} 골드를 약탈
+
+get_bone_name,뼈 수확
+get_bone_desc,소환수가 사망시 {corpseReturnCount}개의 뼈를 얻음

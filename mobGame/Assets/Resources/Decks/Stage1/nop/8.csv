@@ -1,6 +1,6 @@
 nameKey,descriptionKey,cardArtName,cardType,actionType,cardTarget,rare,cost,CostType,maxTurn,maxCount,effectMapRaw
 absolute_luck_name,absolute_luck_desc,AbsoluteLuck,Passive,Power,allPlayer,Tier3,0,Mana,0,0,"absoluteLuck::1"
-heart_name_2,heart_desc_2,Heart_2,Passive,Power,allPlayer,Tier1,0,Mana,0,0,"MaxHPAdd::7:21:d"
+heart_name_2,heart_desc_2,Heart_2,Passive,Power,allPlayer,Tier1,0,Mana,0,0,"addHp::7:21:d"
 inc_dmg_name,inc_dmg_desc_3,IncomingDamageUp,Passive,Power,allEnemy,Tier1,0,Mana,0,0,"incomingDamage::0.2:0.4:f"
 atk_name,atk_desc_2,Attack_2,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"Damage::10:20:d"
 atk_name,atk_desc_2,Attack_2,Action,Skill,oneEnemy,Tier1,1,Mana,0,0,"Damage::5:10:d"

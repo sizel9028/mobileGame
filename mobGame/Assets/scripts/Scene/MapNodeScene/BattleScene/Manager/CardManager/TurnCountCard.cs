@@ -5,7 +5,7 @@ public class TurnCountCard
     public int remainTurn;
     public int remainCount;
 
-    private CardData card;
+    public CardData card;
 
     public TurnCountCard(CardData card)
     {

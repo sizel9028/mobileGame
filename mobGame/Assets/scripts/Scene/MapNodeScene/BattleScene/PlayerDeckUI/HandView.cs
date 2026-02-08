@@ -176,7 +176,7 @@ public class HandView : MonoBehaviour
         RemoveCard(selectCard);
     }
 
-    private void RemoveCard(CardUI card)
+    public void RemoveCard(CardUI card)
     {
         if (!cards.Contains(card)) return;
 
@@ -185,13 +185,13 @@ public class HandView : MonoBehaviour
         {
             DeckManager.Instance.scrollCards.Remove(card.data);
         }
-
-        //일반 카드라면
-        // 1) 덱에 폐기 등록
-        if (card.data.rare != Rare.TierRage)
+        else if (card.data.rare != Rare.TierRage)
         {
             DeckManager.Instance.discardPile.cards.Add(card.data);
         }
+
+        //일반 카드라면
+        // 1) 덱에 폐기 등록
 
         cards.Remove(card);
 

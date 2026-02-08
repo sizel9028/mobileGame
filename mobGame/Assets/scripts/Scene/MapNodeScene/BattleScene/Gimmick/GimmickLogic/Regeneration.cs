@@ -10,6 +10,13 @@ public partial class GimmickManager
         character.currentHp += gimmick.gimmicCount;
         character.currentHp = Mathf.Min(character.currentHp, character.maxHp);
 
+        var ui = CharacterUIManager.Instance.GetUI(character);
+
+        if (ui != null)
+        {
+            ui.Setup();
+        }
+
         gimmick.gimmicCount = 0; //기믹을 한번만 적용하면 끝남
     }
 }

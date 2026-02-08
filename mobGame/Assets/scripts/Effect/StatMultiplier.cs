@@ -79,7 +79,7 @@ public class StatMultiplier : ICloneable
     // 소환사 계수
 
     //소환물 죽을때 뼈 반환
-    public float corpseReturnCount = 1f;
+    public float corpseReturnCount = 0f;
     // (소환수 자푝)
     //자폭 확률 계수
     public float DeathBlastChance = 0f;

@@ -8,7 +8,7 @@ public partial class CardEffectProcessor
     {
         var playerUIs = CharacterUIManager.Instance.playerUIs;
 
-        if (playerUIs.Count < 3 || playerUIs[1].character == null || playerUIs[2].character == null || playerUIs[0] == null)
+        if (playerUIs.Count < 3 || playerUIs[1] == null || playerUIs[2] == null || playerUIs[0] == null)
         {
             Debug.LogWarning("[Fusion] 융합할 몬스터가 부족합니다.");
             return;

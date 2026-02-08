@@ -6,8 +6,8 @@ public class EffectCardManager : ICloneable
 {
     //배틀씬중에서 턴, 횟수 기반 카드를 전부 넣음 (나중에 효과를 되돌리기 위함)
 
-    private List<TurnCountCard> turnCards = new(); //턴 기반 카드 (3턴 적용)
-    private List<TurnCountCard> countCards = new(); // 횟수 기반 카드 (3번 공격등)
+    public List<TurnCountCard> turnCards = new(); //턴 기반 카드 (3턴 적용)
+    public List<TurnCountCard> countCards = new(); // 횟수 기반 카드 (3번 공격등)
     public List<string> dirtyFlag = new();
 
     private StatMultiplier statMultiplier;
@@ -31,6 +31,10 @@ public class EffectCardManager : ICloneable
 
         if (card.maxTurn > 0)
         {
+            if (card.cardTarget == CardTarget.oneEnemy || card.cardTarget == CardTarget.allEnemy)
+            {
+                card.maxTurn++;  //상대에게 적용되는 턴 버프가 바로 상대턴에 사라짐을 방지
+            }
             var tcc = new TurnCountCard(card);
             turnCards.Add(tcc);
         }
@@ -180,6 +184,9 @@ public class EffectCardManager : ICloneable
         //TODO 현재 적용된 모든 카드 버프/디버프를 백하고 해제
         RevertCardEffects(turnCards);
         RevertCardEffects(countCards);
+
+        turnCards.Clear();
+        countCards.Clear();
     }
 
 }

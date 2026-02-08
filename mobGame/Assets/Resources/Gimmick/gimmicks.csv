@@ -2,6 +2,7 @@ null|Summon::0,1|Explode::0.1,1
 burserker|RageGain::1,1
 Slime|SelfDelet::0,1
 
-NOP_BOSS_1|Summon::0.5,1
+NOP_BOSS_1|Summon::0.5,1|Summon::0.5,1
+NOP_ELITE_1|Regeneration::0.5,10
 Summon_1|Explode::1,1
 Summon_8|Explode::1,1

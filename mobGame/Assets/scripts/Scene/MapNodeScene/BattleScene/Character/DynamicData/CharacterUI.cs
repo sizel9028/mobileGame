@@ -52,6 +52,47 @@ public class CharacterUI : MonoBehaviour
     [SerializeField] private Shader grayShader;
     [SerializeField] private Shader alphaShader;
 
+    //퍽 이미지 모음
+    [SerializeField] private Image[] puckImages;
+
+    public void SetPuck()
+    {
+        //TODO effectManager에서 퍽을 관리
+        if (character == null || character.effectCardManager == null) return;
+
+        foreach (var img in puckImages)
+        {
+            img.gameObject.SetActive(false);
+        }
+
+        List<TurnCountCard> allEffects = new List<TurnCountCard>();
+        allEffects.AddRange(character.effectCardManager.turnCards);
+        allEffects.AddRange(character.effectCardManager.countCards);
+
+        int count = Mathf.Min(allEffects.Count, puckImages.Length);
+
+        for (int i = 0; i < count; i++)
+        {
+            var effect = allEffects[i];
+            var img = puckImages[i];
+            img.gameObject.SetActive(true);
+
+            var cardIcon = img.transform.Find("CardIcon")?.GetComponent<Image>();
+
+            // 남은 턴/횟수 텍스트
+            if (effect.card != null)
+            {
+                StartCoroutine(CardArtLoader.LoadCardArt(effect.card, (sprite) =>
+                {
+                    if (sprite != null)
+                        cardIcon.sprite = sprite;
+                    else
+                        cardIcon.sprite = null;
+                }));
+            }
+        }
+    }
+
     public void SetGrayState(int stunValue)
     {
         if (characterImage == null || grayShader == null)

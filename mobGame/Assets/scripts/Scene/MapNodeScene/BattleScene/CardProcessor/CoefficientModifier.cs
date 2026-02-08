@@ -61,7 +61,9 @@ public partial class CoefficientModifier
         switch (effectKey)
         {
             case "Rage":
+                DeleteRage();
                 ApplyRage(value, caster, target);
+                
                 return;
 
             case "stun":
@@ -90,6 +92,20 @@ public partial class CoefficientModifier
         {
             float current = (float)field.GetValue(statObj);
             field.SetValue(statObj, current + value);
+        }
+    }
+
+    private void DeleteRage()
+    {
+        var handView = DeckManager.Instance.handView;
+
+        foreach (var cardUI in handView.cards)
+        {
+            if (cardUI.data.cardArtName == "Rage")
+            {
+                handView.RemoveCard(cardUI);
+                break;
+            }
         }
     }
 

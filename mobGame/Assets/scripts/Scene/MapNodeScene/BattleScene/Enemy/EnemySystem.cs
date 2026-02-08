@@ -12,8 +12,9 @@ public class EnemySystem : Singleton<EnemySystem>
         // 마나 또는 체력 비용 소비
         SpendCost(card);
 
-        CharacterUI caster = CharacterUIManager.Instance.enemyUIs
-        .FirstOrDefault(ui => ui != null && ui.character != null);
+        // CharacterUI caster = CharacterUIManager.Instance.enemyUIs
+        //.FirstOrDefault(ui => ui != null && ui.character != null);
+        var caster = GetRandomUI();
 
         if (caster == null)
         {
@@ -21,7 +22,7 @@ public class EnemySystem : Singleton<EnemySystem>
             yield break;
         }
 
-        var target = GetTargetUI(card);
+        var target = GetTargetUI(card, caster);
 
         var processor = new CardProcessor();
         yield return processor.ProcessCardWithTarget(card, caster, target);
@@ -49,19 +50,40 @@ public class EnemySystem : Singleton<EnemySystem>
             }
         }
     }
-    
+
     // 상대적으로 target을 반환
-    private CharacterUI GetTargetUI(CardData card)
+    private CharacterUI GetTargetUI(CardData card, CharacterUI randomUI)
     {
         return card.cardTarget switch
         {
             CardTarget.oneEnemy => CharacterUIManager.Instance.playerUIs
                 .LastOrDefault(ui => ui != null && ui.character != null),
 
-            CardTarget.onePlayer => CharacterUIManager.Instance.enemyUIs
-                .LastOrDefault(ui => ui != null && ui.character != null),
+            CardTarget.onePlayer => randomUI,
 
             _ => null // allEnemy, allPlayer 등은 내부 처리
         };
+    }
+
+    private CharacterUI GetRandomUI()
+    {
+        var UIs = CharacterUIManager.Instance.enemyUIs;
+
+        if (UIs == null || UIs.Count == 0)
+        {
+            Debug.LogWarning("EnemySystem :: caster가 null");
+            return null;
+        }
+
+        var validUIs = UIs.Where(ui => ui != null).ToList();
+
+        if (validUIs.Count == 0)
+        {
+            Debug.LogWarning("EnemySystem :: caster가 null");
+            return null;
+        }
+
+        int index = Random.Range(0, validUIs.Count);
+        return validUIs[index];
     }
 }

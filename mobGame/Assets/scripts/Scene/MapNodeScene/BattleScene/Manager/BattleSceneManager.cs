@@ -80,6 +80,8 @@ public class Battle : Singleton<Battle>
         //플레이어 소환
         var chData = GameManager.gameManager.playerData.characterData;
         CharacterUIManager.Instance.AddCharacterByData(chData);
+
+        SetPuck();
     }
 
     public IEnumerator EndGame(BattleResult result)
@@ -94,8 +96,10 @@ public class Battle : Singleton<Battle>
             //게임에서 승리하면 사용한 스크롤 카드 다 삭제
             DeleteUsedScrollCards();
             var chData = CharacterUIManager.Instance.playerUIs[0].character;
-            GameManager.gameManager.playerData.characterData.hp = chData.currentHp;
+            GameManager.gameManager.playerData.characterData.hp = chData.currentHp -
+            (int)PassiveProcessor.Instance.playerCh.statMultiplier.addHp; //카드 패시브로 증가한 맥스 hp는 뺌
 
+            GameManager.gameManager.playerData.characterData.hp = Mathf.Max(1, GameManager.gameManager.playerData.characterData.hp);
             Debug.Log("플레이어 승리");
             SceneManager.LoadScene("GachaScene");
         }
@@ -137,14 +141,20 @@ public class Battle : Singleton<Battle>
         }
     }
 
-    public void PlayerTurn()
+    public IEnumerator PlayerTurn()
     {
         turnType = TurnType.PlayerTurn;
 
-        DeckManager.Instance.ReDrawCards();  //패에 다시 카드를 넣음
+        SetPuck();
+
+        //DeckManager.Instance.ReDrawCards();  //패에 다시 카드를 넣음
+        yield return DeckManager.Instance.ReDrawCards();
         MapEffectProcessor.Instance.ProcessMapEffect();  //플레이어 턴 시작때 맵의 효과를 받음
 
         ManaSystem.Instance.Refill();
+
+        DeckManager.Instance.handView.CheckUsableCard();
+
         endTurnBtn.SetActive(true);  //턴 버튼 UI 보여줌
     }
 
@@ -160,11 +170,15 @@ public class Battle : Singleton<Battle>
 
         yield return new WaitForSeconds(1f);  //패를 다 버릴때까지 딜레이
 
-        if (!(turnCount <= 1))
+        CheckTurnEffects(false); // 에너미 턴 체크
+
+        SetPuck();
+
+        /*if (!(turnCount <= 1))
         {
             CheckTurnEffects(false); // 에너미 턴 체크
             yield return new WaitForSeconds(0.6f); // 데미지 입고 바로 카드 안씀
-        }
+        }*/
 
         MapEffectProcessor.Instance.ProcessMapEffect();  //에너미 효과
 
@@ -172,7 +186,7 @@ public class Battle : Singleton<Battle>
         yield return EnemyDeckManager.Instance.PlayCard();  //적이 카드를 낸다
 
         CheckTurnEffects(true);
-        PlayerTurn(); //플레이어 턴으로 넘어감
+        StartCoroutine(PlayerTurn()); //플레이어 턴으로 넘어감
     }
 
     //턴 기반 카드 횟수 체크
@@ -229,6 +243,22 @@ public class Battle : Singleton<Battle>
 
                 processor.ProcessCardEffect(dmgCard, null, new List<CharacterUI> { ui });
             }
+        }
+    }
+
+    public void SetPuck()
+    {
+        SetPuckPlayer(true); SetPuckPlayer(false); 
+    }
+
+    private void SetPuckPlayer(bool isPlayer)
+    {
+        var UIs = isPlayer ? CharacterUIManager.Instance.playerUIs : CharacterUIManager.Instance.enemyUIs;
+
+        foreach (var ui in UIs)
+        {
+            if (ui == null) continue;
+            ui.SetPuck();
         }
     }
 
